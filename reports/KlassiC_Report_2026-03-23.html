@@ -3,24 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KlassiC. 每日輿論分析</title>
+    <title>KlassiC. | ClearStreet Style Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        klassic: {
-                            blue: '#0033A1', // 官網主購物按鈕色系
-                            dark: '#333333', // 官網主字體顏色
-                            light: '#FAFAFA',// 柔和背景
-                            border: '#EAEAEA'
+                        cs: {
+                            bg: '#000000', // 極致黑底
+                            card: '#0D0D0D', // 深灰卡片
+                            border: '#262626', // 極細科技邊框
+                            accent: '#D4FF00', // Clear Street 標誌性螢光綠
+                            textMain: '#FFFFFF',
+                            textMuted: '#A3A3A3',
                         }
                     },
                     fontFamily: {
-                        sans: ['Montserrat', 'Noto Sans TC', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
                     }
                 }
             }
@@ -28,87 +31,109 @@
     </script>
     <style>
         body { 
-            background-color: #FFFFFF; 
-            color: #333333;
+            background-color: #000000; 
+            color: #FFFFFF;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .cs-grid-bg {
+            background-image: 
+                linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(212, 255, 0, 0.5);
         }
     </style>
 </head>
-<body class="bg-white">
+<body class="bg-cs-bg font-sans min-h-screen cs-grid-bg">
 
-<div class="max-w-6xl mx-auto px-4 sm:px-8 py-10 lg:py-14">
-    <!-- Header -->
-    <header class="flex flex-col md:flex-row items-center md:items-end justify-between mb-10 pb-6 border-b border-klassic-border">
-        <div class="text-center md:text-left">
-            <h1 class="text-4xl lg:text-5xl font-bold tracking-widest text-klassic-blue uppercase mb-2">
-                KlassiC.
-            </h1>
-            <p class="text-sm tracking-widest text-gray-500 font-medium">Daily Brand Monitor</p>
+<!-- Top Navigation Bar (Fintech style) -->
+<nav class="border-b border-cs-border bg-cs-bg/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-2 h-2 rounded-full bg-cs-accent shadow-[0_0_8px_#D4FF00]"></div>
+            <span class="font-bold text-lg tracking-tight">KlassiC<span class="text-cs-accent">.</span> Intelligence</span>
         </div>
-        <div class="text-center md:text-right mt-6 md:mt-0">
-            <p class="text-base font-semibold text-klassic-dark mb-2">2026-03-23</p>
-            <span class="inline-block bg-gray-100 text-gray-600 text-xs px-4 py-1.5 rounded-full font-medium tracking-wide">
-                資料擷取量：25
-            </span>
+        <div class="font-mono text-xs text-cs-textMuted flex items-center space-x-4">
+            <span class="hidden md:inline-block">SYS.STATUS: <span class="text-cs-accent">ONLINE</span></span>
+            <span>DATE: 2026-03-23</span>
         </div>
+    </div>
+</nav>
+
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Header Section -->
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-4">
+            Sentiment <span class="text-cs-textMuted">Analytics</span>
+        </h1>
+        <p class="text-cs-textMuted max-w-2xl text-lg leading-relaxed">
+            Real-time monitoring and algorithmic analysis of KlassiC brand reception. Processing <span class="text-white font-mono">25</span> data points across global social streams.
+        </p>
     </header>
 
-    <!-- Main Grid -->
+    <!-- Main Grid Dashboard -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
         
-        <!-- Emotion Chart -->
-        <div class="bg-klassic-light rounded-xl p-8 flex flex-col items-center justify-center border border-klassic-border">
-            <h2 class="text-base font-bold mb-6 w-full text-center tracking-wider text-klassic-dark">情感分析佔比</h2>
-            <div class="w-52 h-52 relative">
+        <!-- Emotion Chart Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 flex flex-col hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">Sentiment Ratio</h2>
+                <div class="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-white border border-white/10">LIVE</div>
+            </div>
+            <div class="flex-1 flex items-center justify-center relative w-full h-48">
                 <canvas id="sentimentChart"></canvas>
             </div>
         </div>
 
-        <!-- Top Topics -->
-        <div class="bg-klassic-light rounded-xl p-8 lg:col-span-2 border border-klassic-border">
-            <h2 class="text-base font-bold mb-6 tracking-wider text-klassic-dark border-b border-gray-200 pb-3">熱門話題排行 Top 3</h2>
-            <div class="space-y-3 mt-4">
+        <!-- Top Topics Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 lg:col-span-2 hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between border-b border-cs-border pb-4 mb-6">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">Top Detected Keywords</h2>
+                <span class="text-xs font-mono text-cs-textMuted">VOL. RANKING</span>
+            </div>
+            
+            <div class="space-y-4">
                 
                     
-                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-gray-100">
-                        <div class="flex items-center space-x-4">
-                            <!-- Ranking Icon (Klassic Blue for Top 1) -->
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm
-                                 bg-klassic-blue text-white shadow-md ">
-                                1
-                            </div>
-                            <h3 class="font-bold text-base text-klassic-dark">聯名系列</h3>
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-accent glow-text">
+                                01
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">墨鏡</h3>
                         </div>
-                        <div class="text-xs font-semibold text-gray-500 bg-gray-50 px-3 py-1 rounded-full border border-gray-100 tracking-wide">
-                            6 則提及
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-gray-100">
-                        <div class="flex items-center space-x-4">
-                            <!-- Ranking Icon (Klassic Blue for Top 1) -->
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm
-                                 bg-gray-200 text-klassic-dark ">
-                                2
-                            </div>
-                            <h3 class="font-bold text-base text-klassic-dark">墨鏡</h3>
-                        </div>
-                        <div class="text-xs font-semibold text-gray-500 bg-gray-50 px-3 py-1 rounded-full border border-gray-100 tracking-wide">
-                            5 則提及
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">4</span>
+                            <span class="text-[10px] uppercase text-cs-textMuted tracking-wider">Mentions</span>
                         </div>
                     </div>
                     
-                    <div class="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm border border-gray-100">
-                        <div class="flex items-center space-x-4">
-                            <!-- Ranking Icon (Klassic Blue for Top 1) -->
-                            <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm
-                                 bg-gray-100 text-gray-500 ">
-                                3
-                            </div>
-                            <h3 class="font-bold text-base text-klassic-dark">售後服務</h3>
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-textMuted">
+                                02
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">專業驗光</h3>
                         </div>
-                        <div class="text-xs font-semibold text-gray-500 bg-gray-50 px-3 py-1 rounded-full border border-gray-100 tracking-wide">
-                            4 則提及
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">4</span>
+                            <span class="text-[10px] uppercase text-cs-textMuted tracking-wider">Mentions</span>
+                        </div>
+                    </div>
+                    
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-textMuted">
+                                03
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">聯名系列</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">4</span>
+                            <span class="text-[10px] uppercase text-cs-textMuted tracking-wider">Mentions</span>
                         </div>
                     </div>
                     
@@ -117,32 +142,34 @@
         </div>
     </div>
 
-    <!-- Alert Section -->
+    <!-- Alert / Risk Management Section -->
     
 
-    <!-- Data Details Table -->
-    <div class="pt-6">
-        <h2 class="text-base font-bold tracking-wider mb-5 text-klassic-dark border-b border-klassic-border pb-3">所有評論明細</h2>
-        <div class="overflow-x-auto bg-white rounded-xl border border-klassic-border shadow-sm">
-            <table class="w-full text-left text-sm whitespace-nowrap lg:whitespace-normal">
-                <thead class="bg-klassic-light text-gray-500 text-xs tracking-wider border-b border-klassic-border">
-                    <tr>
-                        <th class="px-6 py-4 font-semibold">來源頻道</th>
-                        <th class="px-6 py-4 font-semibold w-1/2">內容摘要</th>
-                        <th class="px-6 py-4 font-semibold">分析標籤</th>
-                        <th class="px-6 py-4 font-semibold text-right">連結</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">介紹 KlassiC 為結合復古美學與現代科技的台灣眼鏡品牌，強調工藝品質與親民價格。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="生活  全部生活百貨  藝術  收藏品  家居  户外  書籍及刊物  科技產品
+    <!-- Database Terminal Table -->
+    <div class="pt-8">
+        <h2 class="text-lg font-semibold tracking-tight text-white mb-6">Operation Logs</h2>
+        
+        <div class="bg-cs-card border border-cs-border rounded-xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap lg:whitespace-normal">
+                    <thead class="bg-[#1A1A1A] border-b border-cs-border font-mono text-[11px] uppercase tracking-wider text-cs-textMuted">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">Origin / Timestamp</th>
+                            <th class="px-6 py-4 font-semibold w-1/2">Semantic Summary</th>
+                            <th class="px-6 py-4 font-semibold">Classifiers</th>
+                            <th class="px-6 py-4 font-semibold text-right">Ext. Link</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-cs-border">
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">HBX 平台上的品牌介紹，描述 KlassiC 為結合復古與現代科技的台灣眼鏡品牌，強調搭配自由度與平實價格。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="生活  全部生活百貨  藝術  收藏品  家居  户外  書籍及刊物  科技產品
 
 # KlassiC眼鏡
 
@@ -491,31 +518,31 @@ USD繁體
 生活  全部生活百貨  藝術  收藏品  家居  户外  書籍及刊物  科技產品
 
 # KlassiC眼鏡</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://hbx.com/tc/men/brands/klassic/categories/eyewear?page=1&limit=72&srsltid=AfmBOoomCwe-9ctWDYWarXLUaK6yBFfoHBZmOVPUk1mG3VlJF4v4PLrS" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC 於 HBX 平台的品牌介紹，強調其結合復古美學與現代科技的設計理念及親民價格。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="Clothing  All Clothing  Hoodies  Jackets & Coats  Jeans  Knitwear  Pants  Shirts  Sweatshirts  T-Shirts
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://hbx.com/tc/men/brands/klassic/categories/eyewear?page=1&limit=72&srsltid=AfmBOoomCwe-9ctWDYWarXLUaK6yBFfoHBZmOVPUk1mG3VlJF4v4PLrS" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">HBX 平台對 KlassiC 的品牌介紹，強調其結合復古美學與現代科技，並具備高性價比與穿搭靈活性。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="Clothing  All Clothing  Hoodies  Jackets & Coats  Jeans  Knitwear  Pants  Shirts  Sweatshirts  T-Shirts
 
 Footwear  All Footwear  Boots  Casual Shoes  Sandals  Sneakers
 
@@ -536,31 +563,31 @@ Life  All Life  Art  Collectibles  Home  Outdoor  Publications  Tech & Gadgets
 # KlassiC
 
 KlassiC, an eyewear brand founded in Taiwan in 2016, blends vintage charm with modern tech and style. Each piece reflects meticulous craftsmanship, offering a nod to classic aesthetics while meeting today's fashion-forward standards. The brand proposes " The freedom of mix and match,” targeting different lifestyles and re-establishing the dialogue between glasses, clothing, and our expressions at an affordable price.</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://hbx.com/men/brands/klassic?srsltid=AfmBOopez_KDuhIiyLe2xTJnN4SCZibx8Q40vgbUJ0xjEekMjgQFCwL7" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">品牌官網介紹各系列產品特色，強調實惠價格、高品質手工藝與多元跨界聯名。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="KlassiC. YOUTH. 系列
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://hbx.com/men/brands/klassic?srsltid=AfmBOopez_KDuhIiyLe2xTJnN4SCZibx8Q40vgbUJ0xjEekMjgQFCwL7" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">品牌強調以實惠價格提供高品質與多樣化設計的眼鏡，並透過直營模式與聯名系列吸引時尚族群。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="KlassiC. YOUTH. 系列
 
 超實惠價格，
 
@@ -887,31 +914,31 @@ KlassiC. YOUTH. 系列
 {{ 'product.bundled\_products.label' | translate }}
 
 {{ 'product.bundle\_group\_products.label' | translate }}</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/series" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC. 官方提供的鏡框材質科普文章，詳細介紹合金、TR90、複合材質與塑膠的特性及保養建議。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="{{item.variation.name}}
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/series" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC. 官方發布的鏡框材質科普文章，詳細介紹合金、TR90及複合材質的優缺點與保養知識。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{item.variation.name}}
 
 {{item.quantity}}x NT$0  {{ item.unit\_point }} 點
 
@@ -1162,31 +1189,31 @@ KlassiC.使用的複合材料為板料，不刺激皮膚也降低過敏性，而
 ．購買常見問題
 
 ．隱私權政策</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/frame-material" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC 官方網站的產品清單與品牌資訊，包含新品上市、聯名系列及購物流程說明。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="．品牌理念
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/frame-material" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 官方網站的商品列表、價格資訊與品牌導覽內容。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="．品牌理念
 
 ．門市資訊
 
@@ -1821,31 +1848,31 @@ AXIS
 ．註冊與下單
 
 ．官網退換貨流程</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/klassic" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC 品牌全台門市資訊彙整，包含地址、營業時間及特定門市優惠。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="刪除
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/klassic" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">彙整 KlassiC. 於全台各地的門市地址、營業時間、聯絡電話及特定通路優惠資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="刪除
 
 語言
 
@@ -2164,31 +2191,31 @@ KlassiC. 桃園統領百貨店
 KlassiC. 新竹巨城店
 
 \ CHIMI 總代理經銷門市</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/stores" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC 品牌於台灣各區及全球的經銷店家、門市地址與營業時間資訊彙整。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="MON - SAT｜10:00 - 20:30  
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/stores" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">提供 KlassiC. 於台灣各地（北中南東）及全球經銷店家的詳細地址、電話與營業時間資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="MON - SAT｜10:00 - 20:30  
  TEL：03-8322946  
  ADD：970花蓮縣花蓮市中華路19號
 
@@ -2527,31 +2554,31 @@ MON - THU｜11:00 - 22:00
  ADD：104台北市中山區南京西路14號3樓
 
 WODEN 台北</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/stockist" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">該文本為 KlassiC 官網之商品清單與促銷組合資訊，包含聯名系列、福袋活動及購物導覽。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="NT$4,980
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/stockist" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 品牌官網的商品列表與促銷資訊，包含聯名款墨鏡、馬年限量福袋及新品資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="NT$4,980
 
 查看更多
 
@@ -3056,31 +3083,31 @@ KlassiC. x mEltEd potato 梳子款0度抗藍光眼鏡
 NT$4,980
 
 Limited Edition</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">此文本為紐西蘭食品與冰塊批發商 Klassic Distribution 的官網資訊，與台灣眼鏡品牌 KlassiC 無關。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="Contact Us 07 577 0664
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">此文本為紐西蘭食品批發商 Klassic Distribution 的官網資訊，與台灣眼鏡品牌 KlassiC 無關。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="Contact Us 07 577 0664
 
 Phone us on  07 577 0664
 
@@ -3327,31 +3354,31 @@ Click here to view cart.
 #### Product not added to cart.
 
 Top</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassic.co.nz" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">此文本內容為印度房地產項目 Jaypee Klassic 的介紹與轉售資訊，與台灣眼鏡品牌 KlassiC 無關。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="### Retail Shops for Your Convenience
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassic.co.nz" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">此文本為印度 Noida 地區房地產項目 Jaypee Klassic 的介紹與轉售資訊，與台灣眼鏡品牌 KlassiC 無關。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="### Retail Shops for Your Convenience
 
 Jaypee Klassic has various commercial spaces featuring retail shops to fulfill your everyday needs. Klassic Arcade is one such space where residents of Jaypee Klassic find various pharmacies, departmental shops, vegetable shops, and many food options—so there is no hassle in finding daily products and services.
 
@@ -3394,31 +3421,31 @@ The project is one of the biggest projects in Noida with an area around 45 acres
 8. Klassic Heights( 3 towers offering 2, 3 &4 BHK . Possession is still pending)
 
 All these units are available for resale only.</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="http://www.jaypeegreensproperties.com/jaypee-greens-klassic.html" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣化款式、平易近人的價格以及親切的門市服務，認為其性價比極高且修飾臉型效果佳。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="兩間的裝潢風格不同，不過店內空間都走整潔明亮，我很喜歡，
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="http://www.jaypeegreensproperties.com/jaypee-greens-klassic.html" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣化款式、親民價格與親切服務，並推薦其修飾臉型的墨鏡與專業驗光服務。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="兩間的裝潢風格不同，不過店內空間都走整潔明亮，我很喜歡，
 
 在裡面逛起來很舒服，而且店員都很親切，不怕你試戴！！！只怕你沒有找到自己喜歡的。XD
 
@@ -3673,33 +3700,33 @@ KlassiC.台中文心秀泰門市(Store 02)
 KlassiC. 目前台北、台中都有門市，台北的話中山分店離我很近，另外還有一間在東區，
 
 兩間的裝潢風格不同，不過店內空間都走整潔明亮，我很喜歡，</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                                    <span class="inline-block bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide shadow-sm mt-1">高度激動</span>
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://fgblog.fashionguide.com.tw/9283/posts/407173" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣款式、平易近人的價格與親切服務，認為其性價比高且具設計感。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受，
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">LVL: HIGH</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://fgblog.fashionguide.com.tw/9283/posts/407173" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣款式、平易近人的價格與優質服務，並推薦其修飾臉型的墨鏡與快速配鏡服務。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受，
 
 主要是款式喜歡比較重要，去年去韓國也是從韓國買了三附太陽眼鏡回來，
 
@@ -3948,33 +3975,33 @@ KlassiC.敦南旗艦店(Store 03)
  親子餐廳 (7)
 
 ###### toggle 【美味食物】 (9)</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                                    <span class="inline-block bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide shadow-sm mt-1">高度激動</span>
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://livia1028.pixnet.net/blog/posts/9514859287" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 墨鏡款式豐富且價格親民，對產品設計與質感表示極度滿意。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="電話：02-2731-3738
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">LVL: HIGH</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://livia1028.pixnet.net/blog/posts/9514859287" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">網友高度讚賞 KlassiC 太陽眼鏡款式極其豐富且價格平易近人，對其修飾臉型的設計與產品質感表示極度滿意。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="電話：02-2731-3738
 
 營業時間：週日~週四 1230-2200 週五、週六 1230-2230
 
@@ -4119,33 +4146,33 @@ KlassiC. 在台灣擁有自己的生產線，也有自己的設計師，所以�
 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
 
 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                                    <span class="inline-block bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide shadow-sm mt-1">高度激動</span>
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://fgblog.fashionguide.com.tw/9283/posts/407173-%E3%80%90klassic-%E8%A9%95%E5%83%B9%E3%80%91klassic-%E4%BF%AE%E9%A3%BE%E8%87%89%E5%9E%8B%E5%A4%AA%E9%99%BD%E7%9C%BC%E9%8F%A1-%E5%A2%A8%E9%8F%A1%E6%8E%A7%E6%9D%B1%E5%8D%80%E5%BF%85%E9%80%9B%E5%BA%97%E2%94%82%E5%B9%B3%E5%83%B9%E5%A2%A8%E9%8F%A1%E2%94%82%E5%A2%A8%E9%8F%A1%E5%93%81%E7%89%8C%E6%8E%A8%E8%96%A6%E2%94%82%E6%8A%97uv%E5%A2%A8%E9%8F%A1%E2%94%82%E5%B0%8F%E8%87%89%E5%A2%A8%E9%8F%A1-%E2%9D%A4%E8%B7%9F%E8%91%97livia%E4%BA%AB%E5%8F%97%E4%BA%BA%E7%94%9F%E2%9D%A4" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 Klassic 的鏡框設計感、店員專業熱情的服務及高性價比，並推薦其快速取件與售後保障。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="各種粗框、細框、雙樑、圓框、方框、不規則框 款式多到真的難以抉擇阿!!!
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">LVL: HIGH</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://fgblog.fashionguide.com.tw/9283/posts/407173-%E3%80%90klassic-%E8%A9%95%E5%83%B9%E3%80%91klassic-%E4%BF%AE%E9%A3%BE%E8%87%89%E5%9E%8B%E5%A4%AA%E9%99%BD%E7%9C%BC%E9%8F%A1-%E5%A2%A8%E9%8F%A1%E6%8E%A7%E6%9D%B1%E5%8D%80%E5%BF%85%E9%80%9B%E5%BA%97%E2%94%82%E5%B9%B3%E5%83%B9%E5%A2%A8%E9%8F%A1%E2%94%82%E5%A2%A8%E9%8F%A1%E5%93%81%E7%89%8C%E6%8E%A8%E8%96%A6%E2%94%82%E6%8A%97uv%E5%A2%A8%E9%8F%A1%E2%94%82%E5%B0%8F%E8%87%89%E5%A2%A8%E9%8F%A1-%E2%9D%A4%E8%B7%9F%E8%91%97livia%E4%BA%AB%E5%8F%97%E4%BA%BA%E7%94%9F%E2%9D%A4" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣化鏡框設計、專業熱情的服務態度及高 CP 值的配鏡體驗。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="各種粗框、細框、雙樑、圓框、方框、不規則框 款式多到真的難以抉擇阿!!!
 
 這款整個很有設計感 , 若是想要與眾不同的框型~ 這款hen可以!  
 
@@ -4378,33 +4405,33 @@ P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要�
 ※如果真的不小心用壞,店員還是會盡力幫客人解決問題唷~~ 
 
 鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                                    <span class="inline-block bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide shadow-sm mt-1">高度激動</span>
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://lizhsu1124.pixnet.net/blog/posts/17313069825" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">網友對 KlassiC 眼鏡的外型設計與驗光效率多持正面評價，但對產品品質耐用度及部分分店服務專業度存有負面疑慮。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="→ biofuel: 子，店員還是稱我是：喔喔是在網路上關注 101.12.48.205 04/26 09:11
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">LVL: HIGH</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://lizhsu1124.pixnet.net/blog/posts/17313069825" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">網友對眼鏡設計與外觀多表讚賞，但對產品質感、耐用度及部分門市服務品質有負面回饋。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="→ biofuel: 子，店員還是稱我是：喔喔是在網路上關注 101.12.48.205 04/26 09:11
 
 → biofuel: 我們的粉絲== 101.12.48.205 04/26 09:11
 
@@ -4573,31 +4600,31 @@ Romand 的唇釉 色號是21號~
 → biofuel: 的粉絲，我回只是在網路上有看過你們這牌 101.12.48.205 04/26 09:11
 
 → biofuel: 子，店員還是稱我是：喔喔是在網路上關注 101.12.48.205 04/26 09:11</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.ptt.cc/bbs/e-shopping/M.1619152059.A.02B.html" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC 官方提供的鏡框材質科普與保養指南，旨在教育消費者如何挑選適合的眼鏡。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="{{item.variation.name}}
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.ptt.cc/bbs/e-shopping/M.1619152059.A.02B.html" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 官方提供的鏡框材質科普與保養指南，詳細介紹各類材質優缺點並推廣品牌產品。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{item.variation.name}}
 
 {{item.quantity}}x NT$0  {{ item.unit\_point }} 點
 
@@ -4972,31 +4999,31 @@ NEW ARRIVAL
 加入購物車
 
 AM-001</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/frame-material" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">品牌發布針對亞洲人臉型設計的挑鏡攻略，強調專業驗光服務與產品的修飾效果。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="✔ 下緣蛋型設計－修飾過尖的下巴、過方的下顎
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/frame-material" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">品牌提供針對亞洲人臉型與五官的眼鏡挑選指南，強調其產品設計符合亞洲人比例並具備專業驗光服務。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="✔ 下緣蛋型設計－修飾過尖的下巴、過方的下顎
 
 【復古大方框眼鏡】#小臉時髦感upup！
 
@@ -5405,31 +5432,31 @@ KlassiC. HANDMADE.
 ✔ 下緣蛋型設計－修飾過尖的下巴、過方的下顎
 
 【復古大方框眼鏡】#小臉時髦感upup！</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/htp202108" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC. 品牌於全台各地的門市地址、營業時間及經銷品牌資訊彙整。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="klassic,眼鏡,墨鏡,鏡框
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/htp202108" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">提供 KlassiC. 全台各門市的詳細地址、營業時間及特定門市優惠資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="klassic,眼鏡,墨鏡,鏡框
 
 KlassiC. 台南新光三越小北門店
 
@@ -5718,31 +5745,31 @@ KlassiC. 桃園統領百貨店
 KlassiC. 新竹巨城店
 
 \ CHIMI 總代理經銷門市</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/pages/stores" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣化款式、專業熱情的店員服務以及針對亞洲臉型設計的舒適度，並對其高 CP 值與售後保固表示滿意。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="再來牆面所陳列的是Handmade系列的墨鏡~款式真的超多種的!!! 
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/stores" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣化款式、專業服務與針對亞洲人臉型的設計，並對配鏡體驗與售後保固感到非常滿意。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="再來牆面所陳列的是Handmade系列的墨鏡~款式真的超多種的!!! 
 
 實體比官網看到的還要精緻 
 
@@ -5959,33 +5986,33 @@ P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要�
 ※如果真的不小心用壞,店員還是會盡力幫客人解決問題唷~~ 
 
 鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                                    <span class="inline-block bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide shadow-sm mt-1">高度激動</span>
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://lizhsu1124.pixnet.net/blog/post/313069825" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC 與 BAPE 人氣 IP Baby Milo® 推出限量聯名系列，結合街頭潮流元素與專業眼鏡工藝，並開設限時形象店。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="KlassiC. 與Baby Milo® 聯名中推出HANDMADE.系列推出板料方框與金屬扁圓框各 3 款
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">LVL: HIGH</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://lizhsu1124.pixnet.net/blog/post/313069825" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 攜手 BAPE 人氣 IP Baby Milo 推出聯名系列眼鏡與限量收納盒，並於中山開設限定形象店。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="KlassiC. 與Baby Milo® 聯名中推出HANDMADE.系列推出板料方框與金屬扁圓框各 3 款
 
 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列 首個台灣眼鏡品牌 KlassiC. 攜手 BAPE 人氣 IP Baby Milo® 推出限量聯名系列
 
@@ -6046,31 +6073,31 @@ KlassiC. 與Baby Milo® 聯名中輕行者摺疊墨鏡系列
 KlassiC. 與Baby Milo® 聯名中推出HANDMADE.系列
 
 KlassiC. 與Baby Milo® 聯名中推出HANDMADE.系列推出板料方框與金屬扁圓框各 3 款</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.cool-style.com.tw/wd2/archives/1233739-%E9%A6%96%E5%80%8B%E5%8F%B0%E7%81%A3%E7%9C%BC%E9%8F%A1%E5%93%81%E7%89%8C-klassic-%E6%94%9C%E6%89%8B-bape-%E4%BA%BA%E6%B0%A3-ip-baby-milo-%E6%8E%A8%E5%87%BA%E9%99%90%E9%87%8F%E8%81%AF%E5%90%8D" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">該文本內容為韓國 Cafflano Klassic 手沖咖啡杯的價格比價與資訊整理，與 KlassiC 眼鏡品牌無關。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="cafflano 的價格 - 比價撿便宜
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.cool-style.com.tw/wd2/archives/1233739-%E9%A6%96%E5%80%8B%E5%8F%B0%E7%81%A3%E7%9C%BC%E9%8F%A1%E5%93%81%E7%89%8C-klassic-%E6%94%9C%E6%89%8B-bape-%E4%BA%BA%E6%B0%A3-ip-baby-milo-%E6%8E%A8%E5%87%BA%E9%99%90%E9%87%8F%E8%81%AF%E5%90%8D" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">此文本內容為韓國咖啡器具品牌 Cafflano Klassic 的價格比價與產品資訊，與台灣眼鏡品牌 KlassiC 無關。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="cafflano 的價格 - 比價撿便宜
 
   
  【韓國Cafflano】Klassic All-in-one 手沖研磨隨身咖啡杯 的價格比價結果，價格由2980元至3600元，共8筆推薦結果，(更新日期2017-09-24)。每...
@@ -6225,31 +6252,31 @@ Icecream Slideshow Maker is an application, which can create slideshows with mus
  cafflano klassic 的價格由849 元到2980 元。共有5筆，超商取貨3筆。比價撿便宜，最方便的比價網站，逛街購物的比價王。
 
   cafflano klassic 的價格- 比價撿便宜</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://software.easylife.tw/entry/cafflano%20klassic%E5%83%B9%E6%A0%BC.html" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">此文本為 KlassiC. 品牌墨鏡與 BABY MILO 聯名系列之商品清單與價格資訊。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="NT$1,980 KlassiC. x BABY MILO 輕行者摺疊墨鏡 F003 透灰框漸黑
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://software.easylife.tw/entry/cafflano%20klassic%E5%83%B9%E6%A0%BC.html" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">此文本為 KlassiC. 品牌墨鏡與 BABY MILO 聯名系列及其他型號之產品清單與價格資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="NT$1,980 KlassiC. x BABY MILO 輕行者摺疊墨鏡 F003 透灰框漸黑
 
 KlassiC. x BABY MILO 輕行者摺疊墨鏡 F003 透灰框漸黑
 
@@ -6526,31 +6553,31 @@ NT$2,980 KlassiC. ETHAN 墨鏡 黑框茶片
 KlassiC. ETHAN 墨鏡 黑框茶片
 
 售完</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.flommarket.com.tw/categories/klassic?srsltid=AfmBOopGbwP7kXfuZnqLCNG4COWp7TJtvFYksFFYiL8RX1bPhYJ3MpJz" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">KlassiC. 官方網站商品列表與分類資訊，包含新品上市、聯名系列及各類眼鏡配件價格。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="NEW ARRIVAL
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.flommarket.com.tw/categories/klassic?srsltid=AfmBOopGbwP7kXfuZnqLCNG4COWp7TJtvFYksFFYiL8RX1bPhYJ3MpJz" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 官網商品列表與分類資訊，包含新品上市、聯名系列及各類眼鏡配件之價格與導覽。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="NEW ARRIVAL
 
 CHIMI Eli
 
@@ -7037,60 +7064,60 @@ CHIMI Tome
  繁體中文
 
 你的購物車是空的</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://www.klassicglobal.com/products" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">該文本為 Cafflano Klassic 咖啡隨行瓶的產品介紹與價格比價，與 KlassiC 眼鏡品牌無關。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="| 搜尋參考資料: 1. Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱 … Traduzir esta página  m.books.com.tw/product/show/N000566774  Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 行動博客來 登入 加入會員(電腦版) 使用說明. 結帳 ... Cafflano Klassic 咖啡研磨手沖 ... 2. Cafflano Klassic 咖啡研磨手沖隨行瓶 的價 … Traduzir esta página  feebee.com.tw/s/Cafflano Klassic 咖啡研磨手沖隨行瓶  Cafflano Klassic 咖啡研磨手沖隨行瓶 商品價格比價結果。共有 2 筆，Cafflano Klassic 咖啡研磨手沖隨行瓶 的價格由 2,980 元到 2,980 元。 3. Cafflano Klassic 的價格 - 飛比價格 Traduzir esta página  feebee.com.tw/s/Cafflano Klassic  共有 2 筆，Cafflano Klassic 的價格由 2,980 元到 2,980 ... Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 {引領上市:: ... 4. Cafflano Klassic 的價格-EZprice 比價網 Traduzir esta página  ezprice.com.tw/s/Cafflano Klassic/price  Cafflano Klassic 價格比價結果 ... 價格由低至高; 價格由高至低; Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 $2,680. 博客來. 前往賣場 ... 5. 博客來-Cafflano Klassic [...] | 走過路過,千萬不要錯過！參考本商品Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅到處比價;尋找低價及可靠的網購地方!BLANCHE不吝嗇分享他的生活點點滴滴;包括網路上購買的任何東西BLANCHE最近也對這個商品很趕興趣,網路價格隨時會異動,請以原網購平台資料為準！還有去各大拍賣網站RUTEN露天、YAHOO拍賣收集資料！BLANCHE也在問請我幫忙收集資料！現在很多線上購物平台都有推出該商品!我有去遍尋各大購物網站yahoo奇摩購物、momo購物、博客來、PChome、7Net搜尋優惠價格!當今網購市場很競爭,各大購物網為求好業績無所不用其極。 |
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/products" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">該文本內容為 Cafflano Klassic 咖啡研磨手沖隨行瓶的產品介紹與比價資訊，與台灣眼鏡品牌 KlassiC 無關。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="| 搜尋參考資料: 1. Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱 … Traduzir esta página  m.books.com.tw/product/show/N000566774  Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 行動博客來 登入 加入會員(電腦版) 使用說明. 結帳 ... Cafflano Klassic 咖啡研磨手沖 ... 2. Cafflano Klassic 咖啡研磨手沖隨行瓶 的價 … Traduzir esta página  feebee.com.tw/s/Cafflano Klassic 咖啡研磨手沖隨行瓶  Cafflano Klassic 咖啡研磨手沖隨行瓶 商品價格比價結果。共有 2 筆，Cafflano Klassic 咖啡研磨手沖隨行瓶 的價格由 2,980 元到 2,980 元。 3. Cafflano Klassic 的價格 - 飛比價格 Traduzir esta página  feebee.com.tw/s/Cafflano Klassic  共有 2 筆，Cafflano Klassic 的價格由 2,980 元到 2,980 ... Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 {引領上市:: ... 4. Cafflano Klassic 的價格-EZprice 比價網 Traduzir esta página  ezprice.com.tw/s/Cafflano Klassic/price  Cafflano Klassic 價格比價結果 ... 價格由低至高; 價格由高至低; Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 $2,680. 博客來. 前往賣場 ... 5. 博客來-Cafflano Klassic [...] | 走過路過,千萬不要錯過！參考本商品Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅到處比價;尋找低價及可靠的網購地方!BLANCHE不吝嗇分享他的生活點點滴滴;包括網路上購買的任何東西BLANCHE最近也對這個商品很趕興趣,網路價格隨時會異動,請以原網購平台資料為準！還有去各大拍賣網站RUTEN露天、YAHOO拍賣收集資料！BLANCHE也在問請我幫忙收集資料！現在很多線上購物平台都有推出該商品!我有去遍尋各大購物網站yahoo奇摩購物、momo購物、博客來、PChome、7Net搜尋優惠價格!當今網購市場很競爭,各大購物網為求好業績無所不用其極。 |
 | 售價:2980 |
 | 產品說明重量：590G {引領上市::網路獨家販售}隨時隨地只要有熱水，就可以享受到一杯即磨的精品手沖咖啡！想品嚐哪個產區，甚麼味道，都可以不求人！● 材質：SUS304是日本JIS標準材料，SUS系列奧氏體不銹鋼，具有良好的耐蝕性、耐熱性、低溫強度和機械性能，衝壓彎曲等熱加工性好，無熱處理硬化現象，無磁性。● 重量：470G● 產地：韓國● 內附：8國語言說明書, 有包含中文 ( 韓, 中, 日, 英, 法, 德, 俄, 西）● 產品組成和其特性：▲滴水杯有一個設計獨特的鑽石形嘴，它是同時醞釀用作滴水杯。為方便測量，若水填充到剛好低於噴口孔，具體化儲存可至270毫升水。與滿滴水杯，可以沖泡咖啡足以為2人份。▲手工研磨器你可以研磨一次至30公克豆，並權衡適量用刻度（分別10/15/20/25公克）▲過濾滴網環保且永久不銹鋼的過濾滴網。清洗，保存和沖泡咖啡的時候很方便。滴網具有通氣孔，當沖泡時，確保平穩的水和空氣的流動，可釀出最美味的咖啡。▲平底杯其不銹鋼材質使得它容易清洗，儲存和使用。它可以存儲多達從過濾器滴網的底部至250ML。整個平底杯，最多可存儲450毫升。 |">| 搜尋參考資料: 1. Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱 … Traduzir esta página  m.books.com.tw/product/show/N000566774  Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 行動博客來 登入 加入會員(電腦版) 使用說明. 結帳 ... Cafflano Klassic 咖啡研磨手沖 ... 2. Cafflano Klassic 咖啡研磨手沖隨行瓶 的價 … Traduzir esta página  feebee.com.tw/s/Cafflano Klassic 咖啡研磨手沖隨行瓶  Cafflano Klassic 咖啡研磨手沖隨行瓶 商品價格比價結果。共有 2 筆，Cafflano Klassic 咖啡研磨手沖隨行瓶 的價格由 2,980 元到 2,980 元。 3. Cafflano Klassic 的價格 - 飛比價格 Traduzir esta página  feebee.com.tw/s/Cafflano Klassic  共有 2 筆，Cafflano Klassic 的價格由 2,980 元到 2,980 ... Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 {引領上市:: ... 4. Cafflano Klassic 的價格-EZprice 比價網 Traduzir esta página  ezprice.com.tw/s/Cafflano Klassic/price  Cafflano Klassic 價格比價結果 ... 價格由低至高; 價格由高至低; Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅 $2,680. 博客來. 前往賣場 ... 5. 博客來-Cafflano Klassic [...] | 走過路過,千萬不要錯過！參考本商品Cafflano Klassic 咖啡研磨手沖隨行瓶\_熱情紅到處比價;尋找低價及可靠的網購地方!BLANCHE不吝嗇分享他的生活點點滴滴;包括網路上購買的任何東西BLANCHE最近也對這個商品很趕興趣,網路價格隨時會異動,請以原網購平台資料為準！還有去各大拍賣網站RUTEN露天、YAHOO拍賣收集資料！BLANCHE也在問請我幫忙收集資料！現在很多線上購物平台都有推出該商品!我有去遍尋各大購物網站yahoo奇摩購物、momo購物、博客來、PChome、7Net搜尋優惠價格!當今網購市場很競爭,各大購物網為求好業績無所不用其極。 |
 | 售價:2980 |
 | 產品說明重量：590G {引領上市::網路獨家販售}隨時隨地只要有熱水，就可以享受到一杯即磨的精品手沖咖啡！想品嚐哪個產區，甚麼味道，都可以不求人！● 材質：SUS304是日本JIS標準材料，SUS系列奧氏體不銹鋼，具有良好的耐蝕性、耐熱性、低溫強度和機械性能，衝壓彎曲等熱加工性好，無熱處理硬化現象，無磁性。● 重量：470G● 產地：韓國● 內附：8國語言說明書, 有包含中文 ( 韓, 中, 日, 英, 法, 德, 俄, 西）● 產品組成和其特性：▲滴水杯有一個設計獨特的鑽石形嘴，它是同時醞釀用作滴水杯。為方便測量，若水填充到剛好低於噴口孔，具體化儲存可至270毫升水。與滿滴水杯，可以沖泡咖啡足以為2人份。▲手工研磨器你可以研磨一次至30公克豆，並權衡適量用刻度（分別10/15/20/25公克）▲過濾滴網環保且永久不銹鋼的過濾滴網。清洗，保存和沖泡咖啡的時候很方便。滴網具有通氣孔，當沖泡時，確保平穩的水和空氣的流動，可釀出最美味的咖啡。▲平底杯其不銹鋼材質使得它容易清洗，儲存和使用。它可以存儲多達從過濾器滴網的底部至250ML。整個平底杯，最多可存儲450毫升。 |</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-gray-100 text-gray-600 border border-gray-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">中立</span>
-                                
-                                
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://e8d6b.pixnet.net/blog/posts/12050001120" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="hover:bg-gray-50 transition duration-200">
-                        <td class="px-6 py-5 align-top">
-                            <span class="block font-semibold text-klassic-dark">Tavily AI Search</span>
-                            <span class="block text-xs text-gray-400 mt-1">2026-03-23 15:38</span>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <p class="text-klassic-dark font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 Klassic 的專業驗光、快速取件服務與高 CP 值產品，並對店內氛圍與售後保固表示滿意。</p>
-                            <p class="text-gray-400 text-xs leading-relaxed line-clamp-2" title="# Less is more
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">NEU_STATE</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://e8d6b.pixnet.net/blog/posts/12050001120" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-23 16:05</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 敦南旗艦店的專業驗光、30分鐘快速取件服務及高 CP 值的多樣化鏡框選擇。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="# Less is more
 
 ## 捨去複雜的包裝，呈現最原始的樣貌
 
@@ -7259,32 +7286,35 @@ P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要�
 ※如果真的不小心用壞,店員還是會盡力幫客人解決問題唷~~ 
 
 鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~</p>
-                        </td>
-                        <td class="px-6 py-5 align-top">
-                            <div class="flex flex-col gap-2 items-start">
-                                
-                                    <span class="inline-block bg-blue-50 text-klassic-blue border border-blue-100 px-3 py-1 text-xs rounded-full font-semibold tracking-wide">正面</span>
-                                
-                                
-                                
-                                    <span class="inline-block bg-orange-50 text-orange-600 border border-orange-200 px-3 py-1 text-xs rounded-full font-semibold tracking-wide shadow-sm mt-1">高度激動</span>
-                                
-                            </div>
-                        </td>
-                        <td class="px-6 py-5 align-top text-right">
-                            <a href="https://lizhsu1124.pixnet.net/blog/posts/17313069825" target="_blank" class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-50 text-gray-500 hover:bg-klassic-blue hover:text-white transition-colors">
-                                ↗
-                            </a>
-                        </td>
-                    </tr>
-                    
-                </tbody>
-            </table>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start font-mono text-[10px] tracking-wider uppercase">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">POS_STATE</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">LVL: HIGH</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://lizhsu1124.pixnet.net/blog/posts/17313069825" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     
-    <footer class="mt-16 pt-8 border-t border-klassic-border text-center text-xs tracking-wider text-gray-400 font-medium">
-        &copy; 2026 KlassiC. Brand Sentiment Report | AI Powered
+    <footer class="mt-20 pt-8 border-t border-cs-border text-center">
+        <p class="font-mono text-[10px] text-cs-textMuted uppercase tracking-widest">
+            // KlassiC Data Engine &copy; 2026 | Generated by AI
+        </p>
     </footer>
 </div>
 
@@ -7292,33 +7322,35 @@ P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要�
     const ctx = document.getElementById('sentimentChart').getContext('2d');
     const dataFromBackend = [48.0, 52.0, 0.0];
     
+    // Clear Street style chart colors
     new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['正面 (Positive)', '中立 (Neutral)', '負面 (Negative)'],
+            labels: ['Positive', 'Neutral', 'Negative'],
             datasets: [{
                 data: dataFromBackend,
                 backgroundColor: [
-                    '#0033A1', // KlassiC Blue
-                    '#EAEAEA', // Light Gray
-                    '#DC2626'  // Red (Error state for negative)
+                    '#D4FF00', // CS Accent Green for Positive
+                    '#262626', // Dark border gray for Neutral
+                    '#EF4444'  // Red for Negative
                 ],
                 borderWidth: 2,
-                borderColor: '#FFFFFF',
+                borderColor: '#000000', // Match black background
                 hoverOffset: 4
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '72%',
+            cutout: '80%', // Thinner elegant ring
             plugins: {
                 legend: {
                     position: 'bottom',
                     labels: { 
-                        boxWidth: 12, 
-                        font: { family: 'Montserrat', weight: '500', size: 12 },
-                        padding: 20
+                        boxWidth: 8,
+                        usePointStyle: true,
+                        color: '#A3A3A3',
+                        font: { family: 'JetBrains Mono', size: 10 }
                     }
                 }
             }
