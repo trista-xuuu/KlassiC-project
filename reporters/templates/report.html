@@ -3,155 +3,231 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KlassiC 每日輿情分析報表 ({{ today }})</title>
-    <!-- TailwindCSS for styling -->
+    <title>KlassiC. | ClearStreet Style Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cs: {
+                            bg: '#000000', // 極致黑底
+                            card: '#0D0D0D', // 深灰卡片
+                            border: '#262626', // 極細科技邊框
+                            accent: 'rgb(0, 111, 255)', // 主色改為亮科技藍
+                            textMain: '#FFFFFF',
+                            textMuted: '#A3A3A3',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        body { 
+            background-color: #000000; 
+            color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .cs-grid-bg {
+            background-image: 
+                linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(0, 111, 255, 0.5);
+        }
     </style>
 </head>
-<body class="text-gray-800">
+<body class="bg-cs-bg font-sans min-h-screen cs-grid-bg">
 
-<div class="max-w-5xl mx-auto px-4 py-8">
-    <!-- Header -->
-    <header class="flex items-center justify-between mb-8 pb-4 border-b-2 border-gray-200">
-        <div>
-            <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-indigo-600">
-                KlassiC 輿情監測系統
-            </h1>
-            <p class="text-gray-500 mt-1">報告日期：{{ today }} | 總計分析來源：{{ total_count }}</p>
+<!-- Top Navigation Bar (Fintech style) -->
+<nav class="border-b border-cs-border bg-cs-bg/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-2 h-2 rounded-full bg-cs-accent shadow-[0_0_8px_rgba(0,111,255,0.8)]"></div>
+            <span class="font-bold text-lg tracking-tight">KlassiC<span class="text-cs-accent">.</span> Intelligence</span>
         </div>
-        <div class="text-right">
-            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full font-semibold px-3 py-1 mt-1">
-                Automated Report
-            </span>
+        <div class="font-mono text-xs text-cs-textMuted flex items-center space-x-4">
+            <span class="hidden md:inline-block">系統狀態：<span class="text-cs-accent">運作中 (ONLINE)</span></span>
+            <span>分析日期：{{ today }}</span>
         </div>
+    </div>
+</nav>
+
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Header Section -->
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-4">
+            品牌情緒 <span class="text-cs-textMuted">觀測儀表板</span>
+        </h1>
+        <p class="text-cs-textMuted max-w-2xl text-lg leading-relaxed">
+            KlassiC 市場聲量與語意邏輯分析引擎，今日已自動分析並擷取全球社群串流上共 <span class="text-white font-mono">{{ total_count }}</span> 筆資料節點。
+        </p>
     </header>
 
-    <!-- Main Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <!-- Main Grid Dashboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
         
-        <!-- Emotion Chart -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col items-center">
-            <h2 class="text-lg font-bold mb-4 w-full text-left">情緒分佈 (%)</h2>
-            <div class="w-48 h-48 relative">
+        <!-- Emotion Chart Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 flex flex-col hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">情緒佔比分析 (Sentiment Ratio)</h2>
+                <div class="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-white border border-white/10">即時 (LIVE)</div>
+            </div>
+            <div class="flex-1 flex items-center justify-center relative w-full h-48">
                 <canvas id="sentimentChart"></canvas>
             </div>
         </div>
 
-        <!-- Top Topics -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 md:col-span-2">
-            <h2 class="text-lg font-bold mb-4">前三大熱門話題 (Top 3 Topics)</h2>
+        <!-- Top Topics Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 lg:col-span-2 hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between border-b border-cs-border pb-4 mb-6">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">關鍵字聲量偵測 Top 3</h2>
+                <span class="text-xs font-mono text-cs-textMuted">VOL. RANKING</span>
+            </div>
+            
             <div class="space-y-4">
                 {% if top_topics %}
                     {% for topic, count in top_topics %}
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center p-3 hover:bg-gray-50 rounded-lg transition">
-                        <!-- Ranking Icon -->
-                        <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-white shrink-0
-                            {% if loop.index == 1 %} bg-yellow-400 {% elif loop.index == 2 %} bg-gray-400 {% else %} bg-orange-400 {% endif %}">
-                            {{ loop.index }}
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm {% if loop.index == 1 %}text-cs-accent glow-text{% else %}text-cs-textMuted{% endif %}">
+                                0{{ loop.index }}
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">{{ topic }}</h3>
                         </div>
-                        <div class="sm:ml-4 mt-2 sm:mt-0 flex-1">
-                            <h3 class="font-semibold text-gray-800">{{ topic }}</h3>
-                        </div>
-                        <div class="text-sm font-semibold text-gray-500 bg-gray-100 px-3 py-1 rounded-full sm:ml-4">
-                            提及 {{ count }} 次
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">{{ count }}</span>
+                            <span class="text-[10px] text-cs-textMuted tracking-wider">筆討論</span>
                         </div>
                     </div>
                     {% endfor %}
                 {% else %}
-                    <p class="text-gray-500">尚無足夠的話題數據</p>
+                    <div class="h-full flex items-center justify-center text-cs-textMuted font-mono text-sm py-10">
+                        > 目前無足夠數據 (NO SUFFICIENT DATA)
+                    </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Alert Section -->
+    <!-- Alert / Risk Management Section -->
     {% if alerts|length > 0 %}
-    <div class="mb-8">
-        <h2 class="text-xl font-bold mb-4 text-red-600 flex items-center">
-            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-            公關預警 ({{ alerts|length }} 件)
-        </h2>
-        <div class="space-y-4">
+    <div class="mb-12">
+        <div class="flex items-center space-x-3 mb-6">
+            <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+            <h2 class="text-lg font-semibold tracking-tight text-white">高風險客訴偵測 <span class="text-cs-textMuted ml-2 font-mono text-sm">(共 {{ alerts|length }} 筆)</span></h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             {% for alert in alerts %}
-            <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
-                <div class="flex justify-between items-start mb-2">
-                    <h3 class="font-semibold text-red-800">{{ alert.title }}</h3>
-                    <span class="text-xs text-red-500 bg-red-100 px-2 py-1 rounded">{{ alert.source }}</span>
+            <div class="bg-cs-card border border-red-900/50 hover:border-red-500/50 rounded-xl p-6 transition-colors duration-300 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-transparent"></div>
+                
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="font-semibold text-white text-lg leading-snug pr-4">{{ alert.title }}</h3>
+                    <span class="font-mono text-[10px] border border-red-500/30 text-red-400 bg-red-500/10 px-2 py-1 rounded">{{ alert.source }}</span>
                 </div>
-                <p class="text-red-700 text-sm mb-2 font-medium">{{ alert.analysis.summary }}</p>
+                
+                <p class="text-gray-300 text-sm leading-relaxed mb-6">{{ alert.analysis.summary }}</p>
+                
                 {% if alert.analysis.suggestion %}
-                <p class="text-red-600 text-sm bg-white bg-opacity-50 p-2 rounded mt-2">💡 改善建議：{{ alert.analysis.suggestion }}</p>
+                <div class="bg-black/50 border border-white/5 rounded-lg p-4 mb-6">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <svg class="w-4 h-4 text-cs-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span class="font-mono text-xs uppercase tracking-wider text-cs-accent">AI 危機處理建議</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">{{ alert.analysis.suggestion }}</p>
+                </div>
                 {% endif %}
-                <a href="{{ alert.url }}" target="_blank" class="inline-block mt-3 text-sm text-red-600 underline font-semibold hover:text-red-800">查看原始來源 →</a>
+                
+                <div class="border-t border-cs-border pt-4 mt-auto">
+                    <a href="{{ alert.url }}" target="_blank" class="inline-flex items-center text-xs text-cs-textMuted hover:text-white transition-colors duration-200">
+                        追蹤原始連結 (SOURCE LINK)
+                        <svg class="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
             </div>
             {% endfor %}
         </div>
     </div>
     {% endif %}
 
-    <!-- Data Details Table -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100">
-             <h2 class="text-lg font-bold">所有擷取資料明細</h2>
-        </div>
-        <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-                <thead class="bg-gray-50 text-gray-600">
-                    <tr>
-                        <th class="px-6 py-3 font-semibold">來源 / 日期</th>
-                        <th class="px-6 py-3 font-semibold">摘要歸納</th>
-                        <th class="px-6 py-3 font-semibold">情緒標籤</th>
-                        <th class="px-6 py-3 font-semibold">連結</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-100">
-                    {% for record in records %}
-                    <tr class="hover:bg-gray-50 transition">
-                        <td class="px-6 py-4 w-1/5 align-top">
-                            <span class="block font-medium text-gray-900">{{ record.source }}</span>
-                            <span class="block text-xs text-gray-400 mt-1">{{ record.date }}</span>
-                        </td>
-                        <td class="px-6 py-4 w-2/5 align-top">
-                            <p class="text-gray-800 font-medium mb-1">{{ record.analysis.summary }}</p>
-                            <p class="text-gray-500 text-xs line-clamp-2" title="{{ record.content }}">{{ record.content }}</p>
-                        </td>
-                        <td class="px-6 py-4 align-top">
-                            {% if record.analysis.sentiment == 'positive' %}
-                                <span class="inline-block bg-green-100 text-green-700 px-2 py-1 rounded text-xs font-semibold">正面</span>
-                            {% elif record.analysis.sentiment == 'negative' %}
-                                <span class="inline-block bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">負面</span>
-                            {% else %}
-                                <span class="inline-block bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs font-semibold">中立</span>
-                            {% endif %}
-                            
-                             {% if record.analysis.intensity == 'high' %}
-                                <span class="inline-block bg-orange-100 text-orange-700 px-2 py-1 rounded text-xs font-semibold mt-1">激動程度高</span>
-                             {% endif %}
-                        </td>
-                        <td class="px-6 py-4 align-top">
-                            <a href="{{ record.url }}" target="_blank" class="text-blue-600 hover:text-blue-800 hover:underline">Link</a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <!-- Database Terminal Table -->
+    <div class="pt-8">
+        <h2 class="text-lg font-semibold tracking-tight text-white mb-6">系統資料庫紀錄 (Operation Logs)</h2>
+        
+        <div class="bg-cs-card border border-cs-border rounded-xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap lg:whitespace-normal">
+                    <thead class="bg-[#1A1A1A] border-b border-cs-border font-mono text-[11px] uppercase tracking-wider text-cs-textMuted">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">來源 / 時間標記</th>
+                            <th class="px-6 py-4 font-semibold w-1/2">AI 語意摘要分析</th>
+                            <th class="px-6 py-4 font-semibold">狀態標籤庫</th>
+                            <th class="px-6 py-4 font-semibold text-right">來源連結</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-cs-border">
+                        {% for record in records %}
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">{{ record.source }}</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">{{ record.date }}</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">{{ record.analysis.summary }}</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{ record.content }}">{{ record.content }}</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    {% if record.analysis.sentiment == 'positive' %}
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    {% elif record.analysis.sentiment == 'negative' %}
+                                        <span class="inline-block bg-red-500/10 border border-red-500/30 text-red-400 px-2 py-1 rounded">負面反饋</span>
+                                    {% else %}
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    {% endif %}
+                                    
+                                    {% if record.analysis.intensity == 'high' %}
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    {% endif %}
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="{{ record.url }}" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     
-    <footer class="mt-8 text-center text-sm text-gray-400 pb-8">
-        &copy; {{ today[:4] }} KlassiC 自動化監測報表 | Powered by AI
+    <footer class="mt-20 pt-8 border-t border-cs-border text-center">
+        <p class="font-mono text-[10px] text-cs-textMuted tracking-widest">
+            // KlassiC 輿情數據引擎 &copy; {{ today[:4] }} | Generated by AI
+        </p>
     </footer>
 </div>
 
 <script>
-    // Chart.js Configuration for Emotion Pie Chart
     const ctx = document.getElementById('sentimentChart').getContext('2d');
-    const dataFromBackend = {{ pie_data }}; // [Positive, Neutral, Negative]
+    const dataFromBackend = {{ pie_data }};
     
+    // Clear Street style chart colors
     new Chart(ctx, {
         type: 'doughnut',
         data: {
@@ -159,27 +235,32 @@
             datasets: [{
                 data: dataFromBackend,
                 backgroundColor: [
-                    'rgba(34, 197, 94, 0.8)', // Green
-                    'rgba(156, 163, 175, 0.8)', // Gray
-                    'rgba(239, 68, 68, 0.8)'  // Red
+                    'rgb(0, 111, 255)', // Tech Blue for Positive
+                    '#262626', // Dark border gray for Neutral
+                    '#EF4444'  // Red for Negative
                 ],
-                hoverOffset: 4,
-                borderWidth: 0
+                borderWidth: 2,
+                borderColor: '#000000', // Match black background
+                hoverOffset: 4
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            cutout: '70%',
+            cutout: '80%', // Thinner elegant ring
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { boxWidth: 12, font: { family: 'Inter' } }
+                    labels: { 
+                        boxWidth: 8,
+                        usePointStyle: true,
+                        color: '#A3A3A3',
+                        font: { family: 'Noto Sans TC', size: 10 }
+                    }
                 }
             }
         }
     });
 </script>
-
 </body>
 </html>

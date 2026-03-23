@@ -40,12 +40,29 @@ class HtmlReporter:
             records=records
         )
         
-        # 存檔
+        # 存檔今日報告
         file_path = self.reports_dir / f"KlassiC_Report_{today}.html"
         with open(file_path, "w", encoding="utf-8") as f:
             f.write(html_content)
+            
+        # 為了支援 GitHub Pages 永遠顯示最新報告：在根目錄產生一個跳轉用的 index.html
+        root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        index_path = os.path.join(root_dir, "index.html")
+        redirect_html = f'''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=reports/KlassiC_Report_{today}.html">
+    <title>正在為您載入 KlassiC 最新輿情報告...</title>
+</head>
+<body>
+    <p>正在為您跳轉至最新報告，若沒有反應請 <a href="reports/KlassiC_Report_{today}.html">點此進入</a>。</p>
+</body>
+</html>'''
+        with open(index_path, "w", encoding="utf-8") as f:
+            f.write(redirect_html)
         
-        print(f"[報告產出] HTML 報告已生成於: {file_path}")
+        print(f"[報告產出] HTML 報告與首頁跳轉檔已生成於: {file_path}")
         return str(file_path)
 
     def generate_summary_text(self, summary_data: dict, total_records: int) -> str:
@@ -87,5 +104,8 @@ class HtmlReporter:
             text += f"\n🚨 **高風險預警:** 偵測到 {len(summary_data['alerts'])} 則激動/負面評論，請立即留意以下公關危機可能：\n"
             for alert in summary_data["alerts"][:2]:
                 text += f"❗ {alert['title']} 🔗 {alert.get('url', '無連結')}\n"
-                
+
+        # 加上 GitHub Pages 可被手機一點擊就開起的連結
+        text += "\n\n🔗 [完整圖表數據報告]\n👉 點此在手機觀看：https://trista-xuuu.github.io/KlassiC-project/"
+        
         return text
