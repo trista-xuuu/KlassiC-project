@@ -1,6 +1,7 @@
 import json
 import sys
 import os
+import time
 from typing import List, Dict
 import google.generativeai as genai
 
@@ -62,6 +63,9 @@ class SentimentAnalyzer:
                     "summary": "分析發生錯誤", "topics": [], "suggestion": "", "alert": False
                 }
                 analyzed_records.append(record)
+                
+            # 為了避免觸發 Gemini Free Tier 的「每分鐘 15 次」請求限制，強制各暫停 5 秒
+            time.sleep(5)
 
         return analyzed_records
 

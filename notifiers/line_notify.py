@@ -7,16 +7,18 @@ import config
 
 class LineNotifier:
     def __init__(self):
-        self.token = config.LINE_NOTIFY_TOKEN
-        self.url = "https://notify-api.line.me/api/notify"
+        self.access_token = config.LINE_CHANNEL_ACCESS_TOKEN
+        self.user_id = config.LINE_USER_ID
+        self.url = "https://api.line.me/v2/bot/message/push"
 
     def send(self, message: str, is_alert: bool = False):
-        if not self.token:
-            print("[警告] 尚未設定 LINE_NOTIFY_TOKEN，略過 LINE 推播")
+        if not self.access_token or not self.user_id:
+            print("[警告] 尚未設定 LINE_CHANNEL_ACCESS_TOKEN 或 LINE_USER_ID，略過 LINE 推播")
             return
 
         headers = {
-            "Authorization": f"Bearer {self.token}"
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.access_token}"
         }
         
         # 如果是緊急警報，可以在訊息前面再加上明顯的 tag
@@ -24,14 +26,20 @@ class LineNotifier:
             message = "\n【緊急公關預警】\n" + message
 
         data = {
-            "message": message
+            "to": self.user_id,
+            "messages": [
+                {
+                    "type": "text",
+                    "text": message
+                }
+            ]
         }
 
         try:
-            response = requests.post(self.url, headers=headers, data=data)
+            response = requests.post(self.url, headers=headers, json=data)
             if response.status_code == 200:
-                print("[推播] LINE Notify 發送成功")
+                print("[推播] LINE Messaging API 發送成功")
             else:
-                print(f"[錯誤] LINE Notify 發送失敗: {response.status_code} {response.text}")
+                print(f"[錯誤] LINE 發送失敗: {response.status_code} {response.text}")
         except Exception as e:
-            print(f"[例外] LINE Notify: {e}")
+            print(f"[例外] LINE 推播: {e}")

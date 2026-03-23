@@ -25,7 +25,8 @@ SERPER_API_KEY = os.getenv("SERPER_API_KEY", "")
 TAVILY_API_KEY = os.getenv("TAVILY_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
-LINE_NOTIFY_TOKEN = os.getenv("LINE_NOTIFY_TOKEN", "")
+LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN", "")
+LINE_USER_ID = os.getenv("LINE_USER_ID", "")
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID", "")
 
@@ -49,7 +50,7 @@ TIMEZONE = "Asia/Taipei"
 # ──────────────────────────────────────────────
 # LLM 設定
 # ──────────────────────────────────────────────
-GEMINI_MODEL = "gemini-2.0-flash"
+GEMINI_MODEL = "gemini-flash-latest"
 SENTIMENT_SYSTEM_PROMPT = """你是一位專業的品牌輿情分析師，專注於分析台灣眼鏡品牌「KlassiC」的網路討論與評價。
 
 請針對以下文本進行情緒分析，並以 JSON 格式回傳結果。回傳格式如下：
