@@ -2,6 +2,7 @@ import argparse
 import schedule
 import time
 import datetime
+import subprocess
 from typing import List, Dict
 
 import config
@@ -99,6 +100,44 @@ def run_pipeline():
               
     print("[完成] 輿情監測流水線執行完畢。\n")
 
+def backup_to_github():
+    print(f"\n[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] 啟動自動備份任務 (Backup to GitHub)...")
+    
+    # 建立通知發送實例
+    line = LineNotifier()
+    tg = TelegramNotifier()
+    
+    try:
+        # 只將 reports 資料夾加進追蹤機制
+        subprocess.run(["git", "add", "reports/"], check=True)
+        
+        # 檢查是否有新檔案或變更需要 commit
+        status = subprocess.run(["git", "status", "--porcelain"], capture_output=True, text=True)
+        if "reports/" in status.stdout or "R  reports/" in status.stdout or "A  reports/" in status.stdout or "?? reports/" in status.stdout:
+            commit_msg = f"docs: auto-backup daily reports {datetime.datetime.now().strftime('%Y-%m-%d')}"
+            subprocess.run(["git", "commit", "-m", commit_msg], check=True)
+            subprocess.run(["git", "push"], check=True)
+            
+            # 通知推送
+            success_msg = f"📦 【系統通知】\n今日 ({datetime.datetime.now().strftime('%Y-%m-%d')}) 的 KlassiC 輿情報告已經安全且自動地備份至 GitHub 倉庫了！"
+            print("[備份成功] 昨日的報表已順利推送上傳至 GitHub！")
+            line.send(message=success_msg)
+            tg.send_message(text=success_msg)
+        else:
+            print("[備份略過] 尚未偵測到新的 HTML 報告，無須備份。")
+            # 針對空備份可以選擇不吵使用者，或者如果您希望得知無備份狀態也可以在此加入傳送
+            
+    except subprocess.CalledProcessError as e:
+        error_msg = f"❌ 【系統警報】\nGitHub 自動備份任務失敗！\n錯誤原因 Git 指令：\n{e}"
+        print(f"[備份失敗] {error_msg}")
+        line.send(message=error_msg)
+        tg.send_message(text=error_msg)
+    except Exception as e:
+        except_msg = f"❌ 【系統警報】\nGitHub 備份模組發生異常崩潰：\n{e}"
+        print(f"[備份例外] {except_msg}")
+        line.send(message=except_msg)
+        tg.send_message(text=except_msg)
+
 def main():
     parser = argparse.ArgumentParser(description="KlassiC 輿情監測與自動化通報系統")
     parser.add_argument("--now", action="store_true", help="忽略排程，立即強制執行一次完整流程")
@@ -107,8 +146,11 @@ def main():
     if args.now:
         run_pipeline()
     else:
-        print(f"啟動排程系統 (排程設定時間: 每日 {config.SCHEDULE_TIME} 台北時間)")
+        print(f"啟動排程系統 (報表分析: 每日 {config.SCHEDULE_TIME}, 自動備份: 每日 02:00 台北時間)")
         schedule.every().day.at(config.SCHEDULE_TIME, config.TIMEZONE).do(run_pipeline)
+        
+        # 每晚凌晨兩點執行 GitHub 報表備份
+        schedule.every().day.at("02:00", config.TIMEZONE).do(backup_to_github)
         
         try:
             while True:

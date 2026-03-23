@@ -74,6 +74,9 @@ class SentimentAnalyzer:
         sentiment_counts = {"positive": 0, "negative": 0, "neutral": 0}
         alerts = []
         all_topics = {}
+        
+        # 定義要過濾的無意義標籤 (轉小寫比對)
+        stop_words = {"klassic", "眼鏡", "品牌", "商品", "門市", "產品"}
 
         for r in records:
             ans = r.get("analysis", {})
@@ -88,13 +91,44 @@ class SentimentAnalyzer:
                 alerts.append(r)
                 
             for t in ans.get("topics", []):
-                all_topics[t] = all_topics.get(t, 0) + 1
+                t_clean = t.strip()
+                if t_clean.lower() not in stop_words and len(t_clean) > 1:
+                    all_topics[t_clean] = all_topics.get(t_clean, 0) + 1
 
         # 取前三名的話題
         top_topics = sorted(all_topics.items(), key=lambda x: x[1], reverse=True)[:3]
         
+        # 收集重點洞察與建議
+        positive_highlights = []
+        negative_highlights = []
+        suggestions = []
+        for r in records:
+            ans = r.get("analysis", {})
+            sentiment = ans.get("sentiment", "neutral")
+            intensity = ans.get("intensity", "normal")
+            summary = ans.get("summary", "")
+            sugg = ans.get("suggestion", "")
+            
+            if sentiment == "positive" and intensity == "high" and summary:
+                positive_highlights.append(summary)
+            elif sentiment == "positive" and summary and len(positive_highlights) < 2:
+                positive_highlights.append(summary)
+                
+            if sentiment == "negative" and intensity == "high" and summary:
+                negative_highlights.append(summary)
+            elif sentiment == "negative" and summary and len(negative_highlights) < 2:
+                negative_highlights.append(summary)
+                
+            if sugg and "無" not in sugg and "不需要" not in sugg and len(sugg) > 5:
+                # 排除空字串或無建議的
+                if len(suggestions) < 3:
+                    suggestions.append(sugg)
+        
         return {
             "sentiment_counts": sentiment_counts,
             "alerts": alerts,
-            "top_topics": top_topics
+            "top_topics": top_topics,
+            "positive_highlights": positive_highlights[:2],
+            "negative_highlights": negative_highlights[:2],
+            "suggestions": list(set(suggestions))[:3]
         }

@@ -68,9 +68,24 @@ class HtmlReporter:
         else:
             text += "無特別突出的話題\n"
             
+        positive_highlights = summary_data.get("positive_highlights", [])
+        negative_highlights = summary_data.get("negative_highlights", [])
+        if positive_highlights or negative_highlights:
+            text += "\n💬 【具代表性輿情原聲帶】\n"
+            for ph in positive_highlights:
+                text += f"👍 {ph}\n"
+            for nh in negative_highlights:
+                text += f"👎 {nh}\n"
+                
+        suggestions = summary_data.get("suggestions", [])
+        if suggestions:
+            text += "\n💡 【AI 營運改善建議】\n"
+            for s in suggestions:
+                text += f"- {s}\n"
+
         if summary_data["alerts"]:
-             text += f"\n🚨 **高風險預警:** 偵測到 {len(summary_data['alerts'])} 則激動/負面評論，請立即登入系統查看明細！"
-             
-        # 建議可附上網站連結，若將 HTML 丟到 S3 或網頁空間
-        # text += "\n\n🔗 完整報告網址: https://your-hosting-domain.com/reports"
+            text += f"\n🚨 **高風險預警:** 偵測到 {len(summary_data['alerts'])} 則激動/負面評論，請立即留意以下公關危機可能：\n"
+            for alert in summary_data["alerts"][:2]:
+                text += f"❗ {alert['title']} 🔗 {alert.get('url', '無連結')}\n"
+                
         return text

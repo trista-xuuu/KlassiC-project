@@ -10,8 +10,8 @@ build/
 .venv/
 venv/
 
-# 自動產出的報告
-reports/*.html
+# 自動產出的報告 (已由 Python 自動備份模組接管)
+# reports/*.html
 
 # IDE
 .vscode/
