@@ -15,6 +15,10 @@ class DcardCollector(BaseCollector):
         self.apify_token = os.getenv("APIFY_TOKEN")
         self.actor_id = "apify~rag-web-browser"
         
+    def _headers(self) -> dict:
+        """統一回傳帶有 Bearer Token 的 Header，避免 token 出現在 URL 中"""
+        return {"Authorization": f"Bearer {self.apify_token}", "Content-Type": "application/json"}
+
     def collect(self) -> list:
         if not self.apify_token:
             print("[Dcard] 缺少 APIFY_TOKEN，略過 Dcard 搜尋...")
@@ -33,9 +37,9 @@ class DcardCollector(BaseCollector):
                 "maxResults": 3  # 適中筆數
             }
             
-            # 1. 觸發 Actor 運行
-            start_url = f"https://api.apify.com/v2/acts/{self.actor_id}/runs?token={self.apify_token}"
-            response = requests.post(start_url, json=input_data)
+            # 1. 觸發 Actor 運行 (Token 放在 Header，不放 URL)
+            start_url = f"https://api.apify.com/v2/acts/{self.actor_id}/runs"
+            response = requests.post(start_url, json=input_data, headers=self._headers(), timeout=30)
             response.raise_for_status()
             
             run_info = response.json().get('data', {})
@@ -45,8 +49,8 @@ class DcardCollector(BaseCollector):
             # 2. 等待完成 (最多等 2 分鐘)
             retries = 0
             while retries < 24:
-                status_url = f"https://api.apify.com/v2/actor-runs/{run_id}?token={self.apify_token}"
-                status_resp = requests.get(status_url).json().get('data', {})
+                status_url = f"https://api.apify.com/v2/actor-runs/{run_id}"
+                status_resp = requests.get(status_url, headers=self._headers(), timeout=15).json().get('data', {})
                 status = status_resp.get('status')
                 
                 if status == 'SUCCEEDED':
@@ -63,8 +67,8 @@ class DcardCollector(BaseCollector):
                 return []
                 
             # 3. 取得 Dataset 內容
-            dataset_url = f"https://api.apify.com/v2/datasets/{dataset_id}/items?token={self.apify_token}"
-            items_response = requests.get(dataset_url)
+            dataset_url = f"https://api.apify.com/v2/datasets/{dataset_id}/items"
+            items_response = requests.get(dataset_url, headers=self._headers(), timeout=30)
             items = items_response.json()
             
             for item in items:
