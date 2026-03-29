@@ -1,0 +1,4552 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KlassiC. | ClearStreet Style Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cs: {
+                            bg: '#000000', // 極致黑底
+                            card: '#0D0D0D', // 深灰卡片
+                            border: '#262626', // 極細科技邊框
+                            accent: 'rgb(0, 111, 255)', // 主色改為亮科技藍
+                            textMain: '#FFFFFF',
+                            textMuted: '#A3A3A3',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background-color: #000000; 
+            color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .cs-grid-bg {
+            background-image: 
+                linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(0, 111, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-cs-bg font-sans min-h-screen cs-grid-bg">
+
+<!-- Top Navigation Bar (Fintech style) -->
+<nav class="border-b border-cs-border bg-cs-bg/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-2 h-2 rounded-full bg-cs-accent shadow-[0_0_8px_rgba(0,111,255,0.8)]"></div>
+            <span class="font-bold text-lg tracking-tight">KlassiC<span class="text-cs-accent">.</span> Intelligence</span>
+        </div>
+        <div class="font-mono text-xs text-cs-textMuted flex items-center space-x-4">
+            <span class="hidden md:inline-block">系統狀態：<span class="text-cs-accent">運作中 (ONLINE)</span></span>
+            <span>分析日期：2026-03-29</span>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Header Section -->
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-4">
+            品牌情緒 <span class="text-cs-textMuted">觀測儀表板</span>
+        </h1>
+        <p class="text-cs-textMuted max-w-2xl text-lg leading-relaxed">
+            KlassiC 市場聲量與語意邏輯分析引擎，今日已自動分析並擷取全球社群串流上共 <span class="text-white font-mono">31</span> 筆資料節點。
+        </p>
+    </header>
+
+    <!-- Main Grid Dashboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+        
+        <!-- Emotion Chart Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 flex flex-col hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">情緒佔比分析 (Sentiment Ratio)</h2>
+                <div class="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-white border border-white/10">即時 (LIVE)</div>
+            </div>
+            <div class="flex-1 flex items-center justify-center relative w-full h-48">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Top Topics Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 lg:col-span-2 hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between border-b border-cs-border pb-4 mb-6">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">關鍵字聲量偵測 Top 3</h2>
+                <span class="text-xs font-mono text-cs-textMuted">VOL. RANKING</span>
+            </div>
+            
+            <div class="space-y-4">
+                
+                    
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-accent glow-text">
+                                01
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">聯名系列</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">5</span>
+                            <span class="text-[10px] text-cs-textMuted tracking-wider">筆討論</span>
+                        </div>
+                    </div>
+                    
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-textMuted">
+                                02
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">性價比</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">4</span>
+                            <span class="text-[10px] text-cs-textMuted tracking-wider">筆討論</span>
+                        </div>
+                    </div>
+                    
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-textMuted">
+                                03
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">亞洲臉型設計</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">3</span>
+                            <span class="text-[10px] text-cs-textMuted tracking-wider">筆討論</span>
+                        </div>
+                    </div>
+                    
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert / Risk Management Section -->
+    
+    <div class="mb-12">
+        <div class="flex items-center space-x-3 mb-6">
+            <div class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></div>
+            <h2 class="text-lg font-semibold tracking-tight text-white">高風險客訴偵測 <span class="text-cs-textMuted ml-2 font-mono text-sm">(共 1 筆)</span></h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="bg-cs-card border border-red-900/50 hover:border-red-500/50 rounded-xl p-6 transition-colors duration-300 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-600 to-transparent"></div>
+                
+                <div class="flex justify-between items-start mb-4">
+                    <h3 class="font-semibold text-white text-lg leading-snug pr-4">Dcard 討論：請益KlassiC也太扯！ - 穿搭板...</h3>
+                    <span class="font-mono text-[10px] border border-red-500/30 text-red-400 bg-red-500/10 px-2 py-1 rounded">Dcard (社群)</span>
+                </div>
+                
+                <p class="text-gray-300 text-sm leading-relaxed mb-6">消費者對 KlassiC 的鏡片加價感到驚訝與不滿，認為價格超出預期且與廣告印象有落差。</p>
+                
+                
+                <div class="bg-black/50 border border-white/5 rounded-lg p-4 mb-6">
+                    <div class="flex items-center space-x-2 mb-2">
+                        <svg class="w-4 h-4 text-cs-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <span class="font-mono text-xs uppercase tracking-wider text-cs-accent">AI 危機處理建議</span>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed">建議在行銷廣告或店內明顯處標示鏡片加價規則，提升價格透明度以避免消費者產生心理落差。</p>
+                </div>
+                
+                
+                <div class="border-t border-cs-border pt-4 mt-auto">
+                    <a href="https://www.dcard.tw/f/dressup/p/254295331" target="_blank" class="inline-flex items-center text-xs text-cs-textMuted hover:text-white transition-colors duration-200">
+                        追蹤原始連結 (SOURCE LINK)
+                        <svg class="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                    </a>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+
+    <!-- Database Terminal Table -->
+    <div class="pt-8">
+        <h2 class="text-lg font-semibold tracking-tight text-white mb-6">系統資料庫紀錄 (Operation Logs)</h2>
+        
+        <div class="bg-cs-card border border-cs-border rounded-xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap lg:whitespace-normal">
+                    <thead class="bg-[#1A1A1A] border-b border-cs-border font-mono text-[11px] uppercase tracking-wider text-cs-textMuted">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">來源 / 時間標記</th>
+                            <th class="px-6 py-4 font-semibold w-1/2">AI 語意摘要分析</th>
+                            <th class="px-6 py-4 font-semibold">狀態標籤庫</th>
+                            <th class="px-6 py-4 font-semibold text-right">來源連結</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-cs-border">
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC. 宣傳男子精選系列，強調專為亞洲臉型設計、手工質感與配戴舒適度。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="## KlassiC.'s Post
+
+November 29, 2022  ·
+
+▎KlassiC. 男子款精選！換對眼鏡顏值跳級 🔥
+
+官網逛 🛒 
+
+百款半手工眼鏡，長時間配戴也舒適 ✅
+
+ㅤㅤ
+
+#不只是最多網紅名人實戴
+
+我們擁抱年輕文化，新的事物，拋下傳統印象，一貫堅持在細節＆質感，專注於鏡框設計的可能性：概念、框形線條、材質配色、是否好搭配、同時利用鼻托、配重等理性思考兼顧配戴的舒適；從開模到送到你手上，程序多達 200 道，希冀在有型之餘，質量也要妥妥的，是一副你可以常常戴、經常戴的眼鏡。
+
+-
+
+#不要被帥氣的model影響
+
+來門市試戴，感受我們鏡框帶來的修飾效果與別於一般連鎖眼鏡的同質化，我們相信你也能戴出沒看過的自己，讓朋友說出：「#有不一樣喔！」
+
+-
+
+🔎 KlassiC.設計理念
+
+✦ 多元框形滿足不同臉型
+
+✦ 適合亞洲人的比例（鼻距／鏡高／鏡寬）
+
+✦ 結合歐美日韓的流行風格
+
+✦ 中高階品牌的同級材質（鈦金屬／板材）
+
+✦ 注重細節，別於連鎖品牌的差異化
+
+-
+
+【 KlassiC. - 台灣原創設計 - 眼鏡 / 墨鏡品牌】
+
+來自台灣的 KlassiC. 針對不同的生活風格，
+
+打造出各式具有當代氣息的框型。
+
+ㅤㅤ
+
+眼鏡與墨鏡的設計，
+
+堅守「適合亞洲臉型」與「配戴舒適的感受」。
+
+-
+
+📢 KlassiC. 全台 11 間直營門市
+
+📢 官網 / 門市同步販售
+
+▎30 分鐘快速取鏡 (實際狀況依現場為準)
+
+▎提供鏡框臉型搭配建議
+
+-
+
+💭 只要三秒鐘
+
+詢問更多眼鏡配鏡說明、門市資訊 & 搭配建議 [...] 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0 .767.767h.767a.3835.3835 0 0 0 .3835-.3835V7.3835A.3835.3835 0 0 0 5.134 7h-.767Z' fill='%23fff'/%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(90 .0005 8) scale(7.99958)'%3E%3Cstop offset='.5618' stop-color='%230866FF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230866FF' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5257 10.9237) scale(10.1818)'%3E%3Cstop offset='.3143' stop-color='%2302ADFC'/%3E%3Cstop offset='1' stop-color='%2302ADFC' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient [...] 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0 .767.767h.767a.3835.3835 0 0 0 .3835-.3835V7.3835A.3835.3835 0 0 0 5.134 7h-.767Z' fill='%23fff'/%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(90 .0005 8) scale(7.99958)'%3E%3Cstop offset='.5618' stop-color='%230866FF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230866FF' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5257 10.9237) scale(10.1818)'%3E%3Cstop offset='.3143' stop-color='%2302ADFC'/%3E%3Cstop offset='1' stop-color='%2302ADFC' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient">## KlassiC.'s Post
+
+November 29, 2022  ·
+
+▎KlassiC. 男子款精選！換對眼鏡顏值跳級 🔥
+
+官網逛 🛒 
+
+百款半手工眼鏡，長時間配戴也舒適 ✅
+
+ㅤㅤ
+
+#不只是最多網紅名人實戴
+
+我們擁抱年輕文化，新的事物，拋下傳統印象，一貫堅持在細節＆質感，專注於鏡框設計的可能性：概念、框形線條、材質配色、是否好搭配、同時利用鼻托、配重等理性思考兼顧配戴的舒適；從開模到送到你手上，程序多達 200 道，希冀在有型之餘，質量也要妥妥的，是一副你可以常常戴、經常戴的眼鏡。
+
+-
+
+#不要被帥氣的model影響
+
+來門市試戴，感受我們鏡框帶來的修飾效果與別於一般連鎖眼鏡的同質化，我們相信你也能戴出沒看過的自己，讓朋友說出：「#有不一樣喔！」
+
+-
+
+🔎 KlassiC.設計理念
+
+✦ 多元框形滿足不同臉型
+
+✦ 適合亞洲人的比例（鼻距／鏡高／鏡寬）
+
+✦ 結合歐美日韓的流行風格
+
+✦ 中高階品牌的同級材質（鈦金屬／板材）
+
+✦ 注重細節，別於連鎖品牌的差異化
+
+-
+
+【 KlassiC. - 台灣原創設計 - 眼鏡 / 墨鏡品牌】
+
+來自台灣的 KlassiC. 針對不同的生活風格，
+
+打造出各式具有當代氣息的框型。
+
+ㅤㅤ
+
+眼鏡與墨鏡的設計，
+
+堅守「適合亞洲臉型」與「配戴舒適的感受」。
+
+-
+
+📢 KlassiC. 全台 11 間直營門市
+
+📢 官網 / 門市同步販售
+
+▎30 分鐘快速取鏡 (實際狀況依現場為準)
+
+▎提供鏡框臉型搭配建議
+
+-
+
+💭 只要三秒鐘
+
+詢問更多眼鏡配鏡說明、門市資訊 & 搭配建議 [...] 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0 .767.767h.767a.3835.3835 0 0 0 .3835-.3835V7.3835A.3835.3835 0 0 0 5.134 7h-.767Z' fill='%23fff'/%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(90 .0005 8) scale(7.99958)'%3E%3Cstop offset='.5618' stop-color='%230866FF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230866FF' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5257 10.9237) scale(10.1818)'%3E%3Cstop offset='.3143' stop-color='%2302ADFC'/%3E%3Cstop offset='1' stop-color='%2302ADFC' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient [...] 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0 .767.767h.767a.3835.3835 0 0 0 .3835-.3835V7.3835A.3835.3835 0 0 0 5.134 7h-.767Z' fill='%23fff'/%3E%3Cdefs%3E%3CradialGradient id='paint1_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(90 .0005 8) scale(7.99958)'%3E%3Cstop offset='.5618' stop-color='%230866FF' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%230866FF' stop-opacity='.1'/%3E%3C/radialGradient%3E%3CradialGradient id='paint2_radial_15251_63610' cx='0' cy='0' r='1' gradientUnits='userSpaceOnUse' gradientTransform='rotate(45 -4.5257 10.9237) scale(10.1818)'%3E%3Cstop offset='.3143' stop-color='%2302ADFC'/%3E%3Cstop offset='1' stop-color='%2302ADFC' stop-opacity='0'/%3E%3C/radialGradient%3E%3ClinearGradient</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/klassic888/posts/klassic-%E7%94%B7%E5%AD%90%E6%AC%BE%E7%B2%BE%E9%81%B8%E6%8F%9B%E5%B0%8D%E7%9C%BC%E9%8F%A1%E9%A1%8F%E5%80%BC%E8%B7%B3%E7%B4%9A-%E5%AE%98%E7%B6%B2%E9%80%9B-httpbitly3vcr8ov%E7%99%BE%E6%AC%BE%E5%8D%8A%E6%89%8B%E5%B7%A5%E7%9C%BC%E9%8F%A1%E9%95%B7%E6%99%82%E9%96%93%E9%85%8D%E6%88%B4%E4%B9%9F%E8%88%92%E9%81%A9-%E3%85%A4%E3%85%A4%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%9C%80%E5%A4%9A%E7%B6%B2%E7%B4%85%E5%90%8D%E4%BA%BA%E5%AF%A6%E6%88%B4%E6%88%91%E5%80%91%E6%93%81%E6%8A%B1%E5%B9%B4%E8%BC%95%E6%96%87%E5%8C%96%E6%96%B0/3401800076742818/" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">HBX 平台對 KlassiC 的品牌介紹，強調其結合復古美學與現代科技，並具備高性價比與穿搭靈活性。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="Clothing  All Clothing  Hoodies  Jackets & Coats  Jeans  Knitwear  Pants  Shirts  Sweatshirts  T-Shirts
+
+Footwear  All Footwear  Boots  Casual Shoes  Sandals  Sneakers
+
+Accessories  All Accessories  Bags  Eyewear  Hats  Jewelry  Wallets
+
+Life  All Life  Art  Collectibles  Home  Outdoor  Publications  Tech & Gadgets
+
+# KlassiC
+
+KlassiC, an eyewear brand founded in Taiwan in 2016, blends vintage charm with modern tech and style. Each piece reflects meticulous craftsmanship, offering a nod to classic aesthetics while meeting today's fashion-forward standards. The brand proposes " The freedom of mix and match,” targeting different lifestyles and re-establishing the dialogue between glasses, clothing, and our expressions at an affordable price.">Clothing  All Clothing  Hoodies  Jackets & Coats  Jeans  Knitwear  Pants  Shirts  Sweatshirts  T-Shirts
+
+Footwear  All Footwear  Boots  Casual Shoes  Sandals  Sneakers
+
+Accessories  All Accessories  Bags  Eyewear  Hats  Jewelry  Wallets
+
+Life  All Life  Art  Collectibles  Home  Outdoor  Publications  Tech & Gadgets
+
+# KlassiC
+
+KlassiC, an eyewear brand founded in Taiwan in 2016, blends vintage charm with modern tech and style. Each piece reflects meticulous craftsmanship, offering a nod to classic aesthetics while meeting today's fashion-forward standards. The brand proposes " The freedom of mix and match,” targeting different lifestyles and re-establishing the dialogue between glasses, clothing, and our expressions at an affordable price.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://hbx.com/men/brands/klassic?srsltid=AfmBOoqFKZ92OMy-b7xlwVrd_OBdGlSHZbz7eVWsxN0iY2hjhbN-3im8" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">品牌官網介紹各系列特色與定位，強調實惠價格、設計感及跨界聯名合作。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="KlassiC. YOUTH. 系列
+
+超實惠價格，
+
+輕量簡約為設計概念，
+
+定位為時尚搭配敲門磚，
+
+從學生到小資上班族都能輕鬆駕馭。
+
+社群
+
+平日 09:00 - 18:00
+
+．品牌理念
+
+．門市資訊
+
+．經銷店家
+
+．會員招募
+
+．註冊與下單
+
+．官網退換貨流程
+
+．如何測量瞳距教學
+
+．鏡框大小事
+
+．購買常見問題
+
+．隱私權政策 [...] 刪除
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣
+
+ $ HKD
+ P MOP
+ ¥ CNY
+ $ TWD
+ $ USD
+ $ SGD
+ € EUR
+ $ AUD
+ £ GBP
+ ₱ PHP
+ RM MYR
+ ฿ THB
+ د.إ AED
+ ¥ JPY
+ $ BND
+ ₩ KRW
+ Rp IDR
+ ₫ VND
+ $ CAD
+
+ARCHI by KlassiC. 系列
+
+ARCHI 取自 Architecture（建築），
+
+萃取建築的形體（線條）與精準性（數據化），
+
+以「近未來」的世界觀，結合藝術與技術，
+
+追求知性與秩序後，
+
+再用無規則打破原有的一切，
+
+一個不斷翻新自我的過程。
+
+ARCHI 定位不只是一個設計眼鏡品牌，
+
+而是一個跨單位、跨界的創意單位。
+
+KlassiC. HANDMADE. 系列
+
+革新傳統眼鏡品牌的生產模式，
+
+HANDMADE. 系列直接與國外精品代工廠共同開發合作，
+
+多達200道以上的工序；
+
+接著品檢、銷售、企劃廣告 #全都自己親手做，
+
+#省去層層中間商的成本，
+
+讓消費者能以適切的價格（2-4千元不等）享受到好品質的商品。
+
+經典 x 流行的框型，陪伴您每個需要搭配的日子，
+
+推薦給重質感的時尚人士。
+
+KlassiC. YOUTH. 系列
+
+超實惠價格，
+
+輕量簡約為設計概念，
+
+定位為時尚搭配敲門磚， [...] 春節期間(2/13-2/22)暫停出貨，如有不便敬請見諒
+
+目錄
+
+ 熱賣排行
+ 最新商品
+  + KlassiC. SILENCE IS THE NEW SHAPE
+  + KlassiC. x mEltEd potato
+  + KlassiC. x 膽大黨
+  + niceynook 25AW
+  + KlassiC. x Baby Milo® Store
+  + KlassiC. x GQ x Cody Sanderson
+  + KlassiC. x GQ IGGAAK
+  + KlassiC. 輕行者摺疊墨鏡
+  + SPARKLING BLUE
+  + niceynook new-creme
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + 鈦金屬 8.0
+ 獨家代理
+  + CHIMI
+  + GINGER EYEWEAR
+ 優惠專區
+  + 馬的新年快樂限時 68 折
+  + KlassiC. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）
+ 眼鏡
+  + 鈦金屬
+  + Future Flex 機能系列
+  + Clip'n'Go 掛片眼鏡
+  + 配到好$2,980起
+  + HANDMADE.
+ 墨鏡
+  + HANDMADE.
+  + YOUTH.
+  + 輕行者摺疊墨鏡
+ niceynook 包袋
+
+帳戶
+
+ 會員登入
+ 新用戶註冊
+
+其他
+
+ 聯絡我們
+ 繁體中文
+
+你的購物車是空的
+
+{{ 'product.bundled\_products.label' | translate }}
+
+{{ 'product.bundle\_group\_products.label' | translate }}">KlassiC. YOUTH. 系列
+
+超實惠價格，
+
+輕量簡約為設計概念，
+
+定位為時尚搭配敲門磚，
+
+從學生到小資上班族都能輕鬆駕馭。
+
+社群
+
+平日 09:00 - 18:00
+
+．品牌理念
+
+．門市資訊
+
+．經銷店家
+
+．會員招募
+
+．註冊與下單
+
+．官網退換貨流程
+
+．如何測量瞳距教學
+
+．鏡框大小事
+
+．購買常見問題
+
+．隱私權政策 [...] 刪除
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣
+
+ $ HKD
+ P MOP
+ ¥ CNY
+ $ TWD
+ $ USD
+ $ SGD
+ € EUR
+ $ AUD
+ £ GBP
+ ₱ PHP
+ RM MYR
+ ฿ THB
+ د.إ AED
+ ¥ JPY
+ $ BND
+ ₩ KRW
+ Rp IDR
+ ₫ VND
+ $ CAD
+
+ARCHI by KlassiC. 系列
+
+ARCHI 取自 Architecture（建築），
+
+萃取建築的形體（線條）與精準性（數據化），
+
+以「近未來」的世界觀，結合藝術與技術，
+
+追求知性與秩序後，
+
+再用無規則打破原有的一切，
+
+一個不斷翻新自我的過程。
+
+ARCHI 定位不只是一個設計眼鏡品牌，
+
+而是一個跨單位、跨界的創意單位。
+
+KlassiC. HANDMADE. 系列
+
+革新傳統眼鏡品牌的生產模式，
+
+HANDMADE. 系列直接與國外精品代工廠共同開發合作，
+
+多達200道以上的工序；
+
+接著品檢、銷售、企劃廣告 #全都自己親手做，
+
+#省去層層中間商的成本，
+
+讓消費者能以適切的價格（2-4千元不等）享受到好品質的商品。
+
+經典 x 流行的框型，陪伴您每個需要搭配的日子，
+
+推薦給重質感的時尚人士。
+
+KlassiC. YOUTH. 系列
+
+超實惠價格，
+
+輕量簡約為設計概念，
+
+定位為時尚搭配敲門磚， [...] 春節期間(2/13-2/22)暫停出貨，如有不便敬請見諒
+
+目錄
+
+ 熱賣排行
+ 最新商品
+  + KlassiC. SILENCE IS THE NEW SHAPE
+  + KlassiC. x mEltEd potato
+  + KlassiC. x 膽大黨
+  + niceynook 25AW
+  + KlassiC. x Baby Milo® Store
+  + KlassiC. x GQ x Cody Sanderson
+  + KlassiC. x GQ IGGAAK
+  + KlassiC. 輕行者摺疊墨鏡
+  + SPARKLING BLUE
+  + niceynook new-creme
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + 鈦金屬 8.0
+ 獨家代理
+  + CHIMI
+  + GINGER EYEWEAR
+ 優惠專區
+  + 馬的新年快樂限時 68 折
+  + KlassiC. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）
+ 眼鏡
+  + 鈦金屬
+  + Future Flex 機能系列
+  + Clip'n'Go 掛片眼鏡
+  + 配到好$2,980起
+  + HANDMADE.
+ 墨鏡
+  + HANDMADE.
+  + YOUTH.
+  + 輕行者摺疊墨鏡
+ niceynook 包袋
+
+帳戶
+
+ 會員登入
+ 新用戶註冊
+
+其他
+
+ 聯絡我們
+ 繁體中文
+
+你的購物車是空的
+
+{{ 'product.bundled\_products.label' | translate }}
+
+{{ 'product.bundle\_group\_products.label' | translate }}</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/series" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">HBX 平台對 KlassiC 品牌的介紹，強調其結合復古美學與現代工藝，並提供平易近人的穿搭選擇。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="服裝  全部服裝  連帽衛衣  夾克和外套  牛仔褲  針織衫  長褲  襯衫  無帽衛衣  T 恤
+
+鞋履  全部鞋履  靴子  休閒鞋  涼鞋  球鞋
+
+配飾  全部配飾  包袋  眼鏡  帽子  飾品  錢包
+
+生活  全部生活百貨  藝術  收藏品  家居  户外  書籍及刊物  科技產品
+
+# KlassiC眼鏡
+
+KlassiC, an eyewear brand founded in Taiwan in 2016, blends vintage charm with modern tech and style. Each piece reflects meticulous craftsmanship, offering a nod to classic aesthetics while meeting today's fashion-forward standards. The brand proposes " The freedom of mix and match,” targeting different lifestyles and re-establishing the dialogue between glasses, clothing, and our expressions at an affordable price. [...] 中古逸品  新到中古逸品
+
+折扣商品  所有折扣商品  服裝  T恤  運動鞋  手袋
+
+品牌  品牌 A-Z 
+
+精選品牌
+
+ A.P.C.  Acne Studios  Adidas Originals  Alexander Wang  Amina Muaddi  Asics  Chloé  Entire Studios  Ganni  Gentle Monster  Glowny  Human Made  Jacquemus  Lemaire  Loewe  Maison Kitsune  Maison Margiela  Maison Mihara Yasuhiro  New Balance  Sporty & Rich
+
+我們的品牌
+
+ Hypebeast  Hypegolf  Hypebeans
+
+服裝  所有服裝  T恤  上衣  連衣裙  短褲  半身裙  長褲  牛仔褲
+
+鞋履  所有鞋履  靴子  休閒鞋  高跟鞋  涼鞋  運動鞋
+
+配飾  所有配飾  包袋  腰帶  眼鏡  帽子  珠寶  鑰匙扣  錢包
+
+生活  全部生活貨品  身體護理  收藏品  高爾夫  家居  戶外  寵物  出版物  鞋履和服裝護理  運動  文具  科技和小工具  旅行
+
+運動
+
+ 高爾夫球  跑步
+
+折扣商品  全部折扣商品  服裝  T恤  運動鞋  手袋
+
+品牌  全部品牌 
+
+精選品牌
+
+ Acronym  Chrome Hearts  Dior  Kapital  Kiko Kostadinov  Louis Vuitton  Nike  Palace  Prada  Rick Owens  Sacai  Supreme  Undercover  Vintage  Visvim">服裝  全部服裝  連帽衛衣  夾克和外套  牛仔褲  針織衫  長褲  襯衫  無帽衛衣  T 恤
+
+鞋履  全部鞋履  靴子  休閒鞋  涼鞋  球鞋
+
+配飾  全部配飾  包袋  眼鏡  帽子  飾品  錢包
+
+生活  全部生活百貨  藝術  收藏品  家居  户外  書籍及刊物  科技產品
+
+# KlassiC眼鏡
+
+KlassiC, an eyewear brand founded in Taiwan in 2016, blends vintage charm with modern tech and style. Each piece reflects meticulous craftsmanship, offering a nod to classic aesthetics while meeting today's fashion-forward standards. The brand proposes " The freedom of mix and match,” targeting different lifestyles and re-establishing the dialogue between glasses, clothing, and our expressions at an affordable price. [...] 中古逸品  新到中古逸品
+
+折扣商品  所有折扣商品  服裝  T恤  運動鞋  手袋
+
+品牌  品牌 A-Z 
+
+精選品牌
+
+ A.P.C.  Acne Studios  Adidas Originals  Alexander Wang  Amina Muaddi  Asics  Chloé  Entire Studios  Ganni  Gentle Monster  Glowny  Human Made  Jacquemus  Lemaire  Loewe  Maison Kitsune  Maison Margiela  Maison Mihara Yasuhiro  New Balance  Sporty & Rich
+
+我們的品牌
+
+ Hypebeast  Hypegolf  Hypebeans
+
+服裝  所有服裝  T恤  上衣  連衣裙  短褲  半身裙  長褲  牛仔褲
+
+鞋履  所有鞋履  靴子  休閒鞋  高跟鞋  涼鞋  運動鞋
+
+配飾  所有配飾  包袋  腰帶  眼鏡  帽子  珠寶  鑰匙扣  錢包
+
+生活  全部生活貨品  身體護理  收藏品  高爾夫  家居  戶外  寵物  出版物  鞋履和服裝護理  運動  文具  科技和小工具  旅行
+
+運動
+
+ 高爾夫球  跑步
+
+折扣商品  全部折扣商品  服裝  T恤  運動鞋  手袋
+
+品牌  全部品牌 
+
+精選品牌
+
+ Acronym  Chrome Hearts  Dior  Kapital  Kiko Kostadinov  Louis Vuitton  Nike  Palace  Prada  Rick Owens  Sacai  Supreme  Undercover  Vintage  Visvim</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://hbx.com/tc/men/brands/klassic/categories/eyewear?page=1&limit=72&srsltid=AfmBOorrw4NzJiC_ud5uFAiRlUJdMbckkmxV-7M3urSF1DBeGtuNuck1" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">藝人坤達與 KlassiC. 合作推出聯名系列「歐夏雷.氏」，強調針對亞洲臉型設計與時髦百搭的品牌形象。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="「KUNDA BY KlassiC.」此系列貼近坤達平時日常的穿搭，在簡約機能的外型中，有細節又能長戴；故在這次的框形設計上，採用KlassiC.最擅長的「針對亞洲臉型比例」去設計寬度、鼻距，優化過的鼻墊與鏡腿，大幅提升長時間配戴的舒適感；材質選擇上，主打沉靜又輕透的透明板材，適合亞洲人膚色；最後，金屬鑄件的細部做工讓鏡框更有層次。身為品牌CEO，坤達頗具生意經，頭頭是道，「鏡框，早已不只是矯正視力及遮陽的工具，而是時髦的穿搭配件。」也是風格的精華所在。  
+    
+     坤達表示，自己能夠參與成為KlassiC.眼鏡/墨鏡系列的代表人物非常酷，如同木村拓哉也曾經為知名眼鏡/墨鏡品牌代言，跟自己的偶像做一樣的事情感覺非常讚！目前坤達也工作滿檔，除了擔任「原子少年」的星際導師，也參與當紅綜藝節目「綜藝玩很大」以及網路節目「木曜四超玩」，未來更是不排除戲劇類的演出。  
+    
+     為了「歐夏雷」氏的視覺呈現，整體拍攝也相當日雜風，設計上更是以雜誌封面和內頁的形式來打造！坤達和女模在辦公室優雅呈現午後上班的空氣氛圍，甚至還一左一右就著影印機對看和錯位，不但充滿悠閒的氣味，也為工作空間帶來一絲絲輕熟男女的浪漫氣息！  
+     
+ 發售資訊：  
+ 2022/05/20 21:00 KlassiC. 官網首發  
+ 2022/05/21 KlassiC. 中山/敦南/巨城/一中/義享門市搶先發售  
+ 2022/05/23 KlassiC. 全台其他門市依照開店時間發售  
+    
+ KlassiC. 官方網站：  
+    
+ 限時活動：  
+ 5/20-5/22 首三日 鏡片＋鏡框9折  
+ 早鳥可得坤達簽名限量帆布袋乙個  
+  
+img1652884524(1).jpg.jpg)  
+img1652884524.jpg [...] 以《木曜4超玩》紅遍半邊天、近期又登上男團選秀《原子少年》任星際導師的坤達，將再多一斜槓身份，今（18日）公佈出任個人眼鏡/墨鏡品牌「歐夏雷.氏」CEO，坤達表示：「有機會可以開創自己的眼鏡系列非常酷！木村拓哉也曾主理自己的眼鏡品牌，能跟我的偶像做一樣的事情覺得非常讚！」坤達此次大開「眼」界，是與3屆金鐘獎得主陳凱倫之子陳銳（Ray）的KlassiC.聯名，推出個人支線「KUNDA BY KlassiC.」，以坤達主導的一間設計時髦的眼鏡公司「歐夏雷.氏」為出發，融合坤達自己對於鏡框的挑選原則：「看起來很百搭，但就有一點點地不一樣」為決勝點，親自帶領團隊打造具有年輕氣息、精緻細節、框形百搭的5款眼鏡與2款墨鏡。  
+    
+     坤達匠心獨運，他開心分享「歐夏雷」日文讀作o-sha-re  (おしゃれ) ，基本上就是日文時髦、時尚的意思，「通常形容穿搭為主，但也延伸成髮型、人氣菜單、時髦空間等等，具有當下流行的時代感。」而「氏」則是姓的支系、稱學有專長或有聲望的人、學術派別等意思，他說：「象徵喜愛此系列的人，是一群擁有共同的美感價值觀的人們。」  
+ 坤達靈機一動，採用「歐夏雷」來傳達首度揮軍眼鏡界的概念，他表示：「戴著眼鏡也能有年輕的時髦感，好駕馭的框型不落窠臼，注重於細節的精緻品味！」讓戴眼鏡的朋友們，都能變成時尚都會感的「歐夏雷.氏」。">「KUNDA BY KlassiC.」此系列貼近坤達平時日常的穿搭，在簡約機能的外型中，有細節又能長戴；故在這次的框形設計上，採用KlassiC.最擅長的「針對亞洲臉型比例」去設計寬度、鼻距，優化過的鼻墊與鏡腿，大幅提升長時間配戴的舒適感；材質選擇上，主打沉靜又輕透的透明板材，適合亞洲人膚色；最後，金屬鑄件的細部做工讓鏡框更有層次。身為品牌CEO，坤達頗具生意經，頭頭是道，「鏡框，早已不只是矯正視力及遮陽的工具，而是時髦的穿搭配件。」也是風格的精華所在。  
+    
+     坤達表示，自己能夠參與成為KlassiC.眼鏡/墨鏡系列的代表人物非常酷，如同木村拓哉也曾經為知名眼鏡/墨鏡品牌代言，跟自己的偶像做一樣的事情感覺非常讚！目前坤達也工作滿檔，除了擔任「原子少年」的星際導師，也參與當紅綜藝節目「綜藝玩很大」以及網路節目「木曜四超玩」，未來更是不排除戲劇類的演出。  
+    
+     為了「歐夏雷」氏的視覺呈現，整體拍攝也相當日雜風，設計上更是以雜誌封面和內頁的形式來打造！坤達和女模在辦公室優雅呈現午後上班的空氣氛圍，甚至還一左一右就著影印機對看和錯位，不但充滿悠閒的氣味，也為工作空間帶來一絲絲輕熟男女的浪漫氣息！  
+     
+ 發售資訊：  
+ 2022/05/20 21:00 KlassiC. 官網首發  
+ 2022/05/21 KlassiC. 中山/敦南/巨城/一中/義享門市搶先發售  
+ 2022/05/23 KlassiC. 全台其他門市依照開店時間發售  
+    
+ KlassiC. 官方網站：  
+    
+ 限時活動：  
+ 5/20-5/22 首三日 鏡片＋鏡框9折  
+ 早鳥可得坤達簽名限量帆布袋乙個  
+  
+img1652884524(1).jpg.jpg)  
+img1652884524.jpg [...] 以《木曜4超玩》紅遍半邊天、近期又登上男團選秀《原子少年》任星際導師的坤達，將再多一斜槓身份，今（18日）公佈出任個人眼鏡/墨鏡品牌「歐夏雷.氏」CEO，坤達表示：「有機會可以開創自己的眼鏡系列非常酷！木村拓哉也曾主理自己的眼鏡品牌，能跟我的偶像做一樣的事情覺得非常讚！」坤達此次大開「眼」界，是與3屆金鐘獎得主陳凱倫之子陳銳（Ray）的KlassiC.聯名，推出個人支線「KUNDA BY KlassiC.」，以坤達主導的一間設計時髦的眼鏡公司「歐夏雷.氏」為出發，融合坤達自己對於鏡框的挑選原則：「看起來很百搭，但就有一點點地不一樣」為決勝點，親自帶領團隊打造具有年輕氣息、精緻細節、框形百搭的5款眼鏡與2款墨鏡。  
+    
+     坤達匠心獨運，他開心分享「歐夏雷」日文讀作o-sha-re  (おしゃれ) ，基本上就是日文時髦、時尚的意思，「通常形容穿搭為主，但也延伸成髮型、人氣菜單、時髦空間等等，具有當下流行的時代感。」而「氏」則是姓的支系、稱學有專長或有聲望的人、學術派別等意思，他說：「象徵喜愛此系列的人，是一群擁有共同的美感價值觀的人們。」  
+ 坤達靈機一動，採用「歐夏雷」來傳達首度揮軍眼鏡界的概念，他表示：「戴著眼鏡也能有年輕的時髦感，好駕馭的框型不落窠臼，注重於細節的精緻品味！」讓戴眼鏡的朋友們，都能變成時尚都會感的「歐夏雷.氏」。</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.playmusic.tw/column_info.php?id=18079&type=mf_marketing" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">此文本為 KlassiC 品牌官網或 App 的門市資訊與營業時間列表，包含系統程式碼片段。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{ 'in\_app\_browser\_popup.desc' | translate }}. item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. FRI - SAT｜12:30 - 22:00. FRI - SAT｜11:00 - 22:30. MON - SUN｜11:00 - 22:00. MON - SUN｜12:30 - 21:30. FRI - SAT｜11:00 - 22:00. MON - SUN｜11:30 - 22:00. FRI - SAT｜11:00 - 22:00. FRI - SAT｜11:00 - 22:00. FRI - SAT｜13:00 - 22:30. MON - FRI｜11:00 - 22:00. SAT - SUN｜10:30 - 22:00. MON - FRI｜11:00 - 22:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:00 - 22:00. FRI - SAT｜11:00 - 22:30. MON - THU｜11:00 - 22:00. SAT｜10:30 - 22:30. SUN｜10:30 - 22:00. MON - FRI｜11:00 - 22:00.">{{ 'in\_app\_browser\_popup.desc' | translate }}. item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. FRI - SAT｜12:30 - 22:00. FRI - SAT｜11:00 - 22:30. MON - SUN｜11:00 - 22:00. MON - SUN｜12:30 - 21:30. FRI - SAT｜11:00 - 22:00. MON - SUN｜11:30 - 22:00. FRI - SAT｜11:00 - 22:00. FRI - SAT｜11:00 - 22:00. FRI - SAT｜13:00 - 22:30. MON - FRI｜11:00 - 22:00. SAT - SUN｜10:30 - 22:00. MON - FRI｜11:00 - 22:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:00 - 22:00. FRI - SAT｜11:00 - 22:30. MON - THU｜11:00 - 22:00. SAT｜10:30 - 22:30. SUN｜10:30 - 22:00. MON - FRI｜11:00 - 22:00.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/stores" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">此文本為《真人快打11》遊戲攻略，提及之 Klassic 為遊戲模式名稱，與眼鏡品牌 KlassiC 無關。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="# ど～もeagle0wlです（再）. ## 140文字では収まらないネタを記録するブログ. # 攻略 モータルコンバット11で効率よくKoin/Soul/Heartを稼ぐ - Klassic Tower編. モータルコンバット11でKoin/Soul/Heartを効率よく稼ぐ方法を記す。ここでは、ゲームをある程度進めてきて、有用なオーギュメントが揃い始めてきたあたりから使える方法である。Kryptの宝箱を開けるKoinに難儀するレベルであれば、別の方法をあたるかTower of TimeやKryptで回して欲しい。. ### 基本的な流れ. オーギュメントによる強化が十分であれば、FLAWLESSの成功率が上がる。Luckalityがあれば、（AI FIGHTERを使用していても）Brutalityの成功率がさらに上がる。. ### Koin/Soul/Heartを変換するオーギュメント. ・Soul - Lvl.4 Dark Magic. ・Soul - Lvl.4 Heart and Soul. 両方のオーギュメントを装備すると、獲得したHeart/SoulはすべてKoinに変換されるので、Koinがものすごく貯まる。主にSoulを増やしたい時は『Heart and Soul』だけを装備すればSoulがよく貯まり、Koinも貯まる。Koin/SoulをHeartに逆変換するオーギュメントはないので、Heartが一番貯めにくい。したがって、Heartが得られるオーギュメントを優先的につけたほうが良い。. ### Heartを稼ぐための基本セット. #### 装備するオーギュメント. ・Soul - Lvl.4 Perfect Kombat. １マッチ（１ラウンドではない）をFLAWLESSで勝利すると、7/14/21/28個のHeartが得られる。１マッチのFLAWLESSは難しそうだが、SURVIVORでは１マッチ１ラウンドなので、細かいことを気にする必要はない。. ・Soul - Lvl.4 Death Benefit. ・Soul - Lvl.4 Brutal Heart. Brutalityが2/4/6/8%の確率でいつでも決まる。発動条件・コマンドは自身が持つBrutalityと同じ。ギアにXPは貯まらない。Luckalityを装備したAI FIGHTERは、対戦中でもBrutalityを狙うので、Fatalityより効率の良いBrutalityの成功率が上がる。. #### Tower Konsumablesで選ぶアイテム. f:id:eagle0wl:20211114221234j:plain. マッチ終了時に得られるHeartが２倍になる。KryptのForge（素材合成）では作れないので、Tower of TimeのリワードやKryptのChest（宝箱）から探すしかない。. ### Soulを稼ぐための基本セット. #### 装備するオーギュメント. ・Soul - Lvl.4 Heart and Soul. ・Soul - Lvl.4 Spoils of War. ・Soul - Lvl.4 Good Souls. ### Koinを稼ぐための基本セット. #### 装備するオーギュメント. ・Soul - Lvl.4 Dark Magic. ・Soul - Lvl.4 Heart and Soul. これに加えて「Heartを稼ぐオーギュメントの基本セット」と「Soulを稼ぐオーギュメントの基本セット」からお好みでセットする。獲得したHeart/SoulはすべてKoinに変換される。. ※Koinを獲得できるオーギュメントは複数あるが、Mercyを決める（１ラウンド制なので使えない）、Fatal Blowを使う（very\_easyなので体力がそこまで削られない）といった風にいまいち旨味に欠けるので、他のオーギュメントを使ったほうがいい。. ### 選択キャラ. ただ、オーギュメントのJinseiはキャラごとに固有のものであって、しかも入手しづらいものである。Lvl.4のものともなると、Character TowerのSTAGE 6かTest Your Luckあたりで入手するものである。そこまでたどり着けるのであれば、すでにKoin/Soulは十分貯まっているだろうし、他の有用なオーギュメントもいくらか入手しているはずなので、そこにこだわる必要はないと思う。稼ぎで有用と思えるオーギュメントは以下の１つ。. #### Kollector. ・Jinsei - Lvl.1-4 Rampant Inflation. 得られるKoinの量が25/50/75/100%増しになる。. f:id:eagle0wl:20211114215819j:plain. ※Koin/Soul/Heartの変換を使わずに１周してみたら16,821Koin/2,640Soul/807heartだった。. ### まとめ. Lvl.4 Dark Magic（1Soul→1,000Koin）とLvl.4 Heart and Soul（1Heart→20Soul）を装備してSoul/HeartをKoinに変換していれば、18,796,821Koin (=16821+(2640+(807\*20))\*1000)も得られたことになる。SURVIVOR１周に30分かかるとすれば、時速3600万Koinとなる。. オーギュメントのレベルが２つともLvl.1の場合なら 1,685,571Koin (=16821+(2640+(807\*5))\*250)。Soud/Heartを獲得できるオーギュメントのレベルが下がればもっと少なくなる。. ### マクロによるさらなる効率化. 冒頭で示した「基本的な流れ」のうち、対戦が始まってからは連射ホールドのできるコントローラがあれば手放しができる。しかし、SURVIVORの25人を倒しきった後も放置するとややこしいことになるので、手動操作が必要になる。. ワンボードマイコンであるArduino Leonaldoを使えば、ゲームコントローラになりすますことができる。後は上手く稼ぎループができるような入力を行うコードを書いて、Arduino Leonaldoにコードを書き込んでゲーム機に繋げると、あとは放置するだけで延々とSURVIVORの塔をさまよい続けることができる。. 筆者はArduino Leonaldo（の互換基板）を使って、世にも珍しい（？）ニンテンドースイッチ版『Mortal Kombat 11 Ultimate』用のマクロ基板を自作してみた。Arduinoは数年前から使っていたので簡単な作業だった。うまく動作している。公開予定はありません（MK的には主流とは言えないニンテンドースイッチ版だし…）。. [![モータルコンバット ブルーレイ&DVDセット (2枚組) [Blu-ray]](https://m.media-amazon.com/images/I/51eoCrKWwxL._SL500_.jpg "モータルコンバット ブルーレイ&DVDセット (2枚組) [Blu-ray]")](https://www.amazon.co.jp/exec/obidos/ASIN/B09C7KL9GP/starmansenz0e-22/). [モータルコンバット ブルーレイ&DVDセット (2枚組) [Blu-ray]](https://www.amazon.co.jp/exec/obidos/ASIN/B09C7KL9GP/starmansenz0e-22/). «  書籍『オンラインゲームセキュリティ』サ…     攻略 Mortal Kombat 11 Ultimateで効率よ…  »."># ど～もeagle0wlです（再）. ## 140文字では収まらないネタを記録するブログ. # 攻略 モータルコンバット11で効率よくKoin/Soul/Heartを稼ぐ - Klassic Tower編. モータルコンバット11でKoin/Soul/Heartを効率よく稼ぐ方法を記す。ここでは、ゲームをある程度進めてきて、有用なオーギュメントが揃い始めてきたあたりから使える方法である。Kryptの宝箱を開けるKoinに難儀するレベルであれば、別の方法をあたるかTower of TimeやKryptで回して欲しい。. ### 基本的な流れ. オーギュメントによる強化が十分であれば、FLAWLESSの成功率が上がる。Luckalityがあれば、（AI FIGHTERを使用していても）Brutalityの成功率がさらに上がる。. ### Koin/Soul/Heartを変換するオーギュメント. ・Soul - Lvl.4 Dark Magic. ・Soul - Lvl.4 Heart and Soul. 両方のオーギュメントを装備すると、獲得したHeart/SoulはすべてKoinに変換されるので、Koinがものすごく貯まる。主にSoulを増やしたい時は『Heart and Soul』だけを装備すればSoulがよく貯まり、Koinも貯まる。Koin/SoulをHeartに逆変換するオーギュメントはないので、Heartが一番貯めにくい。したがって、Heartが得られるオーギュメントを優先的につけたほうが良い。. ### Heartを稼ぐための基本セット. #### 装備するオーギュメント. ・Soul - Lvl.4 Perfect Kombat. １マッチ（１ラウンドではない）をFLAWLESSで勝利すると、7/14/21/28個のHeartが得られる。１マッチのFLAWLESSは難しそうだが、SURVIVORでは１マッチ１ラウンドなので、細かいことを気にする必要はない。. ・Soul - Lvl.4 Death Benefit. ・Soul - Lvl.4 Brutal Heart. Brutalityが2/4/6/8%の確率でいつでも決まる。発動条件・コマンドは自身が持つBrutalityと同じ。ギアにXPは貯まらない。Luckalityを装備したAI FIGHTERは、対戦中でもBrutalityを狙うので、Fatalityより効率の良いBrutalityの成功率が上がる。. #### Tower Konsumablesで選ぶアイテム. f:id:eagle0wl:20211114221234j:plain. マッチ終了時に得られるHeartが２倍になる。KryptのForge（素材合成）では作れないので、Tower of TimeのリワードやKryptのChest（宝箱）から探すしかない。. ### Soulを稼ぐための基本セット. #### 装備するオーギュメント. ・Soul - Lvl.4 Heart and Soul. ・Soul - Lvl.4 Spoils of War. ・Soul - Lvl.4 Good Souls. ### Koinを稼ぐための基本セット. #### 装備するオーギュメント. ・Soul - Lvl.4 Dark Magic. ・Soul - Lvl.4 Heart and Soul. これに加えて「Heartを稼ぐオーギュメントの基本セット」と「Soulを稼ぐオーギュメントの基本セット」からお好みでセットする。獲得したHeart/SoulはすべてKoinに変換される。. ※Koinを獲得できるオーギュメントは複数あるが、Mercyを決める（１ラウンド制なので使えない）、Fatal Blowを使う（very\_easyなので体力がそこまで削られない）といった風にいまいち旨味に欠けるので、他のオーギュメントを使ったほうがいい。. ### 選択キャラ. ただ、オーギュメントのJinseiはキャラごとに固有のものであって、しかも入手しづらいものである。Lvl.4のものともなると、Character TowerのSTAGE 6かTest Your Luckあたりで入手するものである。そこまでたどり着けるのであれば、すでにKoin/Soulは十分貯まっているだろうし、他の有用なオーギュメントもいくらか入手しているはずなので、そこにこだわる必要はないと思う。稼ぎで有用と思えるオーギュメントは以下の１つ。. #### Kollector. ・Jinsei - Lvl.1-4 Rampant Inflation. 得られるKoinの量が25/50/75/100%増しになる。. f:id:eagle0wl:20211114215819j:plain. ※Koin/Soul/Heartの変換を使わずに１周してみたら16,821Koin/2,640Soul/807heartだった。. ### まとめ. Lvl.4 Dark Magic（1Soul→1,000Koin）とLvl.4 Heart and Soul（1Heart→20Soul）を装備してSoul/HeartをKoinに変換していれば、18,796,821Koin (=16821+(2640+(807\*20))\*1000)も得られたことになる。SURVIVOR１周に30分かかるとすれば、時速3600万Koinとなる。. オーギュメントのレベルが２つともLvl.1の場合なら 1,685,571Koin (=16821+(2640+(807\*5))\*250)。Soud/Heartを獲得できるオーギュメントのレベルが下がればもっと少なくなる。. ### マクロによるさらなる効率化. 冒頭で示した「基本的な流れ」のうち、対戦が始まってからは連射ホールドのできるコントローラがあれば手放しができる。しかし、SURVIVORの25人を倒しきった後も放置するとややこしいことになるので、手動操作が必要になる。. ワンボードマイコンであるArduino Leonaldoを使えば、ゲームコントローラになりすますことができる。後は上手く稼ぎループができるような入力を行うコードを書いて、Arduino Leonaldoにコードを書き込んでゲーム機に繋げると、あとは放置するだけで延々とSURVIVORの塔をさまよい続けることができる。. 筆者はArduino Leonaldo（の互換基板）を使って、世にも珍しい（？）ニンテンドースイッチ版『Mortal Kombat 11 Ultimate』用のマクロ基板を自作してみた。Arduinoは数年前から使っていたので簡単な作業だった。うまく動作している。公開予定はありません（MK的には主流とは言えないニンテンドースイッチ版だし…）。. [![モータルコンバット ブルーレイ&DVDセット (2枚組) [Blu-ray]](https://m.media-amazon.com/images/I/51eoCrKWwxL._SL500_.jpg "モータルコンバット ブルーレイ&DVDセット (2枚組) [Blu-ray]")](https://www.amazon.co.jp/exec/obidos/ASIN/B09C7KL9GP/starmansenz0e-22/). [モータルコンバット ブルーレイ&DVDセット (2枚組) [Blu-ray]](https://www.amazon.co.jp/exec/obidos/ASIN/B09C7KL9GP/starmansenz0e-22/). «  書籍『オンラインゲームセキュリティ』サ…     攻略 Mortal Kombat 11 Ultimateで効率よ…  ».</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://eagle0wl.hatenadiary.jp/entry/2021/11/14/221644" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">提供 KlassiC 經銷店家的營業時間與門市資訊列表。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title=": item.product.cover_media.alt_translations) | translateModel. {{item.product.title\_translations|translateModel}}. {{addonItem.product.cover_media.alt_translations | translateModel}}. MON - SUN｜13:30 - 22:30. MON - SUN｜11:00 - 21:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:00 - 21:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:30 - 21:30. MON - SUN｜09:00 - 21:00. MON - SUN｜15:00 -22:30. MON - SUN｜10:30 - 21:00. MON - SUN｜11:00 - 21:00. MON - SUN｜10:30 - 21:00. MON - SUN｜10:30 - 21:00. MON - SUN｜13:00 - 21:00. MON - SUN｜10:00 - 21:00. MON - SUN｜10:00 - 21:00. MON - SUN｜10:00 - 21:00. MON - SUN｜11:00 - 21:00. MON - SUN｜10:00 - 22:00. MON - SUN｜09:30 - 21:30. MON - SUN｜11:30 - 21:30. MON - SUN｜12:00 - 21:30. MON - SUN｜10:00 - 21:00. MON - SUN｜10:00 - 22:00. MON - SUN｜10:00 - 22:00. MON - SUN｜10:00 - 22:00. MON - SUN｜10:00 - 22:00. MON - SUN｜09:30 - 21:00. MON - SUN｜13:30 - 22:00. MON - SUN｜14:00 - 22:00. MON - SUN｜13:00 - 21:00. MON - SUN｜11:00 - 21:00.">: item.product.cover_media.alt_translations) | translateModel. {{item.product.title\_translations|translateModel}}. {{addonItem.product.cover_media.alt_translations | translateModel}}. MON - SUN｜13:30 - 22:30. MON - SUN｜11:00 - 21:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:00 - 21:00. MON - SUN｜11:00 - 22:00. MON - SUN｜11:30 - 21:30. MON - SUN｜09:00 - 21:00. MON - SUN｜15:00 -22:30. MON - SUN｜10:30 - 21:00. MON - SUN｜11:00 - 21:00. MON - SUN｜10:30 - 21:00. MON - SUN｜10:30 - 21:00. MON - SUN｜13:00 - 21:00. MON - SUN｜10:00 - 21:00. MON - SUN｜10:00 - 21:00. MON - SUN｜10:00 - 21:00. MON - SUN｜11:00 - 21:00. MON - SUN｜10:00 - 22:00. MON - SUN｜09:30 - 21:30. MON - SUN｜11:30 - 21:30. MON - SUN｜12:00 - 21:30. MON - SUN｜10:00 - 21:00. MON - SUN｜10:00 - 22:00. MON - SUN｜10:00 - 22:00. MON - SUN｜10:00 - 22:00. MON - SUN｜10:00 - 22:00. MON - SUN｜09:30 - 21:00. MON - SUN｜13:30 - 22:00. MON - SUN｜14:00 - 22:00. MON - SUN｜13:00 - 21:00. MON - SUN｜11:00 - 21:00.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/stockist" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的多樣款式、平易近人的價格與優質服務，並推薦其為修飾臉型的墨鏡首選。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受，
+
+主要是款式喜歡比較重要，去年去韓國也是從韓國買了三附太陽眼鏡回來，
+
+這回來逛了 KlassiC. 我在裡面待了一個小時有，因為款式真的無敵多，
+
+價格部分有學生族負擔的起的百元太陽眼鏡，也有上班族可以接受的千元太陽眼鏡，
+
+另外也有聯名款以及精品款，無論是想要日常配戴還是出席活動特殊款，
+
+在 KlassiC. 都可以找到，真的很省事省力耶！
+
+特殊設計款，這款我好喜歡耶！鏡片上有破裂的痕跡，很酷耶！
+
+KlassiC. 在台灣擁有自己的生產線，也有自己的設計師，所以款式多質量好，
+
+但價格不會太 OVER ，因為自產自銷少了其中被層層堆疊的費用，
+
+所以眼鏡的品質好但價格卻是相當平易近人喔！
+
+首次在 KlassiC. 入手的墨鏡是 KC9124 ，價格落在2580元，有四個顏色，
+
+我自己是挑了黑色，喜歡死了！鏡框不是單調的圓弧或是正方，
+
+而是帶有多角度設計的框，KlassiC. 的LOGO 在左右兩側，質感非常好。
+
+KlassiC. 除了有墨鏡之外，還有驗光室可以現在配眼鏡，度數、閃光沒有太深，
+
+或是沒有特殊要求，都是可以現場配眼鏡，30分鐘取件，
+
+光學眼鏡也是有各種款式，其中有一款鈦金框，是有彈性的鏡框，
+
+所以輕壓都是可以承受的，不用擔心不小心坐到眼鏡就壞掉。
+
+無論你買哪一款眼鏡都有送一個訂製眼鏡盒、眼鏡布，墨鏡除了百元以外的款式，
+
+其他的都有售後服務，全省門市也都可以處理售後以及免費清潔眼鏡/墨鏡喔！
+
+挑對墨鏡可以蓋住我一半的臉，看起來臉蛋比較力瘦了些！心情真好！
+
+官網
+
+粉絲專頁
+
+KlassiC. x Coffee Tea Or x Vacanza Accessory 中山形象店(Store 01) [...] # 跟著livia享受人生
+
+## 我的部落格已經搬家 livia.com.tw
+
+部落格全站分類：婚姻育兒
+
+ 相簿
+ 部落格
+ 留言
+ 名片
+
+ 9月 07 週一 202009:58
+ ## 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+#墨鏡品牌推薦 #墨鏡推薦 #網紅藝人推薦 #抗UV墨鏡 #修飾臉型 #小臉墨鏡 #旅遊必備
+
+#太陽眼鏡 #平價墨鏡 #gentle monster 墨鏡 #雷朋太陽眼鏡 #度數墨鏡 #近視墨鏡 #運動墨鏡 #飛行員墨鏡 #復古墨鏡
+
+但我這回發現了一間比日系品牌還要好逛，服務一樣啵棒的 KlassiC. ，
+
+KlassiC. 目前台北、台中都有門市，台北的話中山分店離我很近，另外還有一間在東區，
+
+兩間的裝潢風格不同，不過店內空間都走整潔明亮，我很喜歡，
+
+在裡面逛起來很舒服，而且店員都很親切，不怕你試戴！！！只怕你沒有找到自己喜歡的。XD
+
+每款墨鏡鏡框、鏡片顏色都不太一樣，如果是喜愛鮮豔色系的，
+
+來到 KlassiC. 也可以挑選到，當天我就看到有單一鮮豔色也有撞色感的框，
+
+另外動物紋也有，像是我愛的豹紋款，也有哦！
+
+KlassiC.敦南旗艦店(Store 03)
+
+地址：台北市大安區敦化南路一段187巷38號1樓（捷運忠孝敦化站2號ZARA出口,屯京拉麵旁）
+
+電話：02-2731-3738
+
+營業時間：週日~週四 1230-2200 週五、週六 1230-2230
+
+我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受， [...] 地址：台北市中山區南京西路23巷3號1樓 （中山站四號出口，「心中山」線形公園旁）
+
+電話：(02)2100-8807
+
+營業時間：週日~週四 1230-2130 週五、週六 1230-2200
+
+KlassiC.信義遠百A13店(Store 04)
+
+地址：台北市信義區松仁路58號B2（APPLE電扶梯旁）
+
+電話：02-8786-9740
+
+營業時間：週日~週四 1100-2130 週五、週六 1100-2200
+
+KlassiC.台中文心秀泰門市(Store 02)
+
+地址：台中市南屯區文心南路289號2樓（粉紅好萊塢區）
+
+電話：04-2471-1360
+
+營業時間：週一至週五 1100-2200 週六、週日1030-2200
+
+台中一中形象店
+
+地址：台中市北區一中街165-1號
+
+電話：（04）2225-6861
+
+營業時間：週一~週四 13:00-22:00 週五、週六 13:00-23:00 週日 13:00-22:30
+
+文章標籤
+
+全站熱搜
+
+創作者介紹
+
+創作者 Livia ❤小伊 的頭像
+
+Livia ❤小伊
+
+跟著livia享受人生
+
+Livia ❤小伊發表在痞客邦 留言(0) 人氣(1,153)
+
+ 全站分類：
+ 個人分類：飾品配件
+
+▲top
+
+0 則留言
+
+#### 2023社群金點賞
+
+#### 2021-2022 社群金點賞
+
+#### --關於我--
+
+Livia ❤小伊
+
+暱稱：
+:   Livia ❤小伊
+
+分類：
+:   婚姻育兒
+
+好友：
+:   累積中
+
+地區：
+
+#### --FACEBOOK--
+
+#### --熱門--">我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受，
+
+主要是款式喜歡比較重要，去年去韓國也是從韓國買了三附太陽眼鏡回來，
+
+這回來逛了 KlassiC. 我在裡面待了一個小時有，因為款式真的無敵多，
+
+價格部分有學生族負擔的起的百元太陽眼鏡，也有上班族可以接受的千元太陽眼鏡，
+
+另外也有聯名款以及精品款，無論是想要日常配戴還是出席活動特殊款，
+
+在 KlassiC. 都可以找到，真的很省事省力耶！
+
+特殊設計款，這款我好喜歡耶！鏡片上有破裂的痕跡，很酷耶！
+
+KlassiC. 在台灣擁有自己的生產線，也有自己的設計師，所以款式多質量好，
+
+但價格不會太 OVER ，因為自產自銷少了其中被層層堆疊的費用，
+
+所以眼鏡的品質好但價格卻是相當平易近人喔！
+
+首次在 KlassiC. 入手的墨鏡是 KC9124 ，價格落在2580元，有四個顏色，
+
+我自己是挑了黑色，喜歡死了！鏡框不是單調的圓弧或是正方，
+
+而是帶有多角度設計的框，KlassiC. 的LOGO 在左右兩側，質感非常好。
+
+KlassiC. 除了有墨鏡之外，還有驗光室可以現在配眼鏡，度數、閃光沒有太深，
+
+或是沒有特殊要求，都是可以現場配眼鏡，30分鐘取件，
+
+光學眼鏡也是有各種款式，其中有一款鈦金框，是有彈性的鏡框，
+
+所以輕壓都是可以承受的，不用擔心不小心坐到眼鏡就壞掉。
+
+無論你買哪一款眼鏡都有送一個訂製眼鏡盒、眼鏡布，墨鏡除了百元以外的款式，
+
+其他的都有售後服務，全省門市也都可以處理售後以及免費清潔眼鏡/墨鏡喔！
+
+挑對墨鏡可以蓋住我一半的臉，看起來臉蛋比較力瘦了些！心情真好！
+
+官網
+
+粉絲專頁
+
+KlassiC. x Coffee Tea Or x Vacanza Accessory 中山形象店(Store 01) [...] # 跟著livia享受人生
+
+## 我的部落格已經搬家 livia.com.tw
+
+部落格全站分類：婚姻育兒
+
+ 相簿
+ 部落格
+ 留言
+ 名片
+
+ 9月 07 週一 202009:58
+ ## 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+#墨鏡品牌推薦 #墨鏡推薦 #網紅藝人推薦 #抗UV墨鏡 #修飾臉型 #小臉墨鏡 #旅遊必備
+
+#太陽眼鏡 #平價墨鏡 #gentle monster 墨鏡 #雷朋太陽眼鏡 #度數墨鏡 #近視墨鏡 #運動墨鏡 #飛行員墨鏡 #復古墨鏡
+
+但我這回發現了一間比日系品牌還要好逛，服務一樣啵棒的 KlassiC. ，
+
+KlassiC. 目前台北、台中都有門市，台北的話中山分店離我很近，另外還有一間在東區，
+
+兩間的裝潢風格不同，不過店內空間都走整潔明亮，我很喜歡，
+
+在裡面逛起來很舒服，而且店員都很親切，不怕你試戴！！！只怕你沒有找到自己喜歡的。XD
+
+每款墨鏡鏡框、鏡片顏色都不太一樣，如果是喜愛鮮豔色系的，
+
+來到 KlassiC. 也可以挑選到，當天我就看到有單一鮮豔色也有撞色感的框，
+
+另外動物紋也有，像是我愛的豹紋款，也有哦！
+
+KlassiC.敦南旗艦店(Store 03)
+
+地址：台北市大安區敦化南路一段187巷38號1樓（捷運忠孝敦化站2號ZARA出口,屯京拉麵旁）
+
+電話：02-2731-3738
+
+營業時間：週日~週四 1230-2200 週五、週六 1230-2230
+
+我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受， [...] 地址：台北市中山區南京西路23巷3號1樓 （中山站四號出口，「心中山」線形公園旁）
+
+電話：(02)2100-8807
+
+營業時間：週日~週四 1230-2130 週五、週六 1230-2200
+
+KlassiC.信義遠百A13店(Store 04)
+
+地址：台北市信義區松仁路58號B2（APPLE電扶梯旁）
+
+電話：02-8786-9740
+
+營業時間：週日~週四 1100-2130 週五、週六 1100-2200
+
+KlassiC.台中文心秀泰門市(Store 02)
+
+地址：台中市南屯區文心南路289號2樓（粉紅好萊塢區）
+
+電話：04-2471-1360
+
+營業時間：週一至週五 1100-2200 週六、週日1030-2200
+
+台中一中形象店
+
+地址：台中市北區一中街165-1號
+
+電話：（04）2225-6861
+
+營業時間：週一~週四 13:00-22:00 週五、週六 13:00-23:00 週日 13:00-22:30
+
+文章標籤
+
+全站熱搜
+
+創作者介紹
+
+創作者 Livia ❤小伊 的頭像
+
+Livia ❤小伊
+
+跟著livia享受人生
+
+Livia ❤小伊發表在痞客邦 留言(0) 人氣(1,153)
+
+ 全站分類：
+ 個人分類：飾品配件
+
+▲top
+
+0 則留言
+
+#### 2023社群金點賞
+
+#### 2021-2022 社群金點賞
+
+#### --關於我--
+
+Livia ❤小伊
+
+暱稱：
+:   Livia ❤小伊
+
+分類：
+:   婚姻育兒
+
+好友：
+:   累積中
+
+地區：
+
+#### --FACEBOOK--
+
+#### --熱門--</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://livia1028.pixnet.net/blog/posts/9514859287" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">網友高度推薦 KlassiC 的墨鏡款式多樣且具修飾臉型效果，並讚賞其平價定位與優質服務。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="# 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+ 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+#墨鏡品牌推薦 #墨鏡推薦 #網紅藝人推薦 #抗UV墨鏡 #修飾臉型 #小臉墨鏡 #旅遊必備
+
+#太陽眼鏡 #平價墨鏡 #gentle monster 墨鏡 #雷朋太陽眼鏡 #度數墨鏡 #近視墨鏡 #運動墨鏡 #飛行員墨鏡 #復古墨鏡
+
+很喜歡太陽眼鏡，尤其是戴起來可以修飾臉蛋的款式，對於我這種大臉人來說，
+
+真的是無敵加分，可以擋太陽也可以日常搭配服飾，是實用度非常高的時尚配件。
+
+太陽眼鏡就跟耳環飾品一樣，永遠都不會嫌多。
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+近幾年台灣很多捷運站口還有商圈都可以看到日系品牌的眼鏡店門市，
+
+但我這回發現了一間比日系品牌還要好逛，服務一樣啵棒的 KlassiC. ，
+
+KlassiC. 目前台北、台中都有門市，台北的話中山分店離我很近，另外還有一間在東區， [...] 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+KlassiC. 除了有墨鏡之外，還有驗光室可以現在配眼鏡，度數、閃光沒有太深，
+
+或是沒有特殊要求，都是可以現場配眼鏡，30分鐘取件，
+
+光學眼鏡也是有各種款式，其中有一款鈦金框，是有彈性的鏡框，
+
+所以輕壓都是可以承受的，不用擔心不小心坐到眼鏡就壞掉。 [...] 電話：02-2731-3738
+
+營業時間：週日~週四 1230-2200 週五、週六 1230-2230
+
+我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受，
+
+主要是款式喜歡比較重要，去年去韓國也是從韓國買了三附太陽眼鏡回來，
+
+這回來逛了 KlassiC. 我在裡面待了一個小時有，因為款式真的無敵多，
+
+價格部分有學生族負擔的起的百元太陽眼鏡，也有上班族可以接受的千元太陽眼鏡，
+
+另外也有聯名款以及精品款，無論是想要日常配戴還是出席活動特殊款，
+
+在 KlassiC. 都可以找到，真的很省事省力耶！
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤"># 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+ 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+#墨鏡品牌推薦 #墨鏡推薦 #網紅藝人推薦 #抗UV墨鏡 #修飾臉型 #小臉墨鏡 #旅遊必備
+
+#太陽眼鏡 #平價墨鏡 #gentle monster 墨鏡 #雷朋太陽眼鏡 #度數墨鏡 #近視墨鏡 #運動墨鏡 #飛行員墨鏡 #復古墨鏡
+
+很喜歡太陽眼鏡，尤其是戴起來可以修飾臉蛋的款式，對於我這種大臉人來說，
+
+真的是無敵加分，可以擋太陽也可以日常搭配服飾，是實用度非常高的時尚配件。
+
+太陽眼鏡就跟耳環飾品一樣，永遠都不會嫌多。
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+近幾年台灣很多捷運站口還有商圈都可以看到日系品牌的眼鏡店門市，
+
+但我這回發現了一間比日系品牌還要好逛，服務一樣啵棒的 KlassiC. ，
+
+KlassiC. 目前台北、台中都有門市，台北的話中山分店離我很近，另外還有一間在東區， [...] 【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+KlassiC. 除了有墨鏡之外，還有驗光室可以現在配眼鏡，度數、閃光沒有太深，
+
+或是沒有特殊要求，都是可以現場配眼鏡，30分鐘取件，
+
+光學眼鏡也是有各種款式，其中有一款鈦金框，是有彈性的鏡框，
+
+所以輕壓都是可以承受的，不用擔心不小心坐到眼鏡就壞掉。 [...] 電話：02-2731-3738
+
+營業時間：週日~週四 1230-2200 週五、週六 1230-2230
+
+我還算是蠻愛買太陽眼鏡，眼鏡的價格接受度也蠻大的，百元到千元到萬元都可以接受，
+
+主要是款式喜歡比較重要，去年去韓國也是從韓國買了三附太陽眼鏡回來，
+
+這回來逛了 KlassiC. 我在裡面待了一個小時有，因為款式真的無敵多，
+
+價格部分有學生族負擔的起的百元太陽眼鏡，也有上班族可以接受的千元太陽眼鏡，
+
+另外也有聯名款以及精品款，無論是想要日常配戴還是出席活動特殊款，
+
+在 KlassiC. 都可以找到，真的很省事省力耶！
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤
+
+【KlassiC. 評價】KlassiC 修飾臉型太陽眼鏡 墨鏡控東區必逛店│平價墨鏡│墨鏡品牌推薦│抗UV墨鏡│小臉墨鏡 ❤跟著Livia享受人生❤</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://fgblog.fashionguide.com.tw/9283/posts/407173-%E3%80%90klassic-%E8%A9%95%E5%83%B9%E3%80%91klassic-%E4%BF%AE%E9%A3%BE%E8%87%89%E5%9E%8B%E5%A4%AA%E9%99%BD%E7%9C%BC%E9%8F%A1-%E5%A2%A8%E9%8F%A1%E6%8E%A7%E6%9D%B1%E5%8D%80%E5%BF%85%E9%80%9B%E5%BA%97%E2%94%82%E5%B9%B3%E5%83%B9%E5%A2%A8%E9%8F%A1%E2%94%82%E5%A2%A8%E9%8F%A1%E5%93%81%E7%89%8C%E6%8E%A8%E8%96%A6%E2%94%82%E6%8A%97uv%E5%A2%A8%E9%8F%A1%E2%94%82%E5%B0%8F%E8%87%89%E5%A2%A8%E9%8F%A1-%E2%9D%A4%E8%B7%9F%E8%91%97livia%E4%BA%AB%E5%8F%97%E4%BA%BA%E7%94%9F%E2%9D%A4" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">網友分享 KlassiC 眼鏡開箱好評，讚賞其設計美觀、修飾臉型且百搭，雖有部分品質與服務負評但整體偏正面。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="# [心得] KlassiC眼鏡很好看!! - 看板 e-shopping - 批踢踢實業坊
+
+批踢踢實業坊›看板 e-shopping關於我們聯絡資訊
+
+返回看板
+
+作者 volave (尷尬)
+
+看板 e-shopping
+
+標題[心得] KlassiC眼鏡很好看!!
+
+時間 Fri Apr 23 12:27:35 2021
+
+ ★物品名稱：KlassiC. HANDMADE. DADDY 13黑玫瑰金+抗藍光0度鏡片 ★拍賣網址： ☆網誌心得： 終於收到眼鏡了~實體超有質感！ 完全是我喜歡的風格，尤其是盒子，第一次看到大理石紋的外盒 還忍不住拍了好幾張(外盒XDD 
+
+Image 1
+
+ 眼鏡本體也好看，而且不重 因為近幾年開始流行速配眼鏡，例如JINS、OWNDAYS和我這次買的KlassiC 被燒到的主要原因是想買來搭造型XDD 買之前是有陸續到實體門市去試戴，應該幾乎把所有的款式都試過了吧 最後才決定買這支，覺得這隻很特別，鏡框上方是一般的圓弧狀 但鏡框下方有一點點不規則的設計，實際戴起來也很好看XD 網路下單還有一點點優惠價~ 然後除了造型要好看之外，因為覺得壓克力的鏡片質感很差 想說既然上班都盯著電腦，下班就追劇滑手機，抗藍光應該算現代人的標準配備吧！ 眼睛還是要好好照顧的~~衝著這個藉口，就加購選藍光鏡片了XD 我選的顏色是黑玫瑰金，本體黑色配金框 真的很好看，又質感又百搭，可以時而幹練成熟，時而親切好相處風~ ◎日常穿搭～感覺黑玫瑰金色配上不規則邊很修飾臉型，搭什麼衣服都好看！ 這個造型就叫做「微素顏但其實上了個全妝」風XD 
+
+Image 2
+
+ ◎上班穿搭～不愛戴眼鏡的人通常是因為覺得土 但我發現偶爾配個眼鏡，反而讓造型有加分，會超有氣勢，拜訪客戶講話可以大聲點(誤) 
+
+Image 3 [...] → christensen: 真的很適合妳～好看！ 59.126.167.78 04/23 18:11 
+
+→ xiaofu: 那台中的驗光覺得不太專業 111.252.222.115 04/23 18:48 
+
+推 uhboo: 妳戴起來太適合了！可是我剛剛官網看不到25 101.12.21.181 04/23 18:55 
+
+→ uhboo: 00耶？還是鏡片是另外計價？ 101.12.21.181 04/23 18:55 
+
+對的喔~鏡片額外看你要哪種 
+
+推 yddet41: 好好看 42.72.58.13 04/23 19:00 
+
+推 litricetle: 我買兩隻了，真的好看，但我是去東區 61.230.32.87 04/23 21:49 
+
+→ litricetle: 現場挑框 61.230.32.87 04/23 21:49 
+
+→ cake2246: 這牌廣告打滿兇 223.136.117.90 04/23 22:19 
+
+嗯啊 我現在FB也充滿了他的廣告哈哈 
+
+→ aa720531x: 很好看可是很快就掉漆 42.72.34.10 04/24 00:10 
+
+推 znling: 鏡片好像都要另外加價欸 118.160.117.230 04/24 11:03 
+
+推 aileen5522: 很適合！ 42.76.165.123 04/24 22:58 
+
+推 w6523520: 妳戴好好看 可是這牌的眼鏡我覺得質感沒 220.132.235.53 04/25 11:23 
+
+→ w6523520: 有到很好 220.132.235.53 04/25 11:23 
+
+會嗎 我覺得蠻好的啊@@ 
+
+推 onionku10201: 眼鏡搭起來很好看 27.247.94.40 04/25 22:02 [...] Image 3
+
+ 然後意外發現酷一點的造型也完全沒問題 黑框真的百搭很多，覺得比戴墨鏡還要好看XD，感覺還變年輕了哈哈(自己說) 
+
+Image 4
+
+Image 5
+
+ -- ※ 發信站: 批踢踢實業坊(ptt.cc), 來自: 223.137.146.127 (臺灣) ※ 文章網址: 
+
+推 jiaj: 很適合你 220.143.44.49 04/23 13:26 
+
+謝謝! 
+
+推 jenny5025023: 這樣配下來多少錢呢 39.13.166.115 04/23 13:27 
+
+那時候下單價格是4280 但官網如果有打折應該可以不到四千吧~ 
+
+推 pc2934: 有點生火...黑框這樣好好看喔，我也想換掉 39.9.137.179 04/23 14:23 
+
+→ pc2934: 我的眼鏡，百年款都沒換... 39.9.137.179 04/23 14:23 
+
+可以換啦 現在眼鏡都很好看 其實整個人風格會完全不同 
+
+推 blueknee: 好看！唇妝也好美～求問唇膏XD 42.75.129.125 04/23 15:01 
+
+推 wen0413: klassic的眼鏡很好看! 我之前去東區店配 49.216.166.143 04/23 15:23 
+
+→ wen0413: 近視，驗光蠻專業的，當天配完很快就能拿 49.216.166.143 04/23 15:23 
+
+→ wen0413: 到眼鏡整個很有效率 49.216.166.143 04/23 15:23 
+
+現場配可以這麼快真的蠻方便的XD 
+
+→ Avira: 想問唇膏好好看哈 123.192.49.126 04/23 16:47 
+
+Romand 的唇釉 色號是21號~ 
+
+→ christensen: 真的很適合妳～好看！ 59.126.167.78 04/23 18:11"># [心得] KlassiC眼鏡很好看!! - 看板 e-shopping - 批踢踢實業坊
+
+批踢踢實業坊›看板 e-shopping關於我們聯絡資訊
+
+返回看板
+
+作者 volave (尷尬)
+
+看板 e-shopping
+
+標題[心得] KlassiC眼鏡很好看!!
+
+時間 Fri Apr 23 12:27:35 2021
+
+ ★物品名稱：KlassiC. HANDMADE. DADDY 13黑玫瑰金+抗藍光0度鏡片 ★拍賣網址： ☆網誌心得： 終於收到眼鏡了~實體超有質感！ 完全是我喜歡的風格，尤其是盒子，第一次看到大理石紋的外盒 還忍不住拍了好幾張(外盒XDD 
+
+Image 1
+
+ 眼鏡本體也好看，而且不重 因為近幾年開始流行速配眼鏡，例如JINS、OWNDAYS和我這次買的KlassiC 被燒到的主要原因是想買來搭造型XDD 買之前是有陸續到實體門市去試戴，應該幾乎把所有的款式都試過了吧 最後才決定買這支，覺得這隻很特別，鏡框上方是一般的圓弧狀 但鏡框下方有一點點不規則的設計，實際戴起來也很好看XD 網路下單還有一點點優惠價~ 然後除了造型要好看之外，因為覺得壓克力的鏡片質感很差 想說既然上班都盯著電腦，下班就追劇滑手機，抗藍光應該算現代人的標準配備吧！ 眼睛還是要好好照顧的~~衝著這個藉口，就加購選藍光鏡片了XD 我選的顏色是黑玫瑰金，本體黑色配金框 真的很好看，又質感又百搭，可以時而幹練成熟，時而親切好相處風~ ◎日常穿搭～感覺黑玫瑰金色配上不規則邊很修飾臉型，搭什麼衣服都好看！ 這個造型就叫做「微素顏但其實上了個全妝」風XD 
+
+Image 2
+
+ ◎上班穿搭～不愛戴眼鏡的人通常是因為覺得土 但我發現偶爾配個眼鏡，反而讓造型有加分，會超有氣勢，拜訪客戶講話可以大聲點(誤) 
+
+Image 3 [...] → christensen: 真的很適合妳～好看！ 59.126.167.78 04/23 18:11 
+
+→ xiaofu: 那台中的驗光覺得不太專業 111.252.222.115 04/23 18:48 
+
+推 uhboo: 妳戴起來太適合了！可是我剛剛官網看不到25 101.12.21.181 04/23 18:55 
+
+→ uhboo: 00耶？還是鏡片是另外計價？ 101.12.21.181 04/23 18:55 
+
+對的喔~鏡片額外看你要哪種 
+
+推 yddet41: 好好看 42.72.58.13 04/23 19:00 
+
+推 litricetle: 我買兩隻了，真的好看，但我是去東區 61.230.32.87 04/23 21:49 
+
+→ litricetle: 現場挑框 61.230.32.87 04/23 21:49 
+
+→ cake2246: 這牌廣告打滿兇 223.136.117.90 04/23 22:19 
+
+嗯啊 我現在FB也充滿了他的廣告哈哈 
+
+→ aa720531x: 很好看可是很快就掉漆 42.72.34.10 04/24 00:10 
+
+推 znling: 鏡片好像都要另外加價欸 118.160.117.230 04/24 11:03 
+
+推 aileen5522: 很適合！ 42.76.165.123 04/24 22:58 
+
+推 w6523520: 妳戴好好看 可是這牌的眼鏡我覺得質感沒 220.132.235.53 04/25 11:23 
+
+→ w6523520: 有到很好 220.132.235.53 04/25 11:23 
+
+會嗎 我覺得蠻好的啊@@ 
+
+推 onionku10201: 眼鏡搭起來很好看 27.247.94.40 04/25 22:02 [...] Image 3
+
+ 然後意外發現酷一點的造型也完全沒問題 黑框真的百搭很多，覺得比戴墨鏡還要好看XD，感覺還變年輕了哈哈(自己說) 
+
+Image 4
+
+Image 5
+
+ -- ※ 發信站: 批踢踢實業坊(ptt.cc), 來自: 223.137.146.127 (臺灣) ※ 文章網址: 
+
+推 jiaj: 很適合你 220.143.44.49 04/23 13:26 
+
+謝謝! 
+
+推 jenny5025023: 這樣配下來多少錢呢 39.13.166.115 04/23 13:27 
+
+那時候下單價格是4280 但官網如果有打折應該可以不到四千吧~ 
+
+推 pc2934: 有點生火...黑框這樣好好看喔，我也想換掉 39.9.137.179 04/23 14:23 
+
+→ pc2934: 我的眼鏡，百年款都沒換... 39.9.137.179 04/23 14:23 
+
+可以換啦 現在眼鏡都很好看 其實整個人風格會完全不同 
+
+推 blueknee: 好看！唇妝也好美～求問唇膏XD 42.75.129.125 04/23 15:01 
+
+推 wen0413: klassic的眼鏡很好看! 我之前去東區店配 49.216.166.143 04/23 15:23 
+
+→ wen0413: 近視，驗光蠻專業的，當天配完很快就能拿 49.216.166.143 04/23 15:23 
+
+→ wen0413: 到眼鏡整個很有效率 49.216.166.143 04/23 15:23 
+
+現場配可以這麼快真的蠻方便的XD 
+
+→ Avira: 想問唇膏好好看哈 123.192.49.126 04/23 16:47 
+
+Romand 的唇釉 色號是21號~ 
+
+→ christensen: 真的很適合妳～好看！ 59.126.167.78 04/23 18:11</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.ptt.cc/bbs/e-shopping/M.1619152059.A.02B.html" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">消費者對 KlassiC 的驗光專業度、快速取件服務、針對亞洲人臉型的設計及聯名款式給予高度正面評價。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="接下來驗光的部分就交給專業的驗光師~( Klassic 驗光師是都是有驗光執照的唷,可以放心驗光~~)
+
+驗光過程可以感受到店員很細心~ 會再三跟你確認鏡片的清晰度,一點都不馬虎喔!
+
+若度數測量完,店員會給一副機械型的鏡框夾著測量好的鏡片試戴走走看~
+
+測試自己對於矯正後的鏡片所看到的景象是否感到舒適清晰?
+
+→ Klassic 配鏡30分鐘即可取件唷~ 驗完後等待30分鐘的取件還可以喝杯咖啡、吃餅乾 
+
+趁機幫這家 Coffee.Tea.Or 打個廣告~ 我喝的是燕麥奶拿鐵+軟餅乾(巧克力口味)
+
+拿鐵加上燕麥奶超速配的啦! 香醇順口阿~ 軟餅乾也超好吃! 不會死甜~吃完整個念念不忘
+
+ 
+
+我買的Daddy13鏡框售價為$2480元,我選擇一般薄型奈米非球面鏡片$ 1500元
+
+要跟大家講個好消息    現在購買新品 Daddy Glasses 的話,完成指定活動即可現抵$300元唷!!! 
+
+加入Klassic Line官網帳號又可再抵50元~~ 我配的鏡框+鏡片$3980元再享折扣$350元整筆費用為$3630元
+
+最後!!!  還可以再領一張配鏡折$888元的折價券
+
+此張$888元折價券是針對自己的爸媽配鏡特享有的優惠唷!! 連爸媽都想到了~是不是很優秀!!
+
+附上我美美的眼鏡 ~ 吼~~~~ 連眼鏡盒都做的這麼有質感!! 還是我最愛的大理石紋路 
+
+P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要跟桌子融為一體了 XD 
+
+大家一定也會擔心眼鏡配戴之後若有任何不適或是有損壞的問題怎麼辦呢 ? 
+
+凡配鏡就會有一張保證卡,鏡框的部分保固有一年唷! 非人為因素造成的損壞,有提供免費維修服務唷~
+
+※如果真的不小心用壞,店員還是會盡力幫客人解決問題唷~~ 
+
+鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~ [...] 再來牆面所陳列的是Handmade系列的墨鏡~款式真的超多種的!!! 
+
+實體比官網看到的還要精緻 
+
+下面這兩張照片也是Handmade系列的墨鏡, 墨鏡材質為板料或是合金等等,好的品質加倍耐用!
+
+雙樑造型的墨鏡,這樣的框型真的是經典不敗款啊~ 店員說全部的款式都可以試戴!!
+
+一抬頭就有鏡子可以照,很貼心的設計呢~
+
+店員說這幾款都是超級熱賣款~ 簡單的框型、百搭的黑色系
+
+不管是男生或是女生都超級搶手的!! 重點是大臉、小臉都能駕馭  (真的很燒 
+
+今年韓劇裡也有出現這樣的平面鏡框~ (一看到心想這不就是女主角戴的款式嗎 
+
+由劉仁娜和李棟旭主演的韓劇 《觸及真心》       (圖片來源 © IG@tvndrama.official )
+
+值得一提的是Klassic 的鏡框都是針對亞洲人臉型所設計的唷~
+
+店員解釋說:「框型不會過斜、鼻距窄一點再加上獨立的鼻托對亞洲人是最合適的喔!」
+
+這真的讓我長知識了  因為常常看到類似的廣告都不知道真正的原因~
+
+最後則是klassic 與藝人的聯名款
+
+↑ 玻璃桌上擺放的是Klassic與藝人小鬼 (黃鴻升)的品牌 一同聯名的墨鏡,
+
+簡約的白色調配上復古的粗框真是耐人尋味阿~
+
+↑ 這款前衛又獨特的墨鏡則是 ARCHI by KlassiC 與 陳柏霖品牌 (A)NOWHEREMAN 首次合作的聯名款
+
+對陳柏霖就是滿滿大仁哥的印象,看到這款完全跳脫以往對他的印象! 真的很帥~
+
+三種不同價位可以選擇就像健達出奇蛋~三個願望一次滿足啊!! 
+
+還有販售聯名T恤、眼鏡夾子、眼鏡鏈 ~ 
+
+拉回主題  終於到了今天的重頭戲!  我今天是要來配鏡的!! 往下拉可以看到Handmade的光學框有很多款~~
+
+各種粗框、細框、雙樑、圓框、方框、不規則框 款式多到真的難以抉擇阿!!! [...] 2022-04-14 12:42
+
+#### 個人資訊
+
+栗子
+
+暱稱：
+:   栗子
+
+分類：
+:   生活綜合
+
+好友：
+:   累積中
+
+地區：
+
+#### 熱門文章
+
+ (53,897)配鏡分享｜Klassic眼鏡 到底在夯什麼? 價位&評價分析 跟著我來一探究竟!
+ (124)大安站 ｜Moon baking
+
+#### 文章分類
+
+ 關於生活・分享 (1)
+ 關於味蕾・甜點 (2)
+ 未分類文章 (1)
+
+#### 最新文章
+
+ 配鏡分享｜Klassic眼鏡 到底在夯什麼? 價位&評價分析 跟著我來一探究竟!
+ 民生社區｜but. we love butter
+ 大安站 ｜Moon baking
+
+#### 最新留言
+
+ [[22/04/14] 訪客 於文章「配鏡分享｜Klassic眼鏡 到底在夯什...」](  
+  原本在搜尋引擎找出一堆 Blog 文章，不知哪幾篇值得花時間...
+ [[19/11/05] 訪客 於文章「民生社區｜but. we love bu...」](  
+  哇！！引人入勝～下次照著文章去朝聖😝...
+ [[19/11/05]  於文章「15289199412...」](  
+  ...
+
+#### 參觀人氣
+
+ 本日人氣：
+ 累積人氣：">接下來驗光的部分就交給專業的驗光師~( Klassic 驗光師是都是有驗光執照的唷,可以放心驗光~~)
+
+驗光過程可以感受到店員很細心~ 會再三跟你確認鏡片的清晰度,一點都不馬虎喔!
+
+若度數測量完,店員會給一副機械型的鏡框夾著測量好的鏡片試戴走走看~
+
+測試自己對於矯正後的鏡片所看到的景象是否感到舒適清晰?
+
+→ Klassic 配鏡30分鐘即可取件唷~ 驗完後等待30分鐘的取件還可以喝杯咖啡、吃餅乾 
+
+趁機幫這家 Coffee.Tea.Or 打個廣告~ 我喝的是燕麥奶拿鐵+軟餅乾(巧克力口味)
+
+拿鐵加上燕麥奶超速配的啦! 香醇順口阿~ 軟餅乾也超好吃! 不會死甜~吃完整個念念不忘
+
+ 
+
+我買的Daddy13鏡框售價為$2480元,我選擇一般薄型奈米非球面鏡片$ 1500元
+
+要跟大家講個好消息    現在購買新品 Daddy Glasses 的話,完成指定活動即可現抵$300元唷!!! 
+
+加入Klassic Line官網帳號又可再抵50元~~ 我配的鏡框+鏡片$3980元再享折扣$350元整筆費用為$3630元
+
+最後!!!  還可以再領一張配鏡折$888元的折價券
+
+此張$888元折價券是針對自己的爸媽配鏡特享有的優惠唷!! 連爸媽都想到了~是不是很優秀!!
+
+附上我美美的眼鏡 ~ 吼~~~~ 連眼鏡盒都做的這麼有質感!! 還是我最愛的大理石紋路 
+
+P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要跟桌子融為一體了 XD 
+
+大家一定也會擔心眼鏡配戴之後若有任何不適或是有損壞的問題怎麼辦呢 ? 
+
+凡配鏡就會有一張保證卡,鏡框的部分保固有一年唷! 非人為因素造成的損壞,有提供免費維修服務唷~
+
+※如果真的不小心用壞,店員還是會盡力幫客人解決問題唷~~ 
+
+鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~ [...] 再來牆面所陳列的是Handmade系列的墨鏡~款式真的超多種的!!! 
+
+實體比官網看到的還要精緻 
+
+下面這兩張照片也是Handmade系列的墨鏡, 墨鏡材質為板料或是合金等等,好的品質加倍耐用!
+
+雙樑造型的墨鏡,這樣的框型真的是經典不敗款啊~ 店員說全部的款式都可以試戴!!
+
+一抬頭就有鏡子可以照,很貼心的設計呢~
+
+店員說這幾款都是超級熱賣款~ 簡單的框型、百搭的黑色系
+
+不管是男生或是女生都超級搶手的!! 重點是大臉、小臉都能駕馭  (真的很燒 
+
+今年韓劇裡也有出現這樣的平面鏡框~ (一看到心想這不就是女主角戴的款式嗎 
+
+由劉仁娜和李棟旭主演的韓劇 《觸及真心》       (圖片來源 © IG@tvndrama.official )
+
+值得一提的是Klassic 的鏡框都是針對亞洲人臉型所設計的唷~
+
+店員解釋說:「框型不會過斜、鼻距窄一點再加上獨立的鼻托對亞洲人是最合適的喔!」
+
+這真的讓我長知識了  因為常常看到類似的廣告都不知道真正的原因~
+
+最後則是klassic 與藝人的聯名款
+
+↑ 玻璃桌上擺放的是Klassic與藝人小鬼 (黃鴻升)的品牌 一同聯名的墨鏡,
+
+簡約的白色調配上復古的粗框真是耐人尋味阿~
+
+↑ 這款前衛又獨特的墨鏡則是 ARCHI by KlassiC 與 陳柏霖品牌 (A)NOWHEREMAN 首次合作的聯名款
+
+對陳柏霖就是滿滿大仁哥的印象,看到這款完全跳脫以往對他的印象! 真的很帥~
+
+三種不同價位可以選擇就像健達出奇蛋~三個願望一次滿足啊!! 
+
+還有販售聯名T恤、眼鏡夾子、眼鏡鏈 ~ 
+
+拉回主題  終於到了今天的重頭戲!  我今天是要來配鏡的!! 往下拉可以看到Handmade的光學框有很多款~~
+
+各種粗框、細框、雙樑、圓框、方框、不規則框 款式多到真的難以抉擇阿!!! [...] 2022-04-14 12:42
+
+#### 個人資訊
+
+栗子
+
+暱稱：
+:   栗子
+
+分類：
+:   生活綜合
+
+好友：
+:   累積中
+
+地區：
+
+#### 熱門文章
+
+ (53,897)配鏡分享｜Klassic眼鏡 到底在夯什麼? 價位&評價分析 跟著我來一探究竟!
+ (124)大安站 ｜Moon baking
+
+#### 文章分類
+
+ 關於生活・分享 (1)
+ 關於味蕾・甜點 (2)
+ 未分類文章 (1)
+
+#### 最新文章
+
+ 配鏡分享｜Klassic眼鏡 到底在夯什麼? 價位&評價分析 跟著我來一探究竟!
+ 民生社區｜but. we love butter
+ 大安站 ｜Moon baking
+
+#### 最新留言
+
+ [[22/04/14] 訪客 於文章「配鏡分享｜Klassic眼鏡 到底在夯什...」](  
+  原本在搜尋引擎找出一堆 Blog 文章，不知哪幾篇值得花時間...
+ [[19/11/05] 訪客 於文章「民生社區｜but. we love bu...」](  
+  哇！！引人入勝～下次照著文章去朝聖😝...
+ [[19/11/05]  於文章「15289199412...」](  
+  ...
+
+#### 參觀人氣
+
+ 本日人氣：
+ 累積人氣：</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://lizhsu1124.pixnet.net/blog/posts/17313069825" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">該文本為 KlassiC. 官方網站的商品分類與促銷頁面，主要呈現配到好 2,980 元起之方案及各類聯名系列資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="全部商品 / 用途 / 眼鏡 / 配到好$2,980起
+
+### 分類
+
+ 所有商品
+ 熱賣排行
+ 優惠專區
+ 最新商品 
+  + mEltEd potato
+  + DAN DA DAN 膽大黨
+  + Baby Milo® Store
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + niceynook 包袋
+  + ARC ROOM
+  + BLUE ERA
+  + Kapsule
+  + Plateau Studio X WTNC
+  + Billionaire Boys Club / ICECREAM
+  + TITANIUM 鈦金屬 7.0
+ 獨家代理 
+  + CHIMI
+  + GINGER EYEWEAR
+ 用途 
+  + 墨鏡 
+    - 輕行者摺疊墨鏡
+    - HANDMADE.
+    - YOUTH.
+  + 眼鏡 
+    - archi by KlassiC.
+    - Titanium 鈦金屬
+    - HANDMADE.
+    - Future Flex 機能系列
+    - Clip'n'Go 掛片眼鏡
+    - 配到好$2,980起
+  + 雪鏡
+  + 可配度數的墨鏡
+  + 透明系
+  + 周邊配件
+  + 護目鏡專區
+ 框型 
+  + 飛行員框
+  + 圓框
+  + 方框
+  + 不規則框
+  + 眉框
+  + 無框
+ 材質 
+  + 鈦金屬
+  + 金屬
+  + 板料/膠框
+
+# 配到好$2,980起
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144 [...] {{ childProduct.title\_translations | translateModel }}
+
+  {{ getChildVariationShorthand(childProduct.child\_variation) }}
+
+ {{ 'product.set.open\_variation' | translate }} 
+
+ {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}
+
+  {{ getSelectedItemDetail(selectedChildProduct, item).childVariationName }}
+
+{{item.variation.name}}
+
+{{item.quantity}}x NT$0  {{ item.unit\_point }} 點
+
+刪除
+
+{{addonItem.product.cover_media.alt_translations | translateModel}} 
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣 [...] {{word('consent\_desc')}} {{word('read\_more')}}}})
+
+目錄
+
+ 熱賣排行
+ 最新商品
+  + archi by KlassiC. 臉上的微建築
+  + KlassiC. SILENCE IS THE NEW SHAPE
+  + KlassiC. x mEltEd potato
+  + KlassiC. x 膽大黨
+  + niceynook 25AW
+  + KlassiC. x Baby Milo® Store
+  + KlassiC. x GQ x Cody Sanderson
+  + KlassiC. x GQ IGGAAK
+  + KlassiC. 輕行者摺疊墨鏡
+  + SPARKLING BLUE
+  + niceynook new-creme
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + 鈦金屬 8.0
+ 獨家代理
+  + CHIMI
+  + GINGER EYEWEAR
+ 優惠專區
+  + 購買指定商品即贈 KlassiC. x L’Oréal Paris 瞬順柔亮洗護體驗組（數量有限，送完為止）
+  + KlassiC. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）
+ 眼鏡
+  + archi by KlassiC.
+  + Titanium 鈦金屬
+  + Future Flex 機能系列
+  + HANDMADE.
+  + Clip'n'Go 掛片眼鏡
+  + 配到好$2,980起
+ 墨鏡
+  + HANDMADE.
+  + YOUTH.
+  + 輕行者摺疊墨鏡
+ niceynook 包袋
+
+帳戶
+
+ 會員登入
+ 新用戶註冊
+
+其他
+
+ 聯絡我們
+ 繁體中文
+
+你的購物車是空的">全部商品 / 用途 / 眼鏡 / 配到好$2,980起
+
+### 分類
+
+ 所有商品
+ 熱賣排行
+ 優惠專區
+ 最新商品 
+  + mEltEd potato
+  + DAN DA DAN 膽大黨
+  + Baby Milo® Store
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + niceynook 包袋
+  + ARC ROOM
+  + BLUE ERA
+  + Kapsule
+  + Plateau Studio X WTNC
+  + Billionaire Boys Club / ICECREAM
+  + TITANIUM 鈦金屬 7.0
+ 獨家代理 
+  + CHIMI
+  + GINGER EYEWEAR
+ 用途 
+  + 墨鏡 
+    - 輕行者摺疊墨鏡
+    - HANDMADE.
+    - YOUTH.
+  + 眼鏡 
+    - archi by KlassiC.
+    - Titanium 鈦金屬
+    - HANDMADE.
+    - Future Flex 機能系列
+    - Clip'n'Go 掛片眼鏡
+    - 配到好$2,980起
+  + 雪鏡
+  + 可配度數的墨鏡
+  + 透明系
+  + 周邊配件
+  + 護目鏡專區
+ 框型 
+  + 飛行員框
+  + 圓框
+  + 方框
+  + 不規則框
+  + 眉框
+  + 無框
+ 材質 
+  + 鈦金屬
+  + 金屬
+  + 板料/膠框
+
+# 配到好$2,980起
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144 [...] {{ childProduct.title\_translations | translateModel }}
+
+  {{ getChildVariationShorthand(childProduct.child\_variation) }}
+
+ {{ 'product.set.open\_variation' | translate }} 
+
+ {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}
+
+  {{ getSelectedItemDetail(selectedChildProduct, item).childVariationName }}
+
+{{item.variation.name}}
+
+{{item.quantity}}x NT$0  {{ item.unit\_point }} 點
+
+刪除
+
+{{addonItem.product.cover_media.alt_translations | translateModel}} 
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣 [...] {{word('consent\_desc')}} {{word('read\_more')}}}})
+
+目錄
+
+ 熱賣排行
+ 最新商品
+  + archi by KlassiC. 臉上的微建築
+  + KlassiC. SILENCE IS THE NEW SHAPE
+  + KlassiC. x mEltEd potato
+  + KlassiC. x 膽大黨
+  + niceynook 25AW
+  + KlassiC. x Baby Milo® Store
+  + KlassiC. x GQ x Cody Sanderson
+  + KlassiC. x GQ IGGAAK
+  + KlassiC. 輕行者摺疊墨鏡
+  + SPARKLING BLUE
+  + niceynook new-creme
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + 鈦金屬 8.0
+ 獨家代理
+  + CHIMI
+  + GINGER EYEWEAR
+ 優惠專區
+  + 購買指定商品即贈 KlassiC. x L’Oréal Paris 瞬順柔亮洗護體驗組（數量有限，送完為止）
+  + KlassiC. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）
+ 眼鏡
+  + archi by KlassiC.
+  + Titanium 鈦金屬
+  + Future Flex 機能系列
+  + HANDMADE.
+  + Clip'n'Go 掛片眼鏡
+  + 配到好$2,980起
+ 墨鏡
+  + HANDMADE.
+  + YOUTH.
+  + 輕行者摺疊墨鏡
+ niceynook 包袋
+
+帳戶
+
+ 會員登入
+ 新用戶註冊
+
+其他
+
+ 聯絡我們
+ 繁體中文
+
+你的購物車是空的</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/categories/eyewear2980" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">此文本為 KlassiC 品牌墨鏡系列產品的線上商城商品列表與分類資訊，包含聯名款及摺疊墨鏡等產品介紹。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. ### 分類. # KlassiC. x Baby Milo® 輕行者摺疊墨鏡 F003🔥](). x Baby Milo® 輕行者摺疊墨鏡 F003🔥](). x Baby Milo® 輕行者摺疊墨鏡 F003🔥. 加入購物車](https://www.rida-shop.com.tw/products/聯名限量款-※klassic-x-baby-milo®-輕行者摺疊墨鏡-f003🔥). [![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM002🔥](). ![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM002🔥](). ※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM002🔥. 加入購物車](https://www.rida-shop.com.tw/products/※klassic-輕行者-金屬-摺疊墨鏡-fm002🔥). [![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM001🔥](). ![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM001🔥](). ※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM001🔥. 加入購物車](https://www.rida-shop.com.tw/products/※klassic-輕行者-金屬-摺疊墨鏡-fm001🔥). ※KlassiC M126 板料梯形框墨鏡 - MBTI 16型人格. ※KlassiC M126 板料梯形框墨鏡 - MBTI 16型人格. ※KlassiC M126 板料梯形框墨鏡 - MBTI 16型人格. **時間 /** 01:00 p.m. **電郵 /** rida2941@yahoo.com.tw.">{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. ### 分類. # KlassiC. x Baby Milo® 輕行者摺疊墨鏡 F003🔥](). x Baby Milo® 輕行者摺疊墨鏡 F003🔥](). x Baby Milo® 輕行者摺疊墨鏡 F003🔥. 加入購物車](https://www.rida-shop.com.tw/products/聯名限量款-※klassic-x-baby-milo®-輕行者摺疊墨鏡-f003🔥). [![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM002🔥](). ![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM002🔥](). ※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM002🔥. 加入購物車](https://www.rida-shop.com.tw/products/※klassic-輕行者-金屬-摺疊墨鏡-fm002🔥). [![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM001🔥](). ![※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM001🔥](). ※KlassiC 輕行者 [金屬] 摺疊墨鏡 FM001🔥. 加入購物車](https://www.rida-shop.com.tw/products/※klassic-輕行者-金屬-摺疊墨鏡-fm001🔥). ※KlassiC M126 板料梯形框墨鏡 - MBTI 16型人格. ※KlassiC M126 板料梯形框墨鏡 - MBTI 16型人格. ※KlassiC M126 板料梯形框墨鏡 - MBTI 16型人格. **時間 /** 01:00 p.m. **電郵 /** rida2941@yahoo.com.tw.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.rida-shop.com.tw/categories/klassic" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">品牌行銷文案，強調針對亞洲臉型的獨家設計與多方品牌聯名活動。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). SILENCE IS THE NEW SHAPE. x GQ x Cody Sanderson. x L’Oréal Paris 瞬順柔亮洗護體驗組（數量有限，送完為止）. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）. item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. ### 分類. # 眼鏡. ### 相關產品. 平日 09:00 - 18:00.">{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). SILENCE IS THE NEW SHAPE. x GQ x Cody Sanderson. x L’Oréal Paris 瞬順柔亮洗護體驗組（數量有限，送完為止）. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）. item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. ### 分類. # 眼鏡. ### 相關產品. 平日 09:00 - 18:00.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/categories/glasses" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 品牌官網的產品列表與聯名活動資訊，包含與 DAN DA DAN 及 GQ 的合作內容。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). SILENCE IS THE NEW SHAPE. x GQ x Cody Sanderson. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. ### 最新商品. x DAN DA DAN 拖鞋+帽子（賽伯星人）組合. x DAN DA DAN 拖鞋+帽子（LOGO版）組合. x DAN DA DAN 眼鏡收納盒+毛毯組合. x DAN DA DAN 毛毯+水壺+毛巾組合. x DAN DA DAN 拖鞋+毛毯+毛巾組合. GINGER EYEWEAR BAKER LIGHT Sunglasses. CHIMI Ski Goggle 02 Black. ### 熱賣商品. Baby Milo® 聯名款摺疊墨鏡 F003 + 馬年限量福袋組合. CHIMI Ski Goggle 02 Black. 平日 09:00 - 18:00.">{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). SILENCE IS THE NEW SHAPE. x GQ x Cody Sanderson. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. ### 最新商品. x DAN DA DAN 拖鞋+帽子（賽伯星人）組合. x DAN DA DAN 拖鞋+帽子（LOGO版）組合. x DAN DA DAN 眼鏡收納盒+毛毯組合. x DAN DA DAN 毛毯+水壺+毛巾組合. x DAN DA DAN 拖鞋+毛毯+毛巾組合. GINGER EYEWEAR BAKER LIGHT Sunglasses. CHIMI Ski Goggle 02 Black. ### 熱賣商品. Baby Milo® 聯名款摺疊墨鏡 F003 + 馬年限量福袋組合. CHIMI Ski Goggle 02 Black. 平日 09:00 - 18:00.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 透過推廣透明系鏡框與熱銷單品 DADDY 18，結合時尚趨勢與聯名活動進行品牌宣傳。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). SILENCE IS THE NEW SHAPE. x GQ x Cody Sanderson. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）. item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. Photo via : Hulton Archive、NUVO. Photo via : Hulton Archive、Crfashionbook. 他就是**Nike Mars Yard****火星鞋的設計師，**. 像是**CHANEL****斷頭台、Prada馬桶、Hermes速食快餐****，**. Photo via : Sylvain Gaboury/FilmMagic、Jamie McCarthy/WireImage. 臉型,圓臉,方臉,長臉,眼鏡,鏡框, klassic,klassiceyewear.eyewear,eyewearfashion,style,glasses,sunglasses,optical,眼鏡,鏡框,臉型,穿搭,搭配,光學,墨鏡,太陽眼鏡. 小編大力**推薦熱銷NO.1「DADDY 18」，**. 臉型,圓臉,方臉,長臉,眼鏡,鏡框, klassic,klassiceyewear.eyewear,eyewearfashion,style,glasses,sunglasses,optical,眼鏡,鏡框,臉型,穿搭,搭配,光學,墨鏡,太陽眼鏡. x L’Oréal Paris 摺疊墨鏡. x L’Oréal Paris 摺疊墨鏡. GINGER EYEWEAR BAKER LIGHT Sunglasses. GINGER EYEWEAR BAKER LIGHT Sunglasses. 平日 09:00 - 18:00.">{{ 'fb\_in\_app\_browser\_popup.desc' | translate }} {{ 'fb\_in\_app\_browser\_popup.copy\_link' | translate }}. {{ 'in\_app\_browser\_popup.desc' | translate }}. {{word('consent\_desc')}} {{word('read\_more')}}}}). {{word('consent\_desc')}} {{word('read\_more')}}}}). SILENCE IS THE NEW SHAPE. x GQ x Cody Sanderson. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）. item.variation.media.alt_translations : item.product.cover_media.alt_translations) | translateModel }} {{ (item.variation.media. : item.product.cover_media.alt_translations) | translateModel. {{ 'product.bundled\_products.label' | translate }}. {{ 'product.bundle\_group\_products.label' | translate }}. {{ 'product.addon\_products.label' | translate }}. {{item.product.title\_translations|translateModel}}. {{ 'product.set.open\_variation' | translate }}. * {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}. {{item.quantity}}x NT$0  {{ item.unit\_point }} 點. {{addonItem.product.cover_media.alt_translations | translateModel}}. {{ 'product.addon\_products.label' | translate }}. {{addonItem.product.title\_translations|translateModel}}. {{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}. Photo via : Hulton Archive、NUVO. Photo via : Hulton Archive、Crfashionbook. 他就是**Nike Mars Yard****火星鞋的設計師，**. 像是**CHANEL****斷頭台、Prada馬桶、Hermes速食快餐****，**. Photo via : Sylvain Gaboury/FilmMagic、Jamie McCarthy/WireImage. 臉型,圓臉,方臉,長臉,眼鏡,鏡框, klassic,klassiceyewear.eyewear,eyewearfashion,style,glasses,sunglasses,optical,眼鏡,鏡框,臉型,穿搭,搭配,光學,墨鏡,太陽眼鏡. 小編大力**推薦熱銷NO.1「DADDY 18」，**. 臉型,圓臉,方臉,長臉,眼鏡,鏡框, klassic,klassiceyewear.eyewear,eyewearfashion,style,glasses,sunglasses,optical,眼鏡,鏡框,臉型,穿搭,搭配,光學,墨鏡,太陽眼鏡. x L’Oréal Paris 摺疊墨鏡. x L’Oréal Paris 摺疊墨鏡. GINGER EYEWEAR BAKER LIGHT Sunglasses. GINGER EYEWEAR BAKER LIGHT Sunglasses. 平日 09:00 - 18:00.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/pages/acetate-glasses" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">使用者對 KlassiC 的鏡框設計與時尚感給予高度評價，認為其性價比與款式優於 JINS、OWNDAYS 等競品。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="目前市場上的快速配鏡大多都會用一價配到好的模式去包裝給消費者。
+
+打著基本款$1980/$2980配到好，但以另外兩家在這個價格的鏡框選擇我覺得並沒有KlassiC.來得好(時)看(尚)。
+
+真的有覺得不錯的也都3000以上的了～
+
+今天我配的這副因為是新款又是鈦金屬所以價格較高。
+
+『但在KLASSIC. YOUTH系列裡就有提供很多款式好看但價格大多落在$590~$790之間。』
+
+鏡片另外收費是$1500（不限度數/非藍光），這樣算下來其實一支配到好大概是$2090~$2290之間。
+
+（商品照皆來自KlassiC.官方相片）
+
+看看這些鏡框～～～這個價位能有這樣的選擇？其實真的有逛過的人就會知道真的有差。
+
+KLASSIC. YOUTH的基本款，給的不只是一副近視眼鏡，更是一個穿搭的選擇。
+
+當大家都在要求ＣＰ值的時後，是不是都忽略了一分錢一分貨的道理。
+
+鏡框、鏡片分開的售價組合，讓消費者知道自己到底買了什麼。而不是配了一副一價的眼鏡還懷疑有沒有這個價值？
+
+好的～～快速配鏡就是很快，當天就拿著新眼鏡回家了。
+
+看電視的同時一度懷疑自己以前都在看什麼哈哈哈哈
+
+只能說有新眼鏡真的很好～
+
+隔天去喝下午茶搭配穿搭也是好適合～～～
+
+這裡幫大家整理一下小ＱＡ
+
+Q1 : 感覺門市少少只有兩家，那沒到門市也可以配鏡嗎？
+
+A1 : 可以哦！門市配鏡最快30分鐘可以取鏡但！！不住在台北台中也沒關係 他們官網也有配鏡服務喔！只要知道自己度數就幫你配好送到家！
+
+Q2 : 為什麼相同質感的眼鏡但售價比市面上鏡框便宜這麼多？
+
+A2 : KlassiC.希望在合理的預算內，讓客人可以一次帶走2隻鏡框，豐富生活中不同場合的搭配需求，讓眼鏡不再只是近視眼鏡～
+
+Q3 : 看到超多網紅藝人都有配戴，是真的好嗎？ [...] # Our wonderland\_share is the best
+
+## 熱愛彩妝，更愛分享所有好用的東西。 常旅遊也愛戶外活動，接下來讓我和你們分享我的生活：）
+
+部落格全站分類：時尚美妝
+
+ 相簿
+ 部落格
+ 留言
+ 名片
+
+ 4月 03 週三 201909:27
+ ## [[分享] 配鏡初體驗！時尚眼鏡品牌KlassiC. 完整評價(去了3家眼鏡品牌JINS、OWNDAYS、KLASSIC)！](
+
+好幾年沒有配鏡的我，最近決定要配一副新的眼鏡好讓我雙眼從獲新生
+
+開始要配鏡後自己也找了很多地方去看，從家裡樓下一般傳統眼鏡行（EX: 寶島眼鏡、不然像外面家裡樓下那種）
+
+一直到現在市面上的快速配鏡門店（EX: JIN’S、OWNDAYS、KlassiC...）。真的是看了又看找了又找...
+
+最後！終於在KlassiC.找到讓我 滿 滿 滿 意的眼鏡。
+
+1. 鏡框外型好看，可以每天戴又好穿搭。~~（不想要那種傳統近視眼鏡的感覺~~）
+2. 可以快速取件。~~（因為我目前的眼鏡已經歪到一個不能戴）~~
+
+一般眼鏡行鏡框差不多就是那個價位，基本款一兩千都是有得選。
+
+除非你有選擇特殊品牌的眼鏡，或是外型奇特看起來就貴到爆的那種款式。
+
+好的～鏡框款式普通我都覺得OKAY，但一但進入到了鏡片階段，就會開始出現超級多種類的鏡片。
+
+不是抗東抗西、鏡片曲線不同、不然就是這樣配你以後近視不會再加深Blabla~~一堆我不了解的專業建議（不是這不好只是我真的沒有那麼多預算啊～～）
+
+結果！
+
+在我家附近的眼鏡行估的那副居然要$9500？！
+
+這我真的不行。當下還希望我們快點付錢才能做盡快做鏡片什麼的，立刻說我再想想看好了就跑出來。
+
+想當然我最後沒有在那裡配鏡。SORRY了店員～但還是感謝你細心介紹。
+
+再來陸續又看了JIN’S、OWNDAYS這兩間日系快速配鏡品牌。">目前市場上的快速配鏡大多都會用一價配到好的模式去包裝給消費者。
+
+打著基本款$1980/$2980配到好，但以另外兩家在這個價格的鏡框選擇我覺得並沒有KlassiC.來得好(時)看(尚)。
+
+真的有覺得不錯的也都3000以上的了～
+
+今天我配的這副因為是新款又是鈦金屬所以價格較高。
+
+『但在KLASSIC. YOUTH系列裡就有提供很多款式好看但價格大多落在$590~$790之間。』
+
+鏡片另外收費是$1500（不限度數/非藍光），這樣算下來其實一支配到好大概是$2090~$2290之間。
+
+（商品照皆來自KlassiC.官方相片）
+
+看看這些鏡框～～～這個價位能有這樣的選擇？其實真的有逛過的人就會知道真的有差。
+
+KLASSIC. YOUTH的基本款，給的不只是一副近視眼鏡，更是一個穿搭的選擇。
+
+當大家都在要求ＣＰ值的時後，是不是都忽略了一分錢一分貨的道理。
+
+鏡框、鏡片分開的售價組合，讓消費者知道自己到底買了什麼。而不是配了一副一價的眼鏡還懷疑有沒有這個價值？
+
+好的～～快速配鏡就是很快，當天就拿著新眼鏡回家了。
+
+看電視的同時一度懷疑自己以前都在看什麼哈哈哈哈
+
+只能說有新眼鏡真的很好～
+
+隔天去喝下午茶搭配穿搭也是好適合～～～
+
+這裡幫大家整理一下小ＱＡ
+
+Q1 : 感覺門市少少只有兩家，那沒到門市也可以配鏡嗎？
+
+A1 : 可以哦！門市配鏡最快30分鐘可以取鏡但！！不住在台北台中也沒關係 他們官網也有配鏡服務喔！只要知道自己度數就幫你配好送到家！
+
+Q2 : 為什麼相同質感的眼鏡但售價比市面上鏡框便宜這麼多？
+
+A2 : KlassiC.希望在合理的預算內，讓客人可以一次帶走2隻鏡框，豐富生活中不同場合的搭配需求，讓眼鏡不再只是近視眼鏡～
+
+Q3 : 看到超多網紅藝人都有配戴，是真的好嗎？ [...] # Our wonderland\_share is the best
+
+## 熱愛彩妝，更愛分享所有好用的東西。 常旅遊也愛戶外活動，接下來讓我和你們分享我的生活：）
+
+部落格全站分類：時尚美妝
+
+ 相簿
+ 部落格
+ 留言
+ 名片
+
+ 4月 03 週三 201909:27
+ ## [[分享] 配鏡初體驗！時尚眼鏡品牌KlassiC. 完整評價(去了3家眼鏡品牌JINS、OWNDAYS、KLASSIC)！](
+
+好幾年沒有配鏡的我，最近決定要配一副新的眼鏡好讓我雙眼從獲新生
+
+開始要配鏡後自己也找了很多地方去看，從家裡樓下一般傳統眼鏡行（EX: 寶島眼鏡、不然像外面家裡樓下那種）
+
+一直到現在市面上的快速配鏡門店（EX: JIN’S、OWNDAYS、KlassiC...）。真的是看了又看找了又找...
+
+最後！終於在KlassiC.找到讓我 滿 滿 滿 意的眼鏡。
+
+1. 鏡框外型好看，可以每天戴又好穿搭。~~（不想要那種傳統近視眼鏡的感覺~~）
+2. 可以快速取件。~~（因為我目前的眼鏡已經歪到一個不能戴）~~
+
+一般眼鏡行鏡框差不多就是那個價位，基本款一兩千都是有得選。
+
+除非你有選擇特殊品牌的眼鏡，或是外型奇特看起來就貴到爆的那種款式。
+
+好的～鏡框款式普通我都覺得OKAY，但一但進入到了鏡片階段，就會開始出現超級多種類的鏡片。
+
+不是抗東抗西、鏡片曲線不同、不然就是這樣配你以後近視不會再加深Blabla~~一堆我不了解的專業建議（不是這不好只是我真的沒有那麼多預算啊～～）
+
+結果！
+
+在我家附近的眼鏡行估的那副居然要$9500？！
+
+這我真的不行。當下還希望我們快點付錢才能做盡快做鏡片什麼的，立刻說我再想想看好了就跑出來。
+
+想當然我最後沒有在那裡配鏡。SORRY了店員～但還是感謝你細心介紹。
+
+再來陸續又看了JIN’S、OWNDAYS這兩間日系快速配鏡品牌。</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://yuweicheng0802.pixnet.net/blog/posts/15277458936" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC. 官方網站之商品分類目錄與「配到好$2,980起」促銷方案資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="全部商品 / 用途 / 眼鏡 / 配到好$2,980起
+
+### 分類
+
+ 所有商品
+ 熱賣排行
+ 優惠專區
+ 最新商品 
+  + mEltEd potato
+  + DAN DA DAN 膽大黨
+  + Baby Milo® Store
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + niceynook 包袋
+  + ARC ROOM
+  + BLUE ERA
+  + Kapsule
+  + Plateau Studio X WTNC
+  + Billionaire Boys Club / ICECREAM
+  + TITANIUM 鈦金屬 7.0
+ 獨家代理 
+  + CHIMI
+  + GINGER EYEWEAR
+ 用途 
+  + 墨鏡 
+    - 輕行者摺疊墨鏡
+    - HANDMADE.
+    - YOUTH.
+  + 眼鏡 
+    - archi by KlassiC.
+    - Titanium 鈦金屬
+    - HANDMADE.
+    - Future Flex 機能系列
+    - Clip'n'Go 掛片眼鏡
+    - 配到好$2,980起
+  + 雪鏡
+  + 可配度數的墨鏡
+  + 透明系
+  + 周邊配件
+  + 護目鏡專區
+ 框型 
+  + 飛行員框
+  + 圓框
+  + 方框
+  + 不規則框
+  + 眉框
+  + 無框
+ 材質 
+  + 鈦金屬
+  + 金屬
+  + 板料/膠框
+
+# 配到好$2,980起
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144 [...] {{ childProduct.title\_translations | translateModel }}
+
+  {{ getChildVariationShorthand(childProduct.child\_variation) }}
+
+ {{ 'product.set.open\_variation' | translate }} 
+
+ {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}
+
+  {{ getSelectedItemDetail(selectedChildProduct, item).childVariationName }}
+
+{{item.variation.name}}
+
+{{item.quantity}}x NT$0  {{ item.unit\_point }} 點
+
+刪除
+
+{{addonItem.product.cover_media.alt_translations | translateModel}} 
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣 [...] {{word('consent\_desc')}} {{word('read\_more')}}}})
+
+目錄
+
+ 熱賣排行
+ 最新商品
+  + archi by KlassiC. 臉上的微建築
+  + KlassiC. SILENCE IS THE NEW SHAPE
+  + KlassiC. x mEltEd potato
+  + KlassiC. x 膽大黨
+  + niceynook 25AW
+  + KlassiC. x Baby Milo® Store
+  + KlassiC. x GQ x Cody Sanderson
+  + KlassiC. x GQ IGGAAK
+  + KlassiC. 輕行者摺疊墨鏡
+  + SPARKLING BLUE
+  + niceynook new-creme
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + 鈦金屬 8.0
+ 獨家代理
+  + CHIMI
+  + GINGER EYEWEAR
+ 優惠專區
+  + 購買指定商品即贈 KlassiC. x L’Oréal Paris 瞬順柔亮洗護體驗組（數量有限，送完為止）
+  + KlassiC. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）
+ 眼鏡
+  + archi by KlassiC.
+  + Titanium 鈦金屬
+  + Future Flex 機能系列
+  + HANDMADE.
+  + Clip'n'Go 掛片眼鏡
+  + 配到好$2,980起
+ 墨鏡
+  + HANDMADE.
+  + YOUTH.
+  + 輕行者摺疊墨鏡
+ niceynook 包袋
+
+帳戶
+
+ 會員登入
+ 新用戶註冊
+
+其他
+
+ 聯絡我們
+ 繁體中文
+
+你的購物車是空的">全部商品 / 用途 / 眼鏡 / 配到好$2,980起
+
+### 分類
+
+ 所有商品
+ 熱賣排行
+ 優惠專區
+ 最新商品 
+  + mEltEd potato
+  + DAN DA DAN 膽大黨
+  + Baby Milo® Store
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + niceynook 包袋
+  + ARC ROOM
+  + BLUE ERA
+  + Kapsule
+  + Plateau Studio X WTNC
+  + Billionaire Boys Club / ICECREAM
+  + TITANIUM 鈦金屬 7.0
+ 獨家代理 
+  + CHIMI
+  + GINGER EYEWEAR
+ 用途 
+  + 墨鏡 
+    - 輕行者摺疊墨鏡
+    - HANDMADE.
+    - YOUTH.
+  + 眼鏡 
+    - archi by KlassiC.
+    - Titanium 鈦金屬
+    - HANDMADE.
+    - Future Flex 機能系列
+    - Clip'n'Go 掛片眼鏡
+    - 配到好$2,980起
+  + 雪鏡
+  + 可配度數的墨鏡
+  + 透明系
+  + 周邊配件
+  + 護目鏡專區
+ 框型 
+  + 飛行員框
+  + 圓框
+  + 方框
+  + 不規則框
+  + 眉框
+  + 無框
+ 材質 
+  + 鈦金屬
+  + 金屬
+  + 板料/膠框
+
+# 配到好$2,980起
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+S0144
+
+加入購物車
+
+S0144 [...] {{ childProduct.title\_translations | translateModel }}
+
+  {{ getChildVariationShorthand(childProduct.child\_variation) }}
+
+ {{ 'product.set.open\_variation' | translate }} 
+
+ {{ getSelectedItemDetail(selectedChildProduct, item).childProductName }} x {{ selectedChildProduct.quantity || 1 }}
+
+  {{ getSelectedItemDetail(selectedChildProduct, item).childVariationName }}
+
+{{item.variation.name}}
+
+{{item.quantity}}x NT$0  {{ item.unit\_point }} 點
+
+刪除
+
+{{addonItem.product.cover_media.alt_translations | translateModel}} 
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣 [...] {{word('consent\_desc')}} {{word('read\_more')}}}})
+
+目錄
+
+ 熱賣排行
+ 最新商品
+  + archi by KlassiC. 臉上的微建築
+  + KlassiC. SILENCE IS THE NEW SHAPE
+  + KlassiC. x mEltEd potato
+  + KlassiC. x 膽大黨
+  + niceynook 25AW
+  + KlassiC. x Baby Milo® Store
+  + KlassiC. x GQ x Cody Sanderson
+  + KlassiC. x GQ IGGAAK
+  + KlassiC. 輕行者摺疊墨鏡
+  + SPARKLING BLUE
+  + niceynook new-creme
+  + Berry Normal Day
+  + THE LUCKY LINE
+  + The DoDo Men
+  + 鈦金屬 8.0
+ 獨家代理
+  + CHIMI
+  + GINGER EYEWEAR
+ 優惠專區
+  + 購買指定商品即贈 KlassiC. x L’Oréal Paris 瞬順柔亮洗護體驗組（數量有限，送完為止）
+  + KlassiC. x DAN DA DAN 滿額贈限量周邊商品（贈品均為隨機出貨，恕不得指定款式）
+ 眼鏡
+  + archi by KlassiC.
+  + Titanium 鈦金屬
+  + Future Flex 機能系列
+  + HANDMADE.
+  + Clip'n'Go 掛片眼鏡
+  + 配到好$2,980起
+ 墨鏡
+  + HANDMADE.
+  + YOUTH.
+  + 輕行者摺疊墨鏡
+ niceynook 包袋
+
+帳戶
+
+ 會員登入
+ 新用戶註冊
+
+其他
+
+ 聯絡我們
+ 繁體中文
+
+你的購物車是空的</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/categories/eyewear2980" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">秀泰生活台中文心店發布 KlassiC 品牌優惠活動，宣傳其創新設計與實惠價格。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="## 秀泰生活台中文心店's Post
+
+### 秀泰生活台中文心店
+
+September 14, 2024  ·
+
+【KlassiC 🏃活動開跑中🏃】
+
+以創新的精神挑逗經典，以實惠價格重啟眼鏡搭配👓
+
+KlassiC 讓每位穿戴者在任何場合、任何風格都能展現自信與時髦🤓✨
+
+趕快來2F逛起來~~買新眼鏡囉❤️
+
+📆 即日起~9/30(一)
+
+📌 眼/墨鏡滿$5000折$500
+
+\排除聯名款、YOUTH、摺疊墨鏡、出清特價款
+
+#KlassiC #秀泰生活文心店 #2F #眼鏡 #墨鏡 #優惠活動
+
+No photo description available. [...] All reactions:
+
+5 [...] '/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.5'/%3E%3Cpath d='M7.3014 3.8662a.6974.6974 0 0 1 .6974-.6977c.6742 0 1.2207.5465 1.2207 1.2206v1.7464a.101.101 0 0 0 .101.101h1.7953c.992 0 1.7232.9273 1.4917 1.892l-.4572 1.9047a2.301 2.301 0 0 1-2.2374 1.764H6.9185a.5752.5752 0 0 1-.5752-.5752V7.7384c0-.4168.097-.8278.2834-1.2005l.2856-.5712a3.6878 3.6878 0 0 0 .3893-1.6509l-.0002-.4496ZM4.367 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0">## 秀泰生活台中文心店's Post
+
+### 秀泰生活台中文心店
+
+September 14, 2024  ·
+
+【KlassiC 🏃活動開跑中🏃】
+
+以創新的精神挑逗經典，以實惠價格重啟眼鏡搭配👓
+
+KlassiC 讓每位穿戴者在任何場合、任何風格都能展現自信與時髦🤓✨
+
+趕快來2F逛起來~~買新眼鏡囉❤️
+
+📆 即日起~9/30(一)
+
+📌 眼/墨鏡滿$5000折$500
+
+\排除聯名款、YOUTH、摺疊墨鏡、出清特價款
+
+#KlassiC #秀泰生活文心店 #2F #眼鏡 #墨鏡 #優惠活動
+
+No photo description available. [...] All reactions:
+
+5 [...] '/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint1_radial_15251_63610)'/%3E%3Cpath d='M16.0001 7.9996c0 4.418-3.5815 7.9996-7.9995 7.9996S.001 12.4176.001 7.9996 3.5825 0 8.0006 0C12.4186 0 16 3.5815 16 7.9996Z' fill='url(%23paint2_radial_15251_63610)' fill-opacity='.5'/%3E%3Cpath d='M7.3014 3.8662a.6974.6974 0 0 1 .6974-.6977c.6742 0 1.2207.5465 1.2207 1.2206v1.7464a.101.101 0 0 0 .101.101h1.7953c.992 0 1.7232.9273 1.4917 1.892l-.4572 1.9047a2.301 2.301 0 0 1-2.2374 1.764H6.9185a.5752.5752 0 0 1-.5752-.5752V7.7384c0-.4168.097-.8278.2834-1.2005l.2856-.5712a3.6878 3.6878 0 0 0 .3893-1.6509l-.0002-.4496ZM4.367 7a.767.767 0 0 0-.7669.767v3.2598a.767.767 0 0 0</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/SHOWTIME.LIVE.WENXIN/posts/klassic-%E6%B4%BB%E5%8B%95%E9%96%8B%E8%B7%91%E4%B8%AD%E4%BB%A5%E5%89%B5%E6%96%B0%E7%9A%84%E7%B2%BE%E7%A5%9E%E6%8C%91%E9%80%97%E7%B6%93%E5%85%B8%E4%BB%A5%E5%AF%A6%E6%83%A0%E5%83%B9%E6%A0%BC%E9%87%8D%E5%95%9F%E7%9C%BC%E9%8F%A1%E6%90%AD%E9%85%8Dklassic-%E8%AE%93%E6%AF%8F%E4%BD%8D%E7%A9%BF%E6%88%B4%E8%80%85%E5%9C%A8%E4%BB%BB%E4%BD%95%E5%A0%B4%E5%90%88%E4%BB%BB%E4%BD%95%E9%A2%A8%E6%A0%BC%E9%83%BD%E8%83%BD%E5%B1%95%E7%8F%BE%E8%87%AA%E4%BF%A1%E8%88%87%E6%99%82%E9%AB%A6%E8%B6%95%E5%BF%AB%E4%BE%862f%E9%80%9B%E8%B5%B7%E4%BE%86%E8%B2%B7%E6%96%B0%E7%9C%BC%E9%8F%A1%E5%9B%89%EF%B8%8F/841307981525907/" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 官網商品目錄與品牌資訊，包含新品、聯名系列及價格說明。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="NT$4,980
+
+查看更多
+
+平日 09:00 - 18:00
+
+．品牌理念
+
+．門市資訊
+
+．經銷店家
+
+．會員招募
+
+．註冊與下單
+
+．官網退換貨流程
+
+．如何測量瞳距教學
+
+．鏡框大小事
+
+．購買常見問題
+
+．隱私權政策 [...] NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+GIA
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+AXIS
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+HALO
+
+NT$4,980
+
+加入購物車
+
+KlassiC. x DAN DA DAN 拖鞋+帽子（賽伯星人）組合
+
+NT$1,429
+
+NT$1,579
+
+加入購物車
+
+KlassiC. x DAN DA DAN 拖鞋+帽子（LOGO版）組合
+
+NT$1,429
+
+NT$1,579
+
+加入購物車
+
+KlassiC. x DAN DA DAN 眼鏡收納盒+毛毯組合
+
+NT$1,629
+
+NT$1,779
+
+加入購物車
+
+KlassiC. x DAN DA DAN 毛毯+水壺+毛巾組合
+
+NT$1,197
+
+NT$1,297
+
+加入購物車
+
+KlassiC. x DAN DA DAN 拖鞋+毛毯+毛巾組合
+
+NT$1,397
+
+NT$1,497
+
+加入購物車
+
+GINGER EYEWEAR BAKER LIGHT Sunglasses
+
+NT$8,380
+
+NEW ARRIVAL
+
+加入購物車
+
+GINGER EYEWEAR HANKY Sunglasses
+
+NT$8,380
+
+NEW ARRIVAL
+
+加入購物車
+
+CHIMI Ski Goggle 02 Black
+
+NT$9,580
+
+NEW ARRIVAL
+
+售完
+
+CHIMI Ski 03 Tortoise
+
+NT$12,580
+
+NEW ARRIVAL
+
+加入購物車
+
+GINGER EYEWEAR RIBBON
+
+NT$6,980
+
+Limited Edition
+
+加入購物車
+
+KlassiC. x mEltEd potato 梳子款0度抗藍光眼鏡
+
+NT$4,980
+
+Limited Edition [...] {{item.quantity}}x NT$0  {{ item.unit\_point }} 點
+
+刪除
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣
+
+ $ HKD
+ P MOP
+ ¥ CNY
+ $ TWD
+ $ USD
+ $ SGD
+ € EUR
+ $ AUD
+ £ GBP
+ ₱ PHP
+ RM MYR
+ ฿ THB
+ د.إ AED
+ ¥ JPY
+ $ BND
+ ₩ KRW
+ Rp IDR
+ ₫ VND
+ $ CAD
+
+### 最新商品
+
+NEW ARRIVAL
+
+加入購物車
+
+KAYLO
+
+NT$3,280
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0143
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0142
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0141
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0140
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0139
+
+NT$2,980
+
+NEW ARRIVAL
+
+加入購物車
+
+VIN
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+RYAN
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+GIA
+
+NT$4,980
+
+NEW ARRIVAL">NT$4,980
+
+查看更多
+
+平日 09:00 - 18:00
+
+．品牌理念
+
+．門市資訊
+
+．經銷店家
+
+．會員招募
+
+．註冊與下單
+
+．官網退換貨流程
+
+．如何測量瞳距教學
+
+．鏡框大小事
+
+．購買常見問題
+
+．隱私權政策 [...] NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+GIA
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+AXIS
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+HALO
+
+NT$4,980
+
+加入購物車
+
+KlassiC. x DAN DA DAN 拖鞋+帽子（賽伯星人）組合
+
+NT$1,429
+
+NT$1,579
+
+加入購物車
+
+KlassiC. x DAN DA DAN 拖鞋+帽子（LOGO版）組合
+
+NT$1,429
+
+NT$1,579
+
+加入購物車
+
+KlassiC. x DAN DA DAN 眼鏡收納盒+毛毯組合
+
+NT$1,629
+
+NT$1,779
+
+加入購物車
+
+KlassiC. x DAN DA DAN 毛毯+水壺+毛巾組合
+
+NT$1,197
+
+NT$1,297
+
+加入購物車
+
+KlassiC. x DAN DA DAN 拖鞋+毛毯+毛巾組合
+
+NT$1,397
+
+NT$1,497
+
+加入購物車
+
+GINGER EYEWEAR BAKER LIGHT Sunglasses
+
+NT$8,380
+
+NEW ARRIVAL
+
+加入購物車
+
+GINGER EYEWEAR HANKY Sunglasses
+
+NT$8,380
+
+NEW ARRIVAL
+
+加入購物車
+
+CHIMI Ski Goggle 02 Black
+
+NT$9,580
+
+NEW ARRIVAL
+
+售完
+
+CHIMI Ski 03 Tortoise
+
+NT$12,580
+
+NEW ARRIVAL
+
+加入購物車
+
+GINGER EYEWEAR RIBBON
+
+NT$6,980
+
+Limited Edition
+
+加入購物車
+
+KlassiC. x mEltEd potato 梳子款0度抗藍光眼鏡
+
+NT$4,980
+
+Limited Edition [...] {{item.quantity}}x NT$0  {{ item.unit\_point }} 點
+
+刪除
+
+{{ 'product.addon\_products.label' | translate }}
+
+{{addonItem.product.title\_translations|translateModel}}
+
+{{addonItem.quantity}}x {{ mainConfig.merchantData.base\_currency.alternate\_symbol + "0" }}
+
+刪除
+
+語言
+
+ English
+ 繁體中文
+
+貨幣
+
+ $ HKD
+ P MOP
+ ¥ CNY
+ $ TWD
+ $ USD
+ $ SGD
+ € EUR
+ $ AUD
+ £ GBP
+ ₱ PHP
+ RM MYR
+ ฿ THB
+ د.إ AED
+ ¥ JPY
+ $ BND
+ ₩ KRW
+ Rp IDR
+ ₫ VND
+ $ CAD
+
+### 最新商品
+
+NEW ARRIVAL
+
+加入購物車
+
+KAYLO
+
+NT$3,280
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0144
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0143
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0142
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0141
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0140
+
+NT$2,980
+
+鏡框+鏡片配到好
+
+加入購物車
+
+S0139
+
+NT$2,980
+
+NEW ARRIVAL
+
+加入購物車
+
+VIN
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+RYAN
+
+NT$4,980
+
+NEW ARRIVAL
+
+加入購物車
+
+GIA
+
+NT$4,980
+
+NEW ARRIVAL</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.klassicglobal.com/" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Tavily AI Search</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">部落客高度讚賞 KlassiC 的專業驗光、30分鐘快速取件服務及高性價比，並對產品設計與售後保固表示極度滿意。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="接下來驗光的部分就交給專業的驗光師~( Klassic 驗光師是都是有驗光執照的唷,可以放心驗光~~)
+
+驗光過程可以感受到店員很細心~ 會再三跟你確認鏡片的清晰度,一點都不馬虎喔!
+
+若度數測量完,店員會給一副機械型的鏡框夾著測量好的鏡片試戴走走看~
+
+測試自己對於矯正後的鏡片所看到的景象是否感到舒適清晰?
+
+→ Klassic 配鏡30分鐘即可取件唷~ 驗完後等待30分鐘的取件還可以喝杯咖啡、吃餅乾 
+
+趁機幫這家 Coffee.Tea.Or 打個廣告~ 我喝的是燕麥奶拿鐵+軟餅乾(巧克力口味)
+
+拿鐵加上燕麥奶超速配的啦! 香醇順口阿~ 軟餅乾也超好吃! 不會死甜~吃完整個念念不忘
+
+ 
+
+我買的Daddy13鏡框售價為$2480元,我選擇一般薄型奈米非球面鏡片$ 1500元
+
+要跟大家講個好消息    現在購買新品 Daddy Glasses 的話,完成指定活動即可現抵$300元唷!!! 
+
+加入Klassic Line官網帳號又可再抵50元~~ 我配的鏡框+鏡片$3980元再享折扣$350元整筆費用為$3630元
+
+最後!!!  還可以再領一張配鏡折$888元的折價券
+
+此張$888元折價券是針對自己的爸媽配鏡特享有的優惠唷!! 連爸媽都想到了~是不是很優秀!!
+
+附上我美美的眼鏡 ~ 吼~~~~ 連眼鏡盒都做的這麼有質感!! 還是我最愛的大理石紋路 
+
+P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要跟桌子融為一體了 XD 
+
+大家一定也會擔心眼鏡配戴之後若有任何不適或是有損壞的問題怎麼辦呢 ? 
+
+凡配鏡就會有一張保證卡,鏡框的部分保固有一年唷! 非人為因素造成的損壞,有提供免費維修服務唷~
+
+※如果真的不小心用壞,店員還是會盡力幫客人解決問題唷~~ 
+
+鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~ [...] # Less is more
+
+## 捨去複雜的包裝，呈現最原始的樣貌
+
+部落格全站分類：生活綜合
+
+ 相簿
+ 部落格
+ 留言
+ 名片
+
+ 12月 02 週一 201917:29
+ ## 配鏡分享｜Klassic眼鏡 到底在夯什麼? 價位&評價分析 跟著我來一探究竟!
+
+沒想到他們竟然有配鏡30分鐘快速取件的服務呢! 而且"很專業" ( 請繼續看下去>>>)
+
+經由店員熱心的介紹後我更加清楚了, 以下簡單的為大家分析3種分類~
+
+✔  Youth 系列 / 小資時尚
+
+($580元 ~$880元)   ➔ 日本快速取鏡品牌使用的材質
+
+✔ Handmade 系列 / 質感、細節兼具
+
+($1980元 ~$3480元)   ➔ 手工鏡框與鈦金屬(鏡框超輕!!!)
+
+✔ ARCHI 系列 / 設計師品牌支線
+
+($4800元 ~$6800元)   ➔ 很特別，很有設計感 ! 戴出門絕對萬眾矚目
+
+這次剛好看到Klassic又新開了一家門市在東區,私訊他們臉書小編說敦南旗艦店商品的款式是最齊全的唷!
+
+路線傳送門 → 捷運忠孝敦化站二號ZARA出口，就在屯京拉麵旁 ~步行兩分鐘就到囉
+
+Logo是以藍色及白色為主的色調,協調又充滿活力呢!~ 很有記憶點
+
+Klassic 有超多網美、藝人推薦~!!! 尤其在IG上,有很多名人、KOL都戴過,不親自來逛逛怎麼行 
+
+像在IG就可以看到大學生了沒的莫莉、LuLu還有這群人的展瑞...等藝人都有戴他們家的眼鏡喔!
+
+接下來就讓我帶著大家逛逛三種不同系列的鏡框吧!
+
+首先是平價且高CP值款的Youth系列
+
+對於預算有限制的學生或是小資族~ 這幾款價位真的超彿心的! 想包色都不是問題~
+
+Youth系列材質多為塑料框,重量輕、戴久不用擔心會造鼻樑及耳朵的負擔唷~
+
+再來牆面所陳列的是Handmade系列的墨鏡~款式真的超多種的!!! [...] 鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~
+
+對於鏡框、鏡片保固或是售後服務的部份也是相當的貼心周到呢!
+
+最後還是想跟大家分享一下我在Klassic配鏡所享有的服務  
+
+1.專業驗光 
+
+2.快速配鏡 
+
+3.職人商品 
+
+4.價格透明
+
+5.售服完整 
+
+我在Klassic感受到相當優質的服務與商品,若還在猶豫要不要配鏡的捧油們~心動不如馬上行動!
+
+希望這篇配鏡分享文有幫助到大家唷~~
+
+店家資訊 X  Klassic
+
+直營店
+
+---《中山形象店》---
+
+地址：台北市中山區中山北路二段16巷9號1樓
+
+營業時間：週一至週日 13:00-21:30 (不定期休)
+
+---《東區旗艦店》---
+
+地址:台北市大安區敦化南路一段187巷38號1樓
+
+營業時間：週一至週五  12:30-10:00 / 週六、週日12:30-10:30
+
+（近捷運忠孝敦化站二號ZARA出口，屯京拉麵旁）
+
+---《台中文心秀泰店》---
+
+地址：台中市南屯區文心南路289號2樓（文心秀泰廣場）
+
+營業時間：11:00-22:00（週一至週日）
+
+官網 / 
+
+FB / 
+
+IG / 
+
+文章標籤
+
+全站熱搜
+
+創作者介紹
+
+創作者 栗子 的頭像
+
+栗子
+
+Less is more
+
+栗子發表在痞客邦 留言(1) 人氣(53,897)
+
+ 全站分類：
+ 個人分類：關於生活・分享
+
+▲top
+
+1 則留言
+
+訪客
+
+訪客
+
+原本在搜尋引擎找出一堆 Blog 文章，不知哪幾篇值得花時間一看， 後來用 PTT搜尋引擎，輾轉看到您這的好文而有緣來到這， 謝謝您用心分享有價值的內容， 也回饋給您這實用的主題排名網站資訊，可查看與您 Blog 內容相關的排名好文，應該對寫 Blog 也有所幫助，期待您持續產出好文章 ^^ 
+
+2022-04-14 12:42">接下來驗光的部分就交給專業的驗光師~( Klassic 驗光師是都是有驗光執照的唷,可以放心驗光~~)
+
+驗光過程可以感受到店員很細心~ 會再三跟你確認鏡片的清晰度,一點都不馬虎喔!
+
+若度數測量完,店員會給一副機械型的鏡框夾著測量好的鏡片試戴走走看~
+
+測試自己對於矯正後的鏡片所看到的景象是否感到舒適清晰?
+
+→ Klassic 配鏡30分鐘即可取件唷~ 驗完後等待30分鐘的取件還可以喝杯咖啡、吃餅乾 
+
+趁機幫這家 Coffee.Tea.Or 打個廣告~ 我喝的是燕麥奶拿鐵+軟餅乾(巧克力口味)
+
+拿鐵加上燕麥奶超速配的啦! 香醇順口阿~ 軟餅乾也超好吃! 不會死甜~吃完整個念念不忘
+
+ 
+
+我買的Daddy13鏡框售價為$2480元,我選擇一般薄型奈米非球面鏡片$ 1500元
+
+要跟大家講個好消息    現在購買新品 Daddy Glasses 的話,完成指定活動即可現抵$300元唷!!! 
+
+加入Klassic Line官網帳號又可再抵50元~~ 我配的鏡框+鏡片$3980元再享折扣$350元整筆費用為$3630元
+
+最後!!!  還可以再領一張配鏡折$888元的折價券
+
+此張$888元折價券是針對自己的爸媽配鏡特享有的優惠唷!! 連爸媽都想到了~是不是很優秀!!
+
+附上我美美的眼鏡 ~ 吼~~~~ 連眼鏡盒都做的這麼有質感!! 還是我最愛的大理石紋路 
+
+P.S 眼鏡盒還可以收納喔! 帶出門不怕佔包包空間~ (美到快要跟桌子融為一體了 XD 
+
+大家一定也會擔心眼鏡配戴之後若有任何不適或是有損壞的問題怎麼辦呢 ? 
+
+凡配鏡就會有一張保證卡,鏡框的部分保固有一年唷! 非人為因素造成的損壞,有提供免費維修服務唷~
+
+※如果真的不小心用壞,店員還是會盡力幫客人解決問題唷~~ 
+
+鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~ [...] # Less is more
+
+## 捨去複雜的包裝，呈現最原始的樣貌
+
+部落格全站分類：生活綜合
+
+ 相簿
+ 部落格
+ 留言
+ 名片
+
+ 12月 02 週一 201917:29
+ ## 配鏡分享｜Klassic眼鏡 到底在夯什麼? 價位&評價分析 跟著我來一探究竟!
+
+沒想到他們竟然有配鏡30分鐘快速取件的服務呢! 而且"很專業" ( 請繼續看下去>>>)
+
+經由店員熱心的介紹後我更加清楚了, 以下簡單的為大家分析3種分類~
+
+✔  Youth 系列 / 小資時尚
+
+($580元 ~$880元)   ➔ 日本快速取鏡品牌使用的材質
+
+✔ Handmade 系列 / 質感、細節兼具
+
+($1980元 ~$3480元)   ➔ 手工鏡框與鈦金屬(鏡框超輕!!!)
+
+✔ ARCHI 系列 / 設計師品牌支線
+
+($4800元 ~$6800元)   ➔ 很特別，很有設計感 ! 戴出門絕對萬眾矚目
+
+這次剛好看到Klassic又新開了一家門市在東區,私訊他們臉書小編說敦南旗艦店商品的款式是最齊全的唷!
+
+路線傳送門 → 捷運忠孝敦化站二號ZARA出口，就在屯京拉麵旁 ~步行兩分鐘就到囉
+
+Logo是以藍色及白色為主的色調,協調又充滿活力呢!~ 很有記憶點
+
+Klassic 有超多網美、藝人推薦~!!! 尤其在IG上,有很多名人、KOL都戴過,不親自來逛逛怎麼行 
+
+像在IG就可以看到大學生了沒的莫莉、LuLu還有這群人的展瑞...等藝人都有戴他們家的眼鏡喔!
+
+接下來就讓我帶著大家逛逛三種不同系列的鏡框吧!
+
+首先是平價且高CP值款的Youth系列
+
+對於預算有限制的學生或是小資族~ 這幾款價位真的超彿心的! 想包色都不是問題~
+
+Youth系列材質多為塑料框,重量輕、戴久不用擔心會造鼻樑及耳朵的負擔唷~
+
+再來牆面所陳列的是Handmade系列的墨鏡~款式真的超多種的!!! [...] 鏡片保固為一個月內~ 期間內若配戴有不適,有提供一次免費更換鏡片喔~
+
+對於鏡框、鏡片保固或是售後服務的部份也是相當的貼心周到呢!
+
+最後還是想跟大家分享一下我在Klassic配鏡所享有的服務  
+
+1.專業驗光 
+
+2.快速配鏡 
+
+3.職人商品 
+
+4.價格透明
+
+5.售服完整 
+
+我在Klassic感受到相當優質的服務與商品,若還在猶豫要不要配鏡的捧油們~心動不如馬上行動!
+
+希望這篇配鏡分享文有幫助到大家唷~~
+
+店家資訊 X  Klassic
+
+直營店
+
+---《中山形象店》---
+
+地址：台北市中山區中山北路二段16巷9號1樓
+
+營業時間：週一至週日 13:00-21:30 (不定期休)
+
+---《東區旗艦店》---
+
+地址:台北市大安區敦化南路一段187巷38號1樓
+
+營業時間：週一至週五  12:30-10:00 / 週六、週日12:30-10:30
+
+（近捷運忠孝敦化站二號ZARA出口，屯京拉麵旁）
+
+---《台中文心秀泰店》---
+
+地址：台中市南屯區文心南路289號2樓（文心秀泰廣場）
+
+營業時間：11:00-22:00（週一至週日）
+
+官網 / 
+
+FB / 
+
+IG / 
+
+文章標籤
+
+全站熱搜
+
+創作者介紹
+
+創作者 栗子 的頭像
+
+栗子
+
+Less is more
+
+栗子發表在痞客邦 留言(1) 人氣(53,897)
+
+ 全站分類：
+ 個人分類：關於生活・分享
+
+▲top
+
+1 則留言
+
+訪客
+
+訪客
+
+原本在搜尋引擎找出一堆 Blog 文章，不知哪幾篇值得花時間一看， 後來用 PTT搜尋引擎，輾轉看到您這的好文而有緣來到這， 謝謝您用心分享有價值的內容， 也回饋給您這實用的主題排名網站資訊，可查看與您 Blog 內容相關的排名好文，應該對寫 Blog 也有所幫助，期待您持續產出好文章 ^^ 
+
+2022-04-14 12:42</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://lizhsu1124.pixnet.net/blog/posts/17313069825" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Facebook (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 宣傳 $2,980 配到好的小資方案，主打適合亞洲臉型的透明大扁方框與親民價位。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="#換眼鏡趁現在 $2,980 配到好！
+【學生小資首選眼鏡】亞洲臉型必推 ✨ 
+ 🛒 https://reurl.cc/jQ4qQn
+        
+【S0113 重點整理】
+✔ 透明鏡框：戴上一秒換上好氣色 
+✔ 特別打磨調整成的大扁方框：超顯小臉
+✔ 半手工鏡框：質感依舊，價位更親民
+✔ 適合亞洲人臉型：更講究鏡框、鼻距數據
+✔ 簡約好搭的設計：整體乾淨俐落
+ㅤㅤㅤ
+📢 全台 14 間直營門市 
+▎ 詢問更多配鏡說明、門市資訊 & 搭配建議
+歡迎至門市或私訊詢問 😀">#換眼鏡趁現在 $2,980 配到好！
+【學生小資首選眼鏡】亞洲臉型必推 ✨ 
+ 🛒 https://reurl.cc/jQ4qQn
+        
+【S0113 重點整理】
+✔ 透明鏡框：戴上一秒換上好氣色 
+✔ 特別打磨調整成的大扁方框：超顯小臉
+✔ 半手工鏡框：質感依舊，價位更親民
+✔ 適合亞洲人臉型：更講究鏡框、鼻距數據
+✔ 簡約好搭的設計：整體乾淨俐落
+ㅤㅤㅤ
+📢 全台 14 間直營門市 
+▎ 詢問更多配鏡說明、門市資訊 & 搭配建議
+歡迎至門市或私訊詢問 😀</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/klassic888/posts/pfbid0ZjGRhWW9HjffATCYqCpuARQjHn7AZ9G7TwU8FZjn1HpgEXvFquckVoV5jQo9aPTol" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Facebook (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">品牌宣傳 KlassiC 針對亞洲臉型設計的半手工眼鏡，強調修飾效果、高品質製作及快速取鏡服務。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="KlassiC. 眼鏡針對亞洲人設計，貼近臉型與膚色
+近百款半手工眼鏡，絕對有你的命定款💗
+👉 https://bit.ly/3OitKYO
+　　
+#讓台灣人臉型更好看的眼鏡
+從歐美經典的框型出發，設計團隊根據近百筆的臉型數據與銷售分析，獨創「#三點式設計」發揮鏡框修飾效果的最高可能，發展專屬於KlassiC.的設計語言，再輔以每年流行的穿搭資訊，開發獨特的配色，讓鏡框與服裝搭配更對味✨
+　　
+#你買的不是表面的樣子而是深層的意義
+人與人交會時，9成都會先看臉與眼睛，對眼鏡人來說，眼鏡就像第二張臉，第二張名片一般，好看的、更貼近自己風格的眼鏡，絕對可以讓親朋好友同事主管都更有好感，所以挑選眼鏡不能只是矯正視力，跟挑選服飾、配件一樣，要能代表你，讓你更有自信才是！
+　　
+#高品質高規格的製作流程
+KlassiC. HANDMADE.系列為半手工鏡框，與精品品牌代工廠合作，除了講究細節的變化框型比例外，對顏色的要求更是嚴苛，我們招牌的拿鐵色系，為了追求滿意的色澤，其製造時程常常是常見的黑、金、銀的數倍。
+-
+【 KlassiC. - 最懂亞洲臉型的手工眼鏡品牌 】
+ 官網 / 全台10間門市同步販售
+▎ 30 分鐘快速取鏡 (實際狀況依現場為準)
+▎ 詢問配鏡說明 & 鏡框搭配建議
+歡迎至門市或私訊詢問 🙌">KlassiC. 眼鏡針對亞洲人設計，貼近臉型與膚色
+近百款半手工眼鏡，絕對有你的命定款💗
+👉 https://bit.ly/3OitKYO
+　　
+#讓台灣人臉型更好看的眼鏡
+從歐美經典的框型出發，設計團隊根據近百筆的臉型數據與銷售分析，獨創「#三點式設計」發揮鏡框修飾效果的最高可能，發展專屬於KlassiC.的設計語言，再輔以每年流行的穿搭資訊，開發獨特的配色，讓鏡框與服裝搭配更對味✨
+　　
+#你買的不是表面的樣子而是深層的意義
+人與人交會時，9成都會先看臉與眼睛，對眼鏡人來說，眼鏡就像第二張臉，第二張名片一般，好看的、更貼近自己風格的眼鏡，絕對可以讓親朋好友同事主管都更有好感，所以挑選眼鏡不能只是矯正視力，跟挑選服飾、配件一樣，要能代表你，讓你更有自信才是！
+　　
+#高品質高規格的製作流程
+KlassiC. HANDMADE.系列為半手工鏡框，與精品品牌代工廠合作，除了講究細節的變化框型比例外，對顏色的要求更是嚴苛，我們招牌的拿鐵色系，為了追求滿意的色澤，其製造時程常常是常見的黑、金、銀的數倍。
+-
+【 KlassiC. - 最懂亞洲臉型的手工眼鏡品牌 】
+ 官網 / 全台10間門市同步販售
+▎ 30 分鐘快速取鏡 (實際狀況依現場為準)
+▎ 詢問配鏡說明 & 鏡框搭配建議
+歡迎至門市或私訊詢問 🙌</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/klassic888/posts/pfbid02FyXMCZr86fZWJ3EVLyTgLRJ7dmxZtusDFhhJLuuk6VzAfiGuiXiswLJxkbAWY4Xvl" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Facebook (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 慶祝八週年，推出門市與官網多重折扣優惠及限量滿額禮。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="KlassiC. 八周年慶正式開跑！￼
+門市和官網優惠一次看💥
+>> https://reurl.cc/dqr3lM
+
+➀ 品牌週同樂｜11 / 6 - 11 / 10
+門市
+・眼鏡／墨鏡框／包袋 8 折
+・升級 HOYA 鏡片以上再折 $300
+官網
+・全館不限金額免運費
+・眼鏡／墨鏡框／包袋正價商品 8 折
+
+➁ 年度最低價｜11 / 8 
+台北中山店一日限定 68 折
+一年僅此一次！
+
+➂品牌生日月｜11 / 1 - 11 / 5 & 11 / 11 - 11 / 30
+門市
+・消費滿 $3,800 折 $300（無驗光門市適用）
+・消費滿 $5000 折 $500
+官網
+・官網全館滿 $880 免運
+・墨鏡滿 $3,300 折 $300
+・光學眼鏡折 $500（排除配到好／掛片系列）
+
+➃限量好禮｜送完為止
+・8周年限定貼紙 ｜限藍莓會員以上
+・滿 $4000 贈『八周年限定撲克牌』
+
+💡注意事項
+※以上活動排除經銷／2025聯名商品／特價商品／YOUTH系列
+※ 11/6－11/10 期間，活動另加排除 CHIMI、GINGER EYEWEAR，並無法使用會員折扣，詳細請以現場公告為主。
+
+KlassiC. 八周年
+八歲生日快樂，謝謝你一路相伴">KlassiC. 八周年慶正式開跑！￼
+門市和官網優惠一次看💥
+>> https://reurl.cc/dqr3lM
+
+➀ 品牌週同樂｜11 / 6 - 11 / 10
+門市
+・眼鏡／墨鏡框／包袋 8 折
+・升級 HOYA 鏡片以上再折 $300
+官網
+・全館不限金額免運費
+・眼鏡／墨鏡框／包袋正價商品 8 折
+
+➁ 年度最低價｜11 / 8 
+台北中山店一日限定 68 折
+一年僅此一次！
+
+➂品牌生日月｜11 / 1 - 11 / 5 & 11 / 11 - 11 / 30
+門市
+・消費滿 $3,800 折 $300（無驗光門市適用）
+・消費滿 $5000 折 $500
+官網
+・官網全館滿 $880 免運
+・墨鏡滿 $3,300 折 $300
+・光學眼鏡折 $500（排除配到好／掛片系列）
+
+➃限量好禮｜送完為止
+・8周年限定貼紙 ｜限藍莓會員以上
+・滿 $4000 贈『八周年限定撲克牌』
+
+💡注意事項
+※以上活動排除經銷／2025聯名商品／特價商品／YOUTH系列
+※ 11/6－11/10 期間，活動另加排除 CHIMI、GINGER EYEWEAR，並無法使用會員折扣，詳細請以現場公告為主。
+
+KlassiC. 八周年
+八歲生日快樂，謝謝你一路相伴</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/klassic888/posts/pfbid025j6NbSppz7kDc7MuLvLhqqHPg1qtRqKBGoyRd1XAtVsR9brKTZVKRJ3hC7q2RdL7l" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Facebook (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 官方宣傳 LUNA 鈦金屬眼鏡，針對不同臉型提供修飾建議與門市配鏡資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="【LUNA｜鈦金屬眼鏡】
+方圓框形 ╳ 好人緣框 ，百搭修飾
+買上購買>> https://reurl.cc/rEg5mb
+
+【適合臉型】
+✅肉圓臉 ★★★★
+修飾輪廓，減少圓潤感
+
+✅方形臉 ★★★★★
+中和稜角，提升協調度
+
+✅倒三角臉 ★★★★★
+平衡額頭與下巴比例
+
+✅菱形臉 ★★★★★
+柔和臉部線條
+
+✅瓜子臉 ★★★★★
+完美契合，百搭必備
+
+▎門市快速取鏡 (實際狀況依現場為準)
+▎更多配鏡建議，歡迎私訊或至門市諮詢
+
+#KlassiC 
+#最懂亞洲臉型的手工眼鏡品牌">【LUNA｜鈦金屬眼鏡】
+方圓框形 ╳ 好人緣框 ，百搭修飾
+買上購買>> https://reurl.cc/rEg5mb
+
+【適合臉型】
+✅肉圓臉 ★★★★
+修飾輪廓，減少圓潤感
+
+✅方形臉 ★★★★★
+中和稜角，提升協調度
+
+✅倒三角臉 ★★★★★
+平衡額頭與下巴比例
+
+✅菱形臉 ★★★★★
+柔和臉部線條
+
+✅瓜子臉 ★★★★★
+完美契合，百搭必備
+
+▎門市快速取鏡 (實際狀況依現場為準)
+▎更多配鏡建議，歡迎私訊或至門市諮詢
+
+#KlassiC 
+#最懂亞洲臉型的手工眼鏡品牌</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/klassic888/posts/pfbid02kKFBnvN2zK8FSddAFSoeDT7h4nAUCA5dYDdJJCUjeCP4393StvzFrvLdpfFHS1g7l" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Facebook (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 推出 2026 馬年新春優惠活動，包含門市擲骰抽獎、福袋及多項滿額折扣。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="KlassiC. 2026 馬的新年｜HORSE「花生」
+門市＆官網優惠一次看🤩
+
+【1/31 - 3/1｜HORSE 花生限定優惠 】 
+
+➀ 門市限定｜幸運投擲，Horse 成雙！
+🎲 消費滿 $3,500 並達成社群指定動作，即可參加「Horse 成雙」擲骰活動！ 
+
+▪️壹獎 (雙藍)：免費鏡框一支（以低價者免費，限當日兌換） 
+▪️貳獎 (雙黃/雙粉)：免費品牌包袋一個 (市價 $1,980起) 
+▪️參獎 (雙綠/橘/紅)：免費升級台製藍光鏡片一組 (市價 $1,000)
+▪️肆獎 (異色組合)：現金折抵 $300（限當日折抵） 
+
+※兌獎需完成社群指定動作 
+※滿額門檻以「折扣後實際消費金額」計算 
+※本活動不適用於特價、經銷、膽大黨聯名系列、archi 系列、福袋商品 
+
+➁ HORSE 花生福袋｜超值驚喜
+
+🛍️ 內含眼鏡x 1＋墨鏡 x 1 ＋周邊/贈品 x 1，最高價值破萬！ 
+▪️ 好運加價購：任一商品消費加購只要 $1,688 
+▪️ 單購好運價：$2,688 
+
+➂ 2026 新春折扣：HORSE 成雙
+ 
+▪️官網限定 
+正價商品任選2件折 $666 
+指定商品新春限定68折 
+
+▪️門市限定 
+單筆消費滿 5,500 折 500 
+摺疊墨鏡第 2 件7折
+niceynook包款單件8折 
+
+※ 活動排除項目：特價商品 (niceynook 除外)、膽大黨聯名、福袋、archi 系列；門市另加排除經銷品牌商品
+※ 會員折扣說明：本活動可併用會員折扣，惟「配鏡鏡片、經銷品牌、聯名款、特價品、配到好系列」恕不再享會員折抵
+※ 優惠細節請依門市人員說明為準
+
+➃ 限定新春好禮 
+
+官網+門市｜消費滿 $3,500 贈皮革紅包袋 (數量有限，送完為止)">KlassiC. 2026 馬的新年｜HORSE「花生」
+門市＆官網優惠一次看🤩
+
+【1/31 - 3/1｜HORSE 花生限定優惠 】 
+
+➀ 門市限定｜幸運投擲，Horse 成雙！
+🎲 消費滿 $3,500 並達成社群指定動作，即可參加「Horse 成雙」擲骰活動！ 
+
+▪️壹獎 (雙藍)：免費鏡框一支（以低價者免費，限當日兌換） 
+▪️貳獎 (雙黃/雙粉)：免費品牌包袋一個 (市價 $1,980起) 
+▪️參獎 (雙綠/橘/紅)：免費升級台製藍光鏡片一組 (市價 $1,000)
+▪️肆獎 (異色組合)：現金折抵 $300（限當日折抵） 
+
+※兌獎需完成社群指定動作 
+※滿額門檻以「折扣後實際消費金額」計算 
+※本活動不適用於特價、經銷、膽大黨聯名系列、archi 系列、福袋商品 
+
+➁ HORSE 花生福袋｜超值驚喜
+
+🛍️ 內含眼鏡x 1＋墨鏡 x 1 ＋周邊/贈品 x 1，最高價值破萬！ 
+▪️ 好運加價購：任一商品消費加購只要 $1,688 
+▪️ 單購好運價：$2,688 
+
+➂ 2026 新春折扣：HORSE 成雙
+ 
+▪️官網限定 
+正價商品任選2件折 $666 
+指定商品新春限定68折 
+
+▪️門市限定 
+單筆消費滿 5,500 折 500 
+摺疊墨鏡第 2 件7折
+niceynook包款單件8折 
+
+※ 活動排除項目：特價商品 (niceynook 除外)、膽大黨聯名、福袋、archi 系列；門市另加排除經銷品牌商品
+※ 會員折扣說明：本活動可併用會員折扣，惟「配鏡鏡片、經銷品牌、聯名款、特價品、配到好系列」恕不再享會員折抵
+※ 優惠細節請依門市人員說明為準
+
+➃ 限定新春好禮 
+
+官網+門市｜消費滿 $3,500 贈皮革紅包袋 (數量有限，送完為止)</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/klassic888/posts/pfbid02vnEZz7YK2iPPvk5aX4wNLDS88PtzMoxrPLdN6EFHALT2GCdMYFHN5epG3U8SDPUrl" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Facebook (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:00</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">KlassiC 透過社群貼文宣傳其精選鏡框，強調設計感、舒適度及適合亞洲臉型，提升品牌質感形象。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="▎男子必看！KlassiC. 精選鏡框讓你顏值跳級🔥
+官網逛 🛒https://reurl.cc/eGb8Dx
+百款半手工眼鏡，長時間配戴也舒適！
+ㅤㅤ
+#不只是最多網紅名人實戴
+KlassiC. 秉持著年輕精神，顛覆傳統印象！
+✦ 專注於鏡框細節與質感設計
+✦ 鑽研框的形狀與材質配色的搭配可能
+✦ 人體工學的舒適性設計（鼻托與配重）
+✦ 精細製程超過 200 道工序
+不只追求有型，還要戴得更久、更舒適，成為你日常愛用的鏡框。
+-
+#不要被帥氣的model影響
+到門市試戴，親自感受我們鏡框的修飾效果！告別一般連鎖眼鏡的同質化，讓朋友看到顏值升級的你驚呼：「#真的不一樣！」
+-
+🔎 KlassiC.設計理念
+✦  多元框形滿足不同臉型
+✦  適合亞洲人的比例（鼻距／鏡高／鏡寬）
+✦  結合歐美日韓的流行風格
+✦  中高階品牌的同級材質（鈦金屬／板材）
+✦  注重細節，別於連鎖品牌的差異化
+-
+📢 KlassiC. 全台 14 間直營門市 
+📢 官網 / 門市同步販售
+▎提供鏡框臉型搭配建議
+▎門市提供眼鏡/墨鏡清洗保養服務
+-
+💭 只要三秒鐘
+詢問更多眼鏡配鏡說明、門市資訊&搭配建議">▎男子必看！KlassiC. 精選鏡框讓你顏值跳級🔥
+官網逛 🛒https://reurl.cc/eGb8Dx
+百款半手工眼鏡，長時間配戴也舒適！
+ㅤㅤ
+#不只是最多網紅名人實戴
+KlassiC. 秉持著年輕精神，顛覆傳統印象！
+✦ 專注於鏡框細節與質感設計
+✦ 鑽研框的形狀與材質配色的搭配可能
+✦ 人體工學的舒適性設計（鼻托與配重）
+✦ 精細製程超過 200 道工序
+不只追求有型，還要戴得更久、更舒適，成為你日常愛用的鏡框。
+-
+#不要被帥氣的model影響
+到門市試戴，親自感受我們鏡框的修飾效果！告別一般連鎖眼鏡的同質化，讓朋友看到顏值升級的你驚呼：「#真的不一樣！」
+-
+🔎 KlassiC.設計理念
+✦  多元框形滿足不同臉型
+✦  適合亞洲人的比例（鼻距／鏡高／鏡寬）
+✦  結合歐美日韓的流行風格
+✦  中高階品牌的同級材質（鈦金屬／板材）
+✦  注重細節，別於連鎖品牌的差異化
+-
+📢 KlassiC. 全台 14 間直營門市 
+📢 官網 / 門市同步販售
+▎提供鏡框臉型搭配建議
+▎門市提供眼鏡/墨鏡清洗保養服務
+-
+💭 只要三秒鐘
+詢問更多眼鏡配鏡說明、門市資訊&搭配建議</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.facebook.com/klassic888/posts/pfbid02NG4s159pzqccn9jAa6uEiVB8Pkrmww6LppxR9by92zWBBPW6X7TCBmWaQoQf557El" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Dcard (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:01</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">該文本為 Dcard 平台上關於 KlassiC 眼鏡討論與心得的搜尋導引資訊。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="klassic眼鏡的相關討論與真實心得
+即時搜尋「klassic眼鏡」的真實經驗與熱門文章，快速找到最符合需求的討論與答案.">klassic眼鏡的相關討論與真實心得
+即時搜尋「klassic眼鏡」的真實經驗與熱門文章，快速找到最符合需求的討論與答案.</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.dcard.tw/search?query=klassic%E7%9C%BC%E9%8F%A1" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Dcard (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:01</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">消費者對 KlassiC 的鏡片加價感到驚訝與不滿，認為價格超出預期且與廣告印象有落差。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="請益KlassiC也太扯！ - 穿搭板
+Dec 31, 2023 — 一直想配眼鏡，看到klassic推播廣告想說就去那邊配，快速選了一個2680的鏡框，結果店員說：這邊有台灣跟日本的鏡片，台灣是2500 日本的3300～我聽到2500想說 ...">請益KlassiC也太扯！ - 穿搭板
+Dec 31, 2023 — 一直想配眼鏡，看到klassic推播廣告想說就去那邊配，快速選了一個2680的鏡框，結果店員說：這邊有台灣跟日本的鏡片，台灣是2500 日本的3300～我聽到2500想說 ...</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-red-500/10 border border-red-500/30 text-red-400 px-2 py-1 rounded">負面反饋</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.dcard.tw/f/dressup/p/254295331" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">Dcard (社群)</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-03-29 09:01</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">網友在 Dcard 詢問 OWNDAYS、JINS 與 KlassiC 的品牌選擇建議與評價。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="OWNDAYS、JINS、KLASSIC哪家比較好? - 閒聊板
+Oct 23, 2025 — 前幾天趁週年慶去信義新光三越晃晃，本來只是想補貨保養品，結果待最久的地方是眼鏡區，加上感覺近視有加深，也想把舊的眼鏡替換掉，換成新眼鏡，目前還在猶豫中">OWNDAYS、JINS、KLASSIC哪家比較好? - 閒聊板
+Oct 23, 2025 — 前幾天趁週年慶去信義新光三越晃晃，本來只是想補貨保養品，結果待最久的地方是眼鏡區，加上感覺近視有加深，也想把舊的眼鏡替換掉，換成新眼鏡，目前還在猶豫中</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-gray-500/10 border border-gray-500/30 text-gray-400 px-2 py-1 rounded">中立態度</span>
+                                    
+                                    
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://www.dcard.tw/f/talk/p/260109268" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="mt-20 pt-8 border-t border-cs-border text-center">
+        <p class="font-mono text-[10px] text-cs-textMuted tracking-widest">
+            // KlassiC 輿情數據引擎 &copy; 2026 | Generated by AI
+        </p>
+    </footer>
+</div>
+
+<script>
+    const ctx = document.getElementById('sentimentChart').getContext('2d');
+    const dataFromBackend = [54.8, 41.9, 3.2];
+    
+    // Clear Street style chart colors
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['正面 (Positive)', '中立 (Neutral)', '負面 (Negative)'],
+            datasets: [{
+                data: dataFromBackend,
+                backgroundColor: [
+                    'rgb(0, 111, 255)', // Tech Blue for Positive
+                    '#262626', // Dark border gray for Neutral
+                    '#EF4444'  // Red for Negative
+                ],
+                borderWidth: 2,
+                borderColor: '#000000', // Match black background
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '80%', // Thinner elegant ring
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { 
+                        boxWidth: 8,
+                        usePointStyle: true,
+                        color: '#A3A3A3',
+                        font: { family: 'Noto Sans TC', size: 10 }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
