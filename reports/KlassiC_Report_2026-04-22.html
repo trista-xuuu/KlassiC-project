@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KlassiC. | ClearStreet Style Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cs: {
+                            bg: '#000000', // 極致黑底
+                            card: '#0D0D0D', // 深灰卡片
+                            border: '#262626', // 極細科技邊框
+                            accent: 'rgb(0, 111, 255)', // 主色改為亮科技藍
+                            textMain: '#FFFFFF',
+                            textMuted: '#A3A3A3',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background-color: #000000; 
+            color: #FFFFFF;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .cs-grid-bg {
+            background-image: 
+                linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+                linear-gradient(to bottom, #1a1a1a 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(0, 111, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-cs-bg font-sans min-h-screen cs-grid-bg">
+
+<!-- Top Navigation Bar (Fintech style) -->
+<nav class="border-b border-cs-border bg-cs-bg/90 backdrop-blur-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div class="flex items-center space-x-4">
+            <div class="w-2 h-2 rounded-full bg-cs-accent shadow-[0_0_8px_rgba(0,111,255,0.8)]"></div>
+            <span class="font-bold text-lg tracking-tight">KlassiC<span class="text-cs-accent">.</span> Intelligence</span>
+        </div>
+        <div class="font-mono text-xs text-cs-textMuted flex items-center space-x-4">
+            <span class="hidden md:inline-block">系統狀態：<span class="text-cs-accent">運作中 (ONLINE)</span></span>
+            <span>分析日期：2026-04-22</span>
+        </div>
+    </div>
+</nav>
+
+<div class="max-w-7xl mx-auto px-6 py-12">
+    <!-- Header Section -->
+    <header class="mb-12">
+        <h1 class="text-4xl md:text-6xl font-semibold tracking-tight text-white mb-4">
+            品牌情緒 <span class="text-cs-textMuted">觀測儀表板</span>
+        </h1>
+        <p class="text-cs-textMuted max-w-2xl text-lg leading-relaxed">
+            KlassiC 市場聲量與語意邏輯分析引擎，今日已自動分析並擷取全球社群串流上共 <span class="text-white font-mono">1</span> 筆資料節點。
+        </p>
+    </header>
+
+    <!-- Main Grid Dashboard -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-12">
+        
+        <!-- Emotion Chart Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 flex flex-col hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between mb-8">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">情緒佔比分析 (Sentiment Ratio)</h2>
+                <div class="px-2 py-1 bg-white/5 rounded text-[10px] font-mono text-white border border-white/10">即時 (LIVE)</div>
+            </div>
+            <div class="flex-1 flex items-center justify-center relative w-full h-48">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Top Topics Module -->
+        <div class="bg-cs-card border border-cs-border rounded-xl p-6 lg:col-span-2 hover:border-cs-accent/50 transition-colors duration-300">
+            <div class="flex items-center justify-between border-b border-cs-border pb-4 mb-6">
+                <h2 class="text-sm font-semibold tracking-wide text-cs-textMuted uppercase">關鍵字聲量偵測 Top 3</h2>
+                <span class="text-xs font-mono text-cs-textMuted">VOL. RANKING</span>
+            </div>
+            
+            <div class="space-y-4">
+                
+                    
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-accent glow-text">
+                                01
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">聯名款</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">1</span>
+                            <span class="text-[10px] text-cs-textMuted tracking-wider">筆討論</span>
+                        </div>
+                    </div>
+                    
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-textMuted">
+                                02
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">產品設計</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">1</span>
+                            <span class="text-[10px] text-cs-textMuted tracking-wider">筆討論</span>
+                        </div>
+                    </div>
+                    
+                    <div class="group flex items-center justify-between p-4 bg-black/50 border border-cs-border rounded-lg hover:border-cs-accent transition-all duration-300">
+                        <div class="flex items-center space-x-5">
+                            <span class="font-mono text-sm text-cs-textMuted">
+                                03
+                            </span>
+                            <h3 class="font-medium text-white text-lg group-hover:text-cs-accent transition-colors">開箱</h3>
+                        </div>
+                        <div class="flex flex-col items-end">
+                            <span class="font-mono text-lg text-white">1</span>
+                            <span class="text-[10px] text-cs-textMuted tracking-wider">筆討論</span>
+                        </div>
+                    </div>
+                    
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert / Risk Management Section -->
+    
+
+    <!-- Database Terminal Table -->
+    <div class="pt-8">
+        <h2 class="text-lg font-semibold tracking-tight text-white mb-6">系統資料庫紀錄 (Operation Logs)</h2>
+        
+        <div class="bg-cs-card border border-cs-border rounded-xl overflow-hidden shadow-2xl">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap lg:whitespace-normal">
+                    <thead class="bg-[#1A1A1A] border-b border-cs-border font-mono text-[11px] uppercase tracking-wider text-cs-textMuted">
+                        <tr>
+                            <th class="px-6 py-4 font-semibold">來源 / 時間標記</th>
+                            <th class="px-6 py-4 font-semibold w-1/2">AI 語意摘要分析</th>
+                            <th class="px-6 py-4 font-semibold">狀態標籤庫</th>
+                            <th class="px-6 py-4 font-semibold text-right">來源連結</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-cs-border">
+                        
+                        <tr class="hover:bg-white/[0.02] transition-colors duration-200">
+                            <td class="px-6 py-5 align-top">
+                                <span class="block font-medium text-white">假資料來源</span>
+                                <span class="block font-mono text-[10px] text-cs-textMuted mt-1">2026-04-22 09:04</span>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <p class="text-gray-200 font-medium text-sm leading-relaxed mb-2">消費者對 KlassiC 最新聯名款的設計給予極高評價。</p>
+                                <p class="text-cs-textMuted text-xs leading-relaxed line-clamp-2 font-mono opacity-60" title="我覺得這次的聯名框超好看！">我覺得這次的聯名框超好看！</p>
+                            </td>
+                            <td class="px-6 py-5 align-top">
+                                <div class="flex flex-col gap-2 items-start text-xs tracking-wider">
+                                    
+                                        <span class="inline-block bg-cs-accent/10 border border-cs-accent/30 text-cs-accent px-2 py-1 rounded">正面好評</span>
+                                    
+                                    
+                                    
+                                        <span class="inline-block bg-white/10 border border-white/20 text-white px-2 py-1 rounded mt-1 shadow-[0_0_5px_rgba(255,255,255,0.2)]">情緒強烈 (HIGH)</span>
+                                    
+                                </div>
+                            </td>
+                            <td class="px-6 py-5 align-top text-right">
+                                <a href="https://example.com" target="_blank" class="inline-flex items-center justify-center p-2 rounded-lg bg-white/5 border border-white/10 text-cs-textMuted hover:bg-cs-accent hover:text-black hover:border-cs-accent transition-all duration-300">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                                </a>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="mt-20 pt-8 border-t border-cs-border text-center">
+        <p class="font-mono text-[10px] text-cs-textMuted tracking-widest">
+            // KlassiC 輿情數據引擎 &copy; 2026 | Generated by AI
+        </p>
+    </footer>
+</div>
+
+<script>
+    const ctx = document.getElementById('sentimentChart').getContext('2d');
+    const dataFromBackend = [100.0, 0.0, 0.0];
+    
+    // Clear Street style chart colors
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['正面 (Positive)', '中立 (Neutral)', '負面 (Negative)'],
+            datasets: [{
+                data: dataFromBackend,
+                backgroundColor: [
+                    'rgb(0, 111, 255)', // Tech Blue for Positive
+                    '#262626', // Dark border gray for Neutral
+                    '#EF4444'  // Red for Negative
+                ],
+                borderWidth: 2,
+                borderColor: '#000000', // Match black background
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '80%', // Thinner elegant ring
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { 
+                        boxWidth: 8,
+                        usePointStyle: true,
+                        color: '#A3A3A3',
+                        font: { family: 'Noto Sans TC', size: 10 }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
